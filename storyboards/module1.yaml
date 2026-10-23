@@ -1,0 +1,151 @@
+# Module 1 storyboard, written by hand (automatic storyboarding is a later ticket).
+# Each shot covers a piece of narration. Joined in order, the shot texts must equal
+# the module narration exactly (citation markers already removed).
+# Long sentences are split at a clause boundary so no shot runs much past ~9 s.
+module: 1
+voice: es-ES-AlvaroNeural
+
+# Added to every image prompt.
+style: >-
+  Cinematic photoreal film still, shot on a full-frame camera with a 35mm lens,
+  shallow depth of field, soft overcast natural light, calm, curious and hopeful
+  mood, sleek modern design, muted palette of charcoal, warm grey and cool blue
+  with small burgundy and antique gold accents, high detail. Not dark, not
+  dystopian, not scary. No text, no letters, no logos, no watermark.
+
+# Added to prompts of shots with character: true.
+character: >-
+  The recurring AI character from the reference image: a person whose head is a
+  faceless smooth matte white mannequin head with no eyes, no mouth and no
+  facial features; charcoal bespoke suit in a fine birdseye weave; burgundy silk
+  tie with a small gold-cream paisley pattern; burgundy and antique-gold ornate
+  paisley silk pocket square in the left breast pocket of the jacket (the
+  wearer's left, which is the viewer's right); under the jacket a vivid koi fish
+  watercolour Hawaiian shirt in blue, gold and orange. Normal human hands.
+
+shots:
+  - id: m1-01
+    type: title_card
+    title: "Gobernanza Global de la IA: ¿Cooperación o Colapso?"
+    subtitle: "Pronósticos 2025-2060"
+    lead_in: 1.5
+    text: "Hola a todos y bienvenidos."
+
+  - id: m1-02
+    type: image
+    prompt: >-
+      Wide shot of a grand international summit hall with a large curved
+      assembly of delegates' desks, tall windows with grey overcast daylight,
+      small microphones and water glasses, people in suits taking their seats.
+    text: "En los últimos años hemos presenciado una avalancha de cumbres internacionales,"
+
+  - id: m1-03
+    type: image
+    character: true
+    prompt: >-
+      Medium shot of the AI character seated at a delegate's desk in a large
+      international assembly hall, listening attentively, surrounded by human
+      diplomats, soft diffuse light, rows of curved desks softly out of focus
+      behind, plain light wood-panelled walls with no emblems, no flags, no logos.
+    text: "declaraciones multilaterales y discursos sobre la necesidad urgente de regular la Inteligencia Artificial de frontera."
+
+  - id: m1-04
+    type: image
+    prompt: >-
+      Government ministers from several countries around a large round
+      negotiating table, papers and tablets in front of them, small flag stands
+      without readable emblems, seen from a slightly high angle, soft window
+      light on a cloudy day.
+    text: "Frecuentemente escuchamos que los gobiernos están a punto de coordinarse para evitar riesgos catastróficos y garantizar una IA segura para la humanidad."
+
+  - id: m1-05
+    type: image
+    prompt: >-
+      A futuristic translucent holographic globe of the Earth floating in a dim
+      elegant room, thin glowing arcs of data connecting cities, delicate
+      antique gold and cool blue light lines, calm atmosphere.
+    text: "Sin embargo, ¿qué dicen realmente los datos e investigaciones cuando analizamos las probabilidades a largo plazo?"
+
+  - id: m1-06
+    type: image
+    character: true
+    prompt: >-
+      The AI character sitting at a wooden desk in a high-rise office with a
+      wall of bookshelves, reading a printed research report held in both
+      hands, large windows with a soft overcast city skyline.
+    text: "Hoy nos adentramos en un análisis basado en el informe de superpronósticos de Good Judgment Inc.,"
+
+  - id: m1-07
+    type: text_overlay
+    prompt: >-
+      Close-up of a bound printed research report lying on a wooden desk next
+      to a pen and a cup of coffee, pages with abstract line charts, very
+      shallow depth of field, soft side light, empty calm space on the left
+      half of the frame.
+    overlay:
+      kicker: "La fuente"
+      title: "Good Judgment Inc."
+      body: "Global AI Governance and Strategic Cooperation Forecasts 2025-2060"
+    text: "titulado \"Global AI Governance and Strategic Cooperation Forecasts 2025-2060\"."
+
+  - id: m1-08
+    type: image
+    prompt: >-
+      A small diverse group of professional forecasters working together in a
+      bright minimalist studio, laptops and printed probability charts on a
+      long table, one person pointing at a wall with pinned notes, overcast
+      daylight.
+    text: "Este estudio reúne las predicciones de un grupo de superpronosticadores internacionales"
+
+  - id: m1-09
+    type: text_overlay
+    prompt: >-
+      Long symmetrical aisle of a modern data center with rows of sleek dark
+      server racks, tiny blue and warm status lights, polished floor reflecting
+      soft light, calm and clean, empty space on the left side of the frame.
+    overlay:
+      kicker: "Diez hitos clave"
+      items:
+        - "Regulación mundial de la IA"
+        - "Control de semiconductores"
+        - "Tratados militares"
+        - "Agencias regulatorias"
+    text: "sobre diez hitos clave en la regulación mundial de la IA, control de semiconductores, tratados militares y agencias regulatorias."
+
+  - id: m1-10
+    type: image
+    character: true
+    prompt: >-
+      The AI character standing by a floor-to-ceiling window in a high-rise
+      office, seen from a three-quarter angle, holding a closed report, looking
+      out at a wide city skyline under soft grey clouds with light breaking
+      through near the horizon, thoughtful and calm.
+    text: "Y la conclusión central del informe es reveladora: la verdadera cooperación vinculante no llegará en los 2030s como muchos desearían,"
+
+  - id: m1-11
+    type: text_overlay
+    overlay:
+      kicker: "La conclusión central"
+      from: "2030s"
+      to: "2040s – 2050s"
+      body: "Cooperación vinculante"
+    text: "sino que se postergará hacia las décadas de 2040 y 2050."
+
+  - id: m1-12
+    type: image
+    prompt: >-
+      Abstract flowing streams of luminous code and data particles drifting
+      across layered glass panels in a dark studio, cool blue with fine
+      antique gold highlights, elegant and calm, no readable characters.
+    text: "¿Por qué ocurre esto? ¿Qué frena la diplomacia tecnológica y qué eventos podrían acelerar estos plazos?"
+
+  - id: m1-13
+    type: image
+    character: true
+    prompt: >-
+      The AI character walking towards the camera along a quiet modern glass
+      corridor of an international institution, one hand slightly raised in an
+      inviting gesture, soft overcast daylight from the side, full outfit
+      visible.
+    tail: 1.5
+    text: "Acompáñame a desglosarlo."
