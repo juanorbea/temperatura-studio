@@ -258,7 +258,8 @@ def loudnorm(pcm: np.ndarray, work: Path) -> np.ndarray:
     target = "I=-16:TP=-1.5:LRA=11"
     measure = subprocess.run(["ffmpeg", "-hide_banner", "-i", str(raw), "-af", f"loudnorm={target}:print_format=json",
                               "-f", "null", "-"], capture_output=True, text=True, check=True).stderr
-    m = json.loads(measure[measure.rindex("{"):])
+    start = measure.rindex("{")
+    m = json.loads(measure[start:measure.index("}", start) + 1])  # ffmpeg may log more after it
     af = (f"loudnorm={target}:measured_I={m['input_i']}:measured_TP={m['input_tp']}:"
           f"measured_LRA={m['input_lra']}:measured_thresh={m['input_thresh']}:"
           f"offset={m['target_offset']}:linear=true")
