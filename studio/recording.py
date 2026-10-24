@@ -86,5 +86,9 @@ def timings_from_recording(board: Storyboard, src: Path, cache: Path, wav_out: P
     audio_end = len(pcm) / 2 / RATE
     heard = transcribe(src, cache / "transcripts", model_size)
     shots = align([s.text for s in board.shots], heard, find_pauses(pcm), audio_end)
-    timings = snap_and_write(board.shots, [a.end for a in shots], pcm, wav_out)
+    unread = board.shots[len(shots):]
+    if unread:
+        print(f"warning: the recording stops before these shots, left out of the video: "
+              f"{', '.join(s.id for s in unread)}")
+    timings = snap_and_write(board.shots[:len(shots)], [a.end for a in shots], pcm, wav_out)
     return timings, shots

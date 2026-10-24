@@ -14,6 +14,7 @@ FLAG_MISSING = 3     # warn when a shot has this many script words not heard...
 FLAG_EXTRA = 3       # ...or this many heard words not in the script
 FLAG_RATIO = 0.7     # ...or matches less than this share of its words
 FAIL_RATIO = 0.5     # below this for the whole module, it is probably the wrong recording
+UNREAD_RATIO = 0.2   # a shot at the end with fewer words heard than this was not read
 
 
 @dataclass
@@ -101,6 +102,11 @@ def _choose_cut(after: float, before: float, pauses: list[tuple[float, float]]):
 
 def align(shot_texts: list[str], heard: list[Word], pauses: list[tuple[float, float]],
           audio_end: float) -> list[ShotAlignment]:
+    """One ShotAlignment per shot, in order.
+
+    Shots at the end that were not read (the recording stops early) are left
+    out, so the result can be shorter than shot_texts.
+    """
     ref, owner = [], []
     for k, text in enumerate(shot_texts):
         tokens = normalize(text)
@@ -121,9 +127,16 @@ def align(shot_texts: list[str], heard: list[Word], pauses: list[tuple[float, fl
     starts, ends = _script_times(len(ref), match, hyp, audio_end)
     first = [owner.index(k) for k in range(len(shot_texts))]
     last = [len(owner) - 1 - owner[::-1].index(k) for k in range(len(shot_texts))]
+    words = [last[k] - first[k] + 1 for k in range(len(shot_texts))]
+    matched = [sum(1 for i in range(first[k], last[k] + 1) if i in match)
+               for k in range(len(shot_texts))]
+
+    kept = len(shot_texts)
+    while kept > 1 and matched[kept - 1] < UNREAD_RATIO * words[kept - 1]:
+        kept -= 1
 
     cuts, in_pause = [0.0], [True]
-    for k in range(1, len(shot_texts)):
+    for k in range(1, kept):
         t, ok = _choose_cut(ends[last[k - 1]], starts[first[k]], pauses)
         cuts.append(max(t, cuts[-1] + 0.2))  # keep every shot at least a little long
         in_pause.append(ok)
@@ -131,9 +144,8 @@ def align(shot_texts: list[str], heard: list[Word], pauses: list[tuple[float, fl
 
     unmatched = set(range(len(hyp))) - set(match.values())
     result = []
-    for k in range(len(shot_texts)):
+    for k in range(kept):
         lo, hi = cuts[k], cuts[k + 1]
         extra = sum(1 for j in unmatched if lo <= hyp[j].start < hi)
-        matched = sum(1 for i in range(first[k], last[k] + 1) if i in match)
-        result.append(ShotAlignment(lo, hi, last[k] - first[k] + 1, matched, extra, in_pause[k]))
+        result.append(ShotAlignment(lo, hi, words[k], matched[k], extra, in_pause[k]))
     return result

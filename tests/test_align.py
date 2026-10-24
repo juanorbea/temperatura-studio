@@ -109,3 +109,13 @@ def test_wrong_recording_fails():
     words, pauses, end = speak([("esto no tiene nada que ver con el guion de hoy", 0.5)] * 3)
     with pytest.raises(AlignmentError):
         align(SHOTS, words, pauses, end)
+
+
+def test_recording_that_stops_early_leaves_out_the_unread_shots():
+    words, pauses, end = speak([(SHOTS[0], 0.8), (SHOTS[1], 0.8), (SHOTS[2], 0.5)])
+    shots = align(SHOTS, words, pauses, end)
+
+    assert len(shots) == 3                  # "Acompáñame a desglosarlo." was never read
+    assert shots[-1].end == end             # the last read shot runs to the end of the audio
+    assert shots[-1].ratio == 1.0
+    assert all(s.cut_in_pause for s in shots[1:])
