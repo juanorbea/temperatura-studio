@@ -17,6 +17,8 @@ NARRATION_TAG = "[NARRADOR / PRESENTADOR - EN CÁMARA]"
 CITATION_RE = re.compile(r"\s*\[\d+(?:\s*,\s*\d+)*\]")
 # A sentence ends at . ? ! (optionally followed by a closing quote) before whitespace.
 SENTENCE_END_RE = re.compile(r'(?<=[.?!])["»”]?\s+')
+# ...but not after "EE." (of "EE. UU.") or a list number like "1.", nor before a lowercase word
+NOT_AN_END_RE = re.compile(r"(?:^|\s)(?:EE\.|\d{1,2}\.)$")
 
 
 @dataclass
@@ -34,8 +36,15 @@ def strip_citations(text: str) -> str:
 def split_sentences(text: str) -> list[str]:
     """Split narration into sentences, keeping punctuation."""
     flat = " ".join(text.split())
-    parts = SENTENCE_END_RE.split(flat)
-    return [p.strip() for p in parts if p.strip()]
+    sentences = []
+    for part in (p.strip() for p in SENTENCE_END_RE.split(flat)):
+        if not part:
+            continue
+        if sentences and (NOT_AN_END_RE.search(sentences[-1]) or part[0].islower()):
+            sentences[-1] += " " + part
+        else:
+            sentences.append(part)
+    return sentences
 
 
 def parse_script(text: str) -> list[Module]:
@@ -46,7 +55,9 @@ def parse_script(text: str) -> list[Module]:
         body = text[m.end():end]
         visual, _, narration = body.partition(NARRATION_TAG)
         visual = visual.replace(VISUAL_TAG, "").strip()
-        paragraphs = [" ".join(p.split()) for p in narration.strip().split("\n\n")]
+        # Blank lines separate paragraphs; so does each item of a numbered list ("1. ...").
+        blocks = re.split(r"\n\s*\n|\n(?=\d{1,2}\.\s)", narration.strip())
+        paragraphs = [" ".join(p.split()) for p in blocks]
         narration = "\n\n".join(strip_citations(p) for p in paragraphs if p)
         modules.append(Module(int(m.group(1)), m.group(2).strip(), visual, narration))
     return modules
