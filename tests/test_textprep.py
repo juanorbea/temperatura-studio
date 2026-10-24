@@ -1,0 +1,61 @@
+"""What the cloned voice is asked to read, and what Whisper is expected to hear."""
+from pathlib import Path
+
+import pytest
+
+from studio.textprep import Lexicon, heard_text, load_lexicon, number_words, numbers_to_words, voice_text
+
+LEX = Lexicon(
+    translate={"Chips for Peace": "Chips para la Paz", "EE. UU.": "Estados Unidos", "AI": "IA",
+               "Global AI Governance Forecasts 2025-2060": "Pronósticos de la IA, de 2025 a 2060"},
+    respell={"IA": "í a", "Good Judgment Inc.": "Gud Yóchment", "Nvidia": "Envidia"},
+)
+
+
+@pytest.mark.parametrize("n, words", [
+    (0, "cero"), (16, "dieciséis"), (21, "veintiuno"), (30, "treinta"), (79, "setenta y nueve"),
+    (100, "cien"), (101, "ciento uno"), (1000, "mil"), (2039, "dos mil treinta y nueve"),
+    (2050, "dos mil cincuenta"), (2100, "dos mil cien"),
+])
+def test_number_words(n, words):
+    assert number_words(n) == words
+
+
+@pytest.mark.parametrize("text, said", [
+    ("no llegará en los 2030s", "no llegará en los años dos mil treinta"),
+    ("Pronósticos 2025-2060", "Pronósticos dos mil veinticinco a dos mil sesenta"),
+    ("con un 79% de probabilidad", "con un setenta y nueve por ciento de probabilidad"),
+    ("entre 10 y 20 años", "entre diez y veinte años"),
+    ("las décadas de 2040 y 2050.", "las décadas de dos mil cuarenta y dos mil cincuenta."),
+    ("un 1,5 por mil", "un uno coma cinco por mil"),
+])
+def test_numbers_are_written_out(text, said):
+    assert numbers_to_words(text) == said
+
+
+def test_translations_and_respellings_go_to_the_voice():
+    text = 'el informe de Good Judgment Inc., titulado "Global AI Governance Forecasts 2025-2060".'
+    assert voice_text(text, LEX) == ("el informe de Gud Yóchment, titulado Pronósticos de la í a, "
+                                     "de dos mil veinticinco a dos mil sesenta.")
+
+
+def test_whisper_is_expected_to_hear_translations_but_not_respellings():
+    text = "una IA segura, firmada por EE. UU. y gigantes como Nvidia"
+    assert heard_text(text, LEX) == "una IA segura, firmada por Estados Unidos y gigantes como Nvidia"
+    assert voice_text(text, LEX) == "una í a segura, firmada por Estados Unidos y gigantes como Envidia"
+
+
+def test_whole_words_only_and_case_sensitive():
+    assert voice_text("AIDA y la ia", LEX) == "AIDA y la ia"
+
+
+def test_list_numbers_quotes_dashes_and_parentheses_are_tidied():
+    text = '1. Inercia: el "mando humano" —un fallo sistémico— y la Energía Atómica (OIEA).'
+    assert voice_text(text, Lexicon()) == ("Primero: Inercia: el mando humano, un fallo sistémico, "
+                                           "y la Energía Atómica, OIEA.")
+
+
+def test_juans_lexicon_loads_and_covers_the_script_terms():
+    lex = load_lexicon(Path("voices/juan/pronunciations.yaml"))
+    said = voice_text("la IA de EE. UU. y Chips for Peace en EuroHPC con poder de cómputo (compute)", lex)
+    assert said == "la í a de Estados Unidos y Chips para la Paz en Euro hache pe ce con poder de cómputo"
