@@ -1,0 +1,17 @@
+# Juan's cloned voice. Recorded once (juan_reference_v2.m4a, 24 Oct 2026), reused for every script.
+engine: f5-tts
+# F5-Spanish fine-tune; weights are CC-BY-NC-4.0 (non-commercial use only).
+checkpoint: hf://jpgallegoar/F5-Spanish/model_1250000.safetensors
+reference:
+  # Personal recording, NOT in git (see .gitignore). 10.85 s cut from 4.45-15.30 s of the
+  # original memo, high-pass 70 Hz, +4 dB, 24 kHz mono. Copy it here before using --voice juan.
+  audio: ref.wav
+  text: ref.txt            # the exact words spoken in ref.wav
+lexicon: pronunciations.yaml
+generation:
+  nfe_step: 24             # 32: a bit cleaner, 1.45x slower; 16: 1.5x faster, slightly more slips
+  cfg_strength: 2.0
+  sway_sampling_coef: -1.0
+  letters_per_second: 13.5 # Juan speaks ~14.9 letters/s; asking for a bit more time avoids cut endings
+  pad_seconds: 0.35
+  max_chunk_chars: 160     # longer sentences are split at commas

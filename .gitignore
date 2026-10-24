@@ -4,3 +4,8 @@ cache/
 __pycache__/
 .env
 .pytest_cache/
+.venv-f5
+# personal voice recordings stay out of git
+voices/*/*.wav
+voices/*/*.m4a
+voices/*/*.mp3
