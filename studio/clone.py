@@ -215,6 +215,10 @@ class Narrator:
             wav, meta = self.cache / f"{key}.wav", self.cache / f"{key}.json"
             if wav.exists() and meta.exists():
                 take = json.loads(meta.read_text(encoding="utf-8"))
+                if take["expect"] != expect:  # lexicon changed what should be heard: re-score
+                    take["expect"] = expect
+                    take["wer"], take["tail_ok"] = word_error_rate(expect, take["heard"])
+                    take["wer"] = round(take["wer"], 3)
                 self.reused += 1
             else:
                 if self.worker is None:
