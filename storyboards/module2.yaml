@@ -1,0 +1,89 @@
+# Module 2 storyboard. Shots are whole sentences, so a cut never falls mid-sentence.
+# Images are in assets/images/module2/; each prompt describes the image used.
+module: 2
+voice: es-ES-AlvaroNeural
+style: Cinematic photoreal film still, shot on a full-frame camera with a 35mm lens, shallow depth of
+  field, soft overcast natural light, calm, curious and hopeful mood, sleek modern design, muted palette
+  of charcoal, warm grey and cool blue with small burgundy and antique gold accents, high detail. Not
+  dark, not dystopian, not scary. No text, no letters, no logos, no watermark.
+character: 'The recurring AI character from the reference image: a person whose head is a faceless smooth
+  matte white mannequin head with no eyes, no mouth and no facial features; charcoal bespoke suit in a
+  fine birdseye weave; burgundy silk tie with a small gold-cream paisley pattern; burgundy and antique-gold
+  ornate paisley silk pocket square in the left breast pocket of the jacket (the wearer''s left, which
+  is the viewer''s right); under the jacket a vivid koi fish watercolour Hawaiian shirt in blue, gold
+  and orange. Normal human hands.'
+shots:
+- id: m2-01
+  type: title_card
+  title: Los cuatro pilares de la inercia regulatoria
+  subtitle: Módulo 2
+  lead_in: 1.2
+  text: 'Para entender por qué los calendarios de la gobernanza global se extienden tanto, los superpronosticadores
+    identifican cuatro temas estructurales:'
+- id: m2-02
+  type: text_overlay
+  overlay:
+    kicker: Pilar 1
+    pillars:
+    - Inercia Institucional
+    - Rivalidad Geopolítica
+    - Modelos Históricos
+    - Eventos Detonantes
+    active: 1
+    caption: Los tratados multilaterales tardan décadas
+  text: '1. Inercia Institucional y Tiempos de Tratados: La historia muestra que la creación de organismos
+    regulatorios multilaterales mediante tratados formales lleva décadas.'
+- id: m2-03
+  type: image
+  prompt: Delegates in dark suits signing a formal treaty at long wooden tables in a classic hall, warm
+    lamps.
+  text: Instituciones como el Organismo Internacional de Energía Atómica (OIEA) o la Organización para
+    la Prohibición de las Armas Químicas (OPCW) tardaron muchos años en ratificarse desde que se identificaron
+    sus primeros riesgos.
+- id: m2-04
+  type: text_overlay
+  overlay:
+    kicker: Pilar 2
+    pillars:
+    - Inercia Institucional
+    - Rivalidad Geopolítica
+    - Modelos Históricos
+    - Eventos Detonantes
+    active: 2
+    caption: 'Estados Unidos y China: competencia frente a riesgos compartidos'
+  text: '2. Rivalidad Geopolítica frente a Riesgos Compartidos: La intensa competencia entre Estados Unidos
+    y China frena la supervisión mutua.'
+- id: m2-05
+  type: image
+  prompt: Two delegations facing each other across a long negotiating table, city skyline behind, overcast.
+  text: Aunque ambas potencias comparten interés en la estabilidad de mercados y cadenas de chips, la
+    desconfianza sobre inspecciones externas retrasa los acuerdos.
+- id: m2-06
+  type: text_overlay
+  prompt: Long particle accelerator tunnel with blue magnet segments, dark empty left side.
+  overlay:
+    kicker: Pilar 3
+    title: Modelos de referencia
+    body: CERN · EuroHPC · Átomos para la Paz
+  text: '3. Modelos e Instituciones de Referencia: Experimentos multilaterales como el CERN, EuroHPC o
+    "Átomos para la Paz" sirven como modelos de colaboración científica, pero adaptar estas fórmulas a
+    la IA comercial privada resulta complejo.'
+- id: m2-07
+  type: text_overlay
+  overlay:
+    kicker: Pilar 4
+    pillars:
+    - Inercia Institucional
+    - Rivalidad Geopolítica
+    - Modelos Históricos
+    - Eventos Detonantes
+    active: 4
+    caption: El gran acelerador potencial
+  text: '4. Eventos Detonantes y Presión Pública: Este es el gran acelerador potencial.'
+- id: m2-08
+  type: image
+  prompt: Operators seen from behind in a dim operations centre, wall of screens with network maps and
+    an amber alert glow.
+  tail: 1.0
+  text: Un incidente grave de IA —un fallo sistémico, un ataque cibernético devastador o un accidente
+    militar— podría anular la inercia política e imponer un consenso diplomático rápido.

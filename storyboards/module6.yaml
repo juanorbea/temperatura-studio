@@ -1,0 +1,64 @@
+# Module 6 storyboard. Shots are whole sentences, so a cut never falls mid-sentence.
+# Images are in assets/images/module6/; each prompt describes the image used.
+module: 6
+voice: es-ES-AlvaroNeural
+style: Cinematic photoreal film still, shot on a full-frame camera with a 35mm lens, shallow depth of
+  field, soft overcast natural light, calm, curious and hopeful mood, sleek modern design, muted palette
+  of charcoal, warm grey and cool blue with small burgundy and antique gold accents, high detail. Not
+  dark, not dystopian, not scary. No text, no letters, no logos, no watermark.
+character: 'The recurring AI character from the reference image: a person whose head is a faceless smooth
+  matte white mannequin head with no eyes, no mouth and no facial features; charcoal bespoke suit in a
+  fine birdseye weave; burgundy silk tie with a small gold-cream paisley pattern; burgundy and antique-gold
+  ornate paisley silk pocket square in the left breast pocket of the jacket (the wearer''s left, which
+  is the viewer''s right); under the jacket a vivid koi fish watercolour Hawaiian shirt in blue, gold
+  and orange. Normal human hands.'
+shots:
+- id: m6-01
+  type: title_card
+  title: Conclusión y reflexión final
+  subtitle: Módulo 6
+  lead_in: 1.2
+  text: En resumen, el informe de superpronósticos de Good Judgment Inc. nos entrega una lección de realismo
+    geopolítico.
+- id: m6-02
+  type: image
+  character: true
+  prompt: The AI character in a dim study beside a wall screen with a glowing network, gesturing toward
+    it.
+  text: La gobernanza de la IA está atada a la inercia de las instituciones multilaterales, los intereses
+    comerciales de miles de millones de dólares y la rivalidad entre superpotencias.
+- id: m6-03
+  type: text_overlay
+  overlay:
+    kicker: Diez hitos · fechas medianas
+    rows:
+    - - Directrices comunes de la red INAISI
+      - 2039
+    - - China se une a INAISI
+      - 2050
+    - - Agencia internacional de IA por tratado
+      - 2051
+    - - 'Chips for Peace: EE. UU., Reino Unido + 5'
+      - 2052
+    - - Chips for Peace con China
+      - 2056
+    - - Organismo internacional con más cómputo
+      - 2057
+    - - Acuerdo civil verificable EE. UU.-China
+      - 2050
+    - - China respalda la declaración militar
+      - 2055
+    - - Línea directa EE. UU.-China
+      - 2058
+    - - Cumbre del Consejo de Seguridad
+      - 2043
+  text: Mientras que el alineamiento voluntario de guías de seguridad podría consolidarse hacia 2039,
+    la mayoría de las instituciones formales, los tratados sobre semiconductores y los acuerdos militares
+    entre EE. UU. y China no madurarán hasta las décadas de 2040 y 2050.
+- id: m6-04
+  type: image
+  character: true
+  prompt: The AI character on a stone terrace at early morning, soft first light over a city.
+  tail: 2.0
+  text: La gran incógnita es si la humanidad construirá estas salvaguardas mediante la diplomacia preventiva
+    o si necesitaremos un incidente grave para acelerar de golpe los relojes de la política mundial.

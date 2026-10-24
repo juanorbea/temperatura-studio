@@ -1,0 +1,112 @@
+# Module 4 storyboard. Shots are whole sentences, so a cut never falls mid-sentence.
+# Images are in assets/images/module4/; each prompt describes the image used.
+module: 4
+voice: es-ES-AlvaroNeural
+style: Cinematic photoreal film still, shot on a full-frame camera with a 35mm lens, shallow depth of
+  field, soft overcast natural light, calm, curious and hopeful mood, sleek modern design, muted palette
+  of charcoal, warm grey and cool blue with small burgundy and antique gold accents, high detail. Not
+  dark, not dystopian, not scary. No text, no letters, no logos, no watermark.
+character: 'The recurring AI character from the reference image: a person whose head is a faceless smooth
+  matte white mannequin head with no eyes, no mouth and no facial features; charcoal bespoke suit in a
+  fine birdseye weave; burgundy silk tie with a small gold-cream paisley pattern; burgundy and antique-gold
+  ornate paisley silk pocket square in the left breast pocket of the jacket (the wearer''s left, which
+  is the viewer''s right); under the jacket a vivid koi fish watercolour Hawaiian shirt in blue, gold
+  and orange. Normal human hands.'
+shots:
+- id: m4-01
+  type: title_card
+  title: Control de cómputo, semiconductores y modelos científicos
+  subtitle: Módulo 4
+  lead_in: 1.2
+  text: 'Pasemos al segundo bloque: la infraestructura física, los semiconductores y el poder de cómputo
+    (compute).'
+- id: m4-02
+  type: image
+  prompt: A gloved hand holding a silicon wafer with a fine grid of chips, soft studio light.
+  text: Aquí los analistas evalúan la propuesta "Chips for Peace", inspirada en el programa de desarrollo
+    nuclear pacífico.
+- id: m4-03
+  type: image
+  prompt: A container port at dawn with cranes and a cargo ship, crates of electronics in the foreground.
+  text: Un acuerdo de este tipo exigiría cumplir estándares de seguridad y aplicar controles de exportación
+    hacia naciones no alineadas.
+- id: m4-04
+  type: text_overlay
+  overlay:
+    kicker: Chips for Peace · fecha mediana
+    columns:
+    - title: Sin China
+      rows:
+      - EE. UU.
+      - Reino Unido
+      - Al menos 5 aliados
+      year: 2052
+    - title: Con China
+      rows:
+      - China, EE. UU.
+      - Reino Unido
+      - Otros 4 países
+      year: 2056
+      note: 79% después de 2050
+    show: 1
+  text: Al preguntar cuándo firmarán este acuerdo Estados Unidos, el Reino Unido y al menos otros cinco
+    países aliados, la fecha mediana es 2052.
+- id: m4-05
+  type: image
+  prompt: Engineers in clean-room suits working among machines in a semiconductor fab.
+  text: Aunque existe coordinación unilateral sobre controles de exportación a nivel técnico, acordar
+    mecanismos para compartir beneficios tecnológicos y regular el desarrollo comercial privado genera
+    reticencias en gobiernos y gigantes de chips como Nvidia.
+- id: m4-06
+  type: text_overlay
+  overlay:
+    kicker: Chips for Peace · fecha mediana
+    columns:
+    - title: Sin China
+      rows:
+      - EE. UU.
+      - Reino Unido
+      - Al menos 5 aliados
+      year: 2052
+    - title: Con China
+      rows:
+      - China, EE. UU.
+      - Reino Unido
+      - Otros 4 países
+      year: 2056
+      note: 79% después de 2050
+    show: 2
+  text: Sin embargo, si añadimos a China a la ecuación —exigiendo que China, EE. UU., el Reino Unido y
+    otros cuatro países firmen un acuerdo conjunto estilo "Chips for Peace"— la fecha mediana se retrasa
+    al año 2056, con un 79% de probabilidad para después de 2050.
+- id: m4-07
+  type: image
+  prompt: A lone cargo ship on a grey sea under heavy clouds.
+  text: Lograr que rivales estratégicos acepten controles de exportación cruzados representa una barrera
+    diplomática monumental sin un choque externo devastador.
+- id: m4-08
+  type: image
+  prompt: A long hall of dark supercomputer cabinets with blue lights.
+  text: 'En cuanto a la supercomputación, surge una gran interrogante: ¿Cuándo un organismo internacional
+    desarrollará un modelo de IA entrenado con más compute que cualquier otro actor comercial o estatal?.'
+- id: m4-09
+  type: text_overlay
+  overlay:
+    kicker: Supercomputación · fecha mediana
+    events:
+    - year: 2057
+      label: Un organismo internacional entrena el modelo con más cómputo
+    highlight: 0
+  text: La mediana proyectada es 2057.
+- id: m4-10
+  type: image
+  prompt: Aerial view of a vast data centre campus under construction at golden hour.
+  text: Actualmente, la inversión en compute está dominada por corporaciones privadas y proyectos nacionales
+    como Stargate o la expansión de Microsoft.
+- id: m4-11
+  type: image
+  prompt: A multinational team of scientists around a large touch table showing a network visual.
+  tail: 1.0
+  text: Solo si los costes se vuelven insostenibles para el sector privado o si la UE consolida un consorcio
+    científico multinacional tipo CERN (apoyado en EuroHPC), podrá un ente público internacional liderar
+    la carrera del cómputo.
