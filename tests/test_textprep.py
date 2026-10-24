@@ -59,3 +59,7 @@ def test_juans_lexicon_loads_and_covers_the_script_terms():
     lex = load_lexicon(Path("voices/juan/pronunciations.yaml"))
     said = voice_text("la IA de EE. UU. y Chips for Peace en EuroHPC con poder de cómputo (compute)", lex)
     assert said == "la í a de Estados Unidos y Chips para la Paz en Euro hache pe ce con poder de cómputo"
+
+
+def test_question_mark_left_before_a_removed_citation_is_cleaned():
+    assert voice_text("¿similar al OIEA?.", Lexicon()) == "¿similar al OIEA?"
