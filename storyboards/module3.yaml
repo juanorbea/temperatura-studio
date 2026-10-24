@@ -1,0 +1,111 @@
+# Module 3 storyboard. Shots are whole sentences, so a cut never falls mid-sentence.
+# Images are in assets/images/module3/; each prompt describes the image used.
+module: 3
+voice: es-ES-AlvaroNeural
+style: Cinematic photoreal film still, shot on a full-frame camera with a 35mm lens, shallow depth of
+  field, soft overcast natural light, calm, curious and hopeful mood, sleek modern design, muted palette
+  of charcoal, warm grey and cool blue with small burgundy and antique gold accents, high detail. Not
+  dark, not dystopian, not scary. No text, no letters, no logos, no watermark.
+character: 'The recurring AI character from the reference image: a person whose head is a faceless smooth
+  matte white mannequin head with no eyes, no mouth and no facial features; charcoal bespoke suit in a
+  fine birdseye weave; burgundy silk tie with a small gold-cream paisley pattern; burgundy and antique-gold
+  ornate paisley silk pocket square in the left breast pocket of the jacket (the wearer''s left, which
+  is the viewer''s right); under the jacket a vivid koi fish watercolour Hawaiian shirt in blue, gold
+  and orange. Normal human hands.'
+shots:
+- id: m3-01
+  type: title_card
+  title: Estándares e instituciones internacionales de seguridad
+  subtitle: Módulo 3
+  lead_in: 1.2
+  text: Comencemos analizando las instituciones y guías internacionales de seguridad de IA.
+- id: m3-02
+  type: image
+  prompt: Researchers at workstations in a bright modern AI safety institute with abstract charts on screens.
+  text: El primer hito responde a cuándo la Red Internacional de Institutos de Seguridad de IA (INAISI)
+    acordará un conjunto único de directrices de seguridad.
+- id: m3-03
+  type: text_overlay
+  overlay:
+    kicker: Hito 1 · fecha mediana
+    events:
+    - year: 2039
+      label: Directrices comunes de la red INAISI
+    highlight: 0
+  text: La fecha mediana estimada es el año 2039.
+- id: m3-04
+  type: image
+  prompt: Delegates around a large round table covered with papers and tablets in a glass-roofed hall.
+  text: Aunque existen cumbres frecuentes y marcos voluntarios publicados por diversos países y desarrolladores
+    privados, la consolidación de normas únicas sobre evaluación de capacidades, red-teaming y mitigación
+    de riesgos se ve frenada por visiones regulatorias divergentes entre EE. UU. y la UE, además de fluctuaciones
+    políticas internas.
+- id: m3-05
+  type: image
+  prompt: A diplomat walking down a long bright marble corridor with tall windows.
+  text: El segundo hito aborda cuándo China se unirá formalmente a esta Red Internacional de Institutos
+    de Seguridad de IA.
+- id: m3-06
+  type: text_overlay
+  overlay:
+    kicker: Hito 2 · fecha mediana
+    events:
+    - year: 2039
+      label: Directrices comunes de la red INAISI
+    - year: 2050
+      label: China se une a INAISI
+    highlight: 1
+  text: Aquí la fecha mediana se desplaza hasta el año 2050.
+- id: m3-07
+  type: text_overlay
+  prompt: A desk calendar and an open notebook in a dark wood office, dark empty left side.
+  overlay:
+    kicker: China · históricamente
+    title: 10-20 años
+    body: de retraso
+  text: Históricamente, China tiende a retrasar entre 10 y 20 años su integración en organismos percibidos
+    como liderados por Occidente.
+- id: m3-08
+  type: image
+  prompt: A large assembly hall with curved rows of seats and a tall abstract blue and gold panel, no
+    emblem.
+  text: China exige que estos organismos se trasladen bajo el paraguas de las Naciones Unidas y no dependan
+    de estructuras estadounidenses.
+- id: m3-09
+  type: image
+  character: true
+  prompt: The AI character standing by a window above a city skyline at dusk, calm.
+  text: No obstante, su interés en definir estándares globales mantiene la probabilidad de su adhesión
+    a mediados de siglo.
+- id: m3-10
+  type: image
+  prompt: Two inspectors with tablets walking between dark server racks in a data centre.
+  text: 'Y el tercer hito es aún más ambicioso: ¿cuándo se establecerá por tratado ratificado una agencia
+    regulatoria internacional para la IA de frontera, similar al OIEA?.'
+- id: m3-11
+  type: text_overlay
+  overlay:
+    kicker: Hito 3 · fecha mediana
+    events:
+    - year: 2039
+      label: Directrices comunes de la red INAISI
+    - year: 2050
+      label: China se une a INAISI
+    - year: 2051
+      label: Agencia internacional de IA por tratado
+    highlight: 2
+  text: La mediana apunta al año 2051.
+- id: m3-12
+  type: image
+  prompt: A national parliament chamber from above, members seated in a semicircle during a vote.
+  text: Crear una agencia con poderes de inspección exige tratados ratificados por legislaturas nacionales.
+- id: m3-13
+  type: text_overlay
+  prompt: An empty senate chamber in soft light with a dark empty left side.
+  overlay:
+    kicker: En EE. UU.
+    title: Mayoría de dos tercios
+    body: en el Senado para ratificar un tratado
+  tail: 1.0
+  text: En EE. UU., la ratificación requiere una mayoría de dos tercios en el Senado, un obstáculo político
+    altísimo que frena cualquier acuerdo salvo que ocurra una catástrofe global.

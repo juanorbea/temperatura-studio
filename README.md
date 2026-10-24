@@ -50,6 +50,16 @@ Output: `output/module1.mp4`. Per-shot timings: `output/module1/timings.json`.
 Voice audio is cached in `cache/`, so a rebuild only calls the TTS service for
 paragraphs that changed.
 
+## Build the whole script
+
+```
+.venv/bin/python -m studio build examples/gobernanza-ia.md --module all --voice juan
+```
+
+Builds every module from `storyboards/moduleN.yaml` and `assets/images/moduleN/`,
+then joins them, in order, into `output/gobernanza-ia_full.mp4`. Each module
+starts with its own title card.
+
 If a shot has no image yet, the build stops and prints the shot id and the
 full prompt to generate it with.
 

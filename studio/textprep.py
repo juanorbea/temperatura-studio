@@ -76,6 +76,7 @@ def _tidy(text: str) -> str:
     text = re.sub(r"\s*[—–]\s*", ", ", text)
     text = re.sub(r"\s*\(\s*", ", ", text).replace(")", ",")
     text = re.sub(r",\s*([,.:;?!])", r"\1", text)
+    text = re.sub(r"([?!])\.", r"\1", text)  # "OIEA? [13]." leaves "?." once citations go
     text = re.sub(r"([:;])\s*,", r"\1", text)
     return " ".join(text.split()).strip(" ,")
 

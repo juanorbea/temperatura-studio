@@ -52,3 +52,20 @@ def join(clips: list[Path], audio: Path, out: Path) -> Path:
           "-movflags", "+faststart", str(out)])
     listing.unlink()
     return out
+
+
+def join_modules(videos: list[Path], soundtracks: list[Path], out: Path) -> Path:
+    """One video from several module videos. Pictures are copied as they are; the
+    soundtracks (WAV, each exactly as long as its module) are joined before encoding
+    once, so there are no gaps or clicks at module boundaries."""
+    listing, sound = out.with_suffix(".videos.txt"), out.with_suffix(".wav")
+    listing.write_text("".join(f"file '{v.resolve()}'\n" for v in videos))
+    sounds = out.with_suffix(".sounds.txt")
+    sounds.write_text("".join(f"file '{a.resolve()}'\n" for a in soundtracks))
+    _run(["-f", "concat", "-safe", "0", "-i", str(sounds), "-c", "copy", str(sound)])
+    _run(["-f", "concat", "-safe", "0", "-i", str(listing), "-i", str(sound),
+          "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
+          "-movflags", "+faststart", str(out)])
+    for f in (listing, sounds, sound):
+        f.unlink()
+    return out
