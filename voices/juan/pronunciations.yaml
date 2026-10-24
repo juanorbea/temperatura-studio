@@ -1,0 +1,38 @@
+# Synthesis-only text changes for Juan's cloned voice. The script and storyboards are not changed.
+# Juan's rule: no English pronunciation. English becomes natural Spanish (translate);
+# names that cannot be translated get a Spanish spelling of how to say them (respell).
+# Whole-word, case-sensitive, longest term first. Numbers are written out afterwards
+# (2030s -> "años dos mil treinta", 2025-2060 -> "dos mil veinticinco a dos mil sesenta", 79% -> "setenta y nueve por ciento").
+
+translate:   # Whisper is expected to hear these Spanish words
+  "Global AI Governance and Strategic Cooperation Forecasts 2025-2060": "Pronósticos sobre la gobernanza global de la IA y la cooperación estratégica, de 2025 a 2060"
+  "Global AI Governance and Strategic Outcomes Forecasts 2025-2060": "Pronósticos sobre la gobernanza global de la IA y sus resultados estratégicos, de 2025 a 2060"
+  "Chips for Peace": "Chips para la Paz"
+  "cómputo (compute)": "cómputo"
+  "compute": "cómputo"
+  "red-teaming": "pruebas de equipo rojo"
+  "superforecasters": "superpronosticadores"
+  "super forecasters": "superpronosticadores"
+  "AGI": "IA general"
+  "AI": "IA"
+  "frontier": "de frontera"
+  "Beijing": "Pekín"
+  "Good Judgment Inc.": "Good Judgment"   # "Inc." is not said
+  "EE. UU.": "Estados Unidos"
+  "EE. UU.-China": "Estados Unidos y China"
+  "UE": "Unión Europea"
+
+respell:     # how to write it so the voice says it right
+  "IA": "í a"          # stress on the i, two syllables, like Juan says it
+  "Good Judgment": "Gud Yóchment"
+  "OIEA": "o i e a"
+  "OPCW": "o pe ce uve doble"
+  "INAISI": "Ináisi"
+  "CERN": "Cern"
+  "EuroHPC": "Euro hache pe ce"
+  "Nvidia": "Envidia"
+  "Stargate": "Stárgueit"
+  "Microsoft": "Máicrosoft"
+  "Washington": "Guáshinton"
+  "ONU": "Onu"
+  "diez hitos": "diez, hitos"   # otherwise heard as "diécitos"

@@ -31,6 +31,13 @@ def clean(src: Path, wav_out: Path) -> bytes:
         check=True, capture_output=True).stdout
 
 
+def decode_16k(src: Path) -> np.ndarray:
+    """Decode with ffmpeg ourselves: 16 kHz mono float, what Whisper expects."""
+    return np.frombuffer(subprocess.run(
+        ["ffmpeg", "-v", "error", "-i", str(src), "-f", "f32le", "-ac", "1", "-ar", "16000", "-"],
+        check=True, capture_output=True).stdout, np.float32)
+
+
 def transcribe(src: Path, cache_dir: Path, model_size: str = WHISPER_MODEL) -> list[Word]:
     """Spanish words with start/end times, cached by recording content and model."""
     cache_dir.mkdir(parents=True, exist_ok=True)
@@ -39,10 +46,7 @@ def transcribe(src: Path, cache_dir: Path, model_size: str = WHISPER_MODEL) -> l
     if not cached.exists():
         from faster_whisper import WhisperModel  # slow import, only when needed
 
-        # Decode with ffmpeg ourselves: 16 kHz mono float, what Whisper expects.
-        audio = np.frombuffer(subprocess.run(
-            ["ffmpeg", "-v", "error", "-i", str(src), "-f", "f32le", "-ac", "1", "-ar", "16000", "-"],
-            check=True, capture_output=True).stdout, np.float32)
+        audio = decode_16k(src)
         model = WhisperModel(model_size, device="cpu", compute_type="int8")
         segments, _ = model.transcribe(audio, language="es", word_timestamps=True, vad_filter=True)
         words = [{"text": w.word.strip(), "start": w.start, "end": w.end}

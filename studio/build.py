@@ -2,16 +2,21 @@
 import json
 from pathlib import Path
 
-from studio import assemble, graphics, recording, storyboard, timeline
+from studio import assemble, clone, graphics, recording, storyboard, timeline
 from studio.images import ImageProvider, MissingImages
 from studio.parse import parse_script
 
 
 def build_module(script: Path, number: int, board_path: Path, provider: ImageProvider,
                  out_dir: Path, cache: Path, audio: Path | None = None,
-                 whisper_model: str = recording.WHISPER_MODEL) -> Path:
+                 whisper_model: str = recording.WHISPER_MODEL, voice: str | None = None,
+                 voice_device: str = "cpu") -> Path:
     """Build the module video. With audio (a recording of the narration) the video
-    is timed to it; without, the voice is synthesized with edge-tts."""
+    is timed to it; with voice (a cloned-voice profile name) the narration is generated
+    in that voice; otherwise the voice is synthesized with edge-tts."""
+    if audio and voice:
+        raise ValueError("use either a recording (--audio) or a cloned voice (--voice), not both")
+    profile = clone.load_profile(voice) if voice else None  # fail early if files are missing
     modules = {m.number: m for m in parse_script(script.read_text(encoding="utf-8"))}
     module = modules[number]
     board = storyboard.load(board_path)
@@ -31,7 +36,13 @@ def build_module(script: Path, number: int, board_path: Path, provider: ImagePro
     work = out_dir / f"module{number}"
     work.mkdir(parents=True, exist_ok=True)
     soundtrack = work / "voice.wav"
-    if audio is None:
+    if profile:
+        timings, report = clone.timings_from_voice(board, module, profile, cache / "voice",
+                                                   soundtrack, voice_device, whisper_model)
+        (out_dir / f"module{number}_voice.json").write_text(
+            json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
+        voice_name = f"cloned voice {voice}"
+    elif audio is None:
         timings = timeline.build(board, module, cache / "voice", soundtrack)
         voice_name = board.voice
     else:
@@ -84,3 +95,27 @@ def _alignment_report(timings, aligned, path: Path) -> None:
           f"{sum(r['flagged'] for r in rows)} shot(s) to check\n")
     path.write_text(json.dumps({"overall_ratio": round(matched / words, 3), "shots": rows},
                                ensure_ascii=False, indent=1))
+
+
+def narrate_module(script: Path, number: int, voice: str, out_dir: Path, cache: Path,
+                   device: str = "cpu", whisper_model: str = recording.WHISPER_MODEL) -> Path:
+    """Only the narration of one module, in a cloned voice, one paragraph after another.
+    Pieces are the same sentences a storyboard cut at sentence ends uses, so a later
+    build --voice reuses them from the cache."""
+    module = {m.number: m for m in parse_script(script.read_text(encoding="utf-8"))}[number]
+    profile = clone.load_profile(voice)
+    shots = [storyboard.Shot(id=f"p{i + 1}", type="image", text=p)
+             for i, p in enumerate(module.narration.split("\n\n"))]
+    work = out_dir / f"module{number}"
+    work.mkdir(parents=True, exist_ok=True)
+    narrator = clone.Narrator(profile, cache / "voice", device, whisper_model)
+    try:
+        pcm, _, report = clone.narrate_shots(narrator, shots, set(range(len(shots))), work)
+    finally:
+        narrator.close()
+    out = out_dir / f"module{number}_{voice}.wav"
+    clone.write_wav(pcm, out)
+    (out_dir / f"module{number}_{voice}.json").write_text(
+        json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
+    print(f"{out}: {len(pcm) / clone.RATE:.1f}s")
+    return out
