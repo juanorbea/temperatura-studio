@@ -1,13 +1,15 @@
 """Command line: python -m studio build SCRIPT --module N [--audio FILE | --voice NAME]
+               python -m studio build SCRIPT --module all [--voice NAME]   (one video of all modules)
                python -m studio narrate SCRIPT --module N --voice NAME"""
 import argparse
 import sys
 from pathlib import Path
 
-from studio.build import build_module, narrate_module
+from studio.build import build_module, build_script, narrate_module
 from studio.clone import VoiceError
 from studio.align import AlignmentError
 from studio.images import FolderProvider, MissingImages
+from studio.parse import parse_script
 from studio.recording import WHISPER_MODEL
 
 
@@ -16,9 +18,11 @@ def main() -> int:
     sub = parser.add_subparsers(dest="command", required=True)
     b = sub.add_parser("build", help="build one module of a script into a video")
     b.add_argument("script", type=Path)
-    b.add_argument("--module", type=int, required=True)
+    b.add_argument("--module", required=True,
+                   help="module number, or 'all' to build every module and join them into one video")
     b.add_argument("--storyboard", type=Path, help="default: storyboards/moduleN.yaml")
-    b.add_argument("--images", type=Path, help="default: assets/images/moduleN")
+    b.add_argument("--images", type=Path,
+                   help="default: assets/images/moduleN (with --module all: the folder holding moduleN/)")
     b.add_argument("--audio", type=Path,
                    help="your own recording of the module narration (m4a, mp3, wav); "
                         "default: synthesized voice")
@@ -49,7 +53,20 @@ def main() -> int:
             return 1
         return 0
 
-    n = args.module
+    if args.module == "all":
+        if args.audio or args.storyboard:
+            print("--module all takes no --audio or --storyboard", file=sys.stderr)
+            return 1
+        numbers = [m.number for m in parse_script(args.script.read_text(encoding="utf-8"))]
+        try:
+            build_script(args.script, numbers, args.images or Path("assets/images"), args.out,
+                         args.cache, args.whisper_model, args.voice, args.voice_device)
+        except (MissingImages, VoiceError) as e:
+            print(e, file=sys.stderr)
+            return 1
+        return 0
+
+    n = int(args.module)
     board = args.storyboard or Path(f"storyboards/module{n}.yaml")
     images = FolderProvider(args.images or Path(f"assets/images/module{n}"))
     try:

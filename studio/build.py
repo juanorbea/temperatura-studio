@@ -78,6 +78,24 @@ def build_module(script: Path, number: int, board_path: Path, provider: ImagePro
     return out
 
 
+def build_script(script: Path, numbers: list[int], images_root: Path, out_dir: Path, cache: Path,
+                 whisper_model: str = recording.WHISPER_MODEL, voice: str | None = None,
+                 voice_device: str = "cpu") -> Path:
+    """Build several modules (each from storyboards/moduleN.yaml and images_root/moduleN)
+    and join them, in order, into one video named after the script."""
+    from studio.images import FolderProvider
+    videos = []
+    for n in numbers:
+        print(f"\n=== module {n} ===")
+        videos.append(build_module(script, n, Path(f"storyboards/module{n}.yaml"),
+                                   FolderProvider(images_root / f"module{n}"), out_dir, cache,
+                                   None, whisper_model, voice, voice_device))
+    out = out_dir / f"{script.stem}_full.mp4"
+    assemble.join_modules(videos, [out_dir / f"module{n}" / "voice.wav" for n in numbers], out)
+    print(f"\n{out}: modules {', '.join(map(str, numbers))}")
+    return out
+
+
 def _alignment_report(timings, aligned, path: Path) -> None:
     """Print a short table and save the full report as JSON."""
     rows = []
