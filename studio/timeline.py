@@ -92,10 +92,19 @@ def build(board: Storyboard, module: Module, cache: Path, wav_out: Path) -> list
         if offset + audio_len > ends[-1] + 1e-6:
             raise RuntimeError("paragraph audio longer than its shots")
 
-    # Snap cuts to frames, then make the audio exactly as long as the video.
+    return snap_and_write(board.shots, ends, bytes(pcm), wav_out)
+
+
+def snap_and_write(shots: list[Shot], ends: list[float], pcm: bytes, wav_out: Path) -> list[Timing]:
+    """Snap shot end times to frames and write the audio exactly as long as the video.
+
+    pcm is 16-bit mono audio at RATE. Returns one Timing per shot.
+    """
     timings, start = [], 0
-    for shot, end in zip(board.shots, ends):
+    for shot, end in zip(shots, ends):
         end_frame = round(end * FPS)
+        if end_frame <= start:
+            raise RuntimeError(f"{shot.id}: shot would have no frames (ends at {end:.2f}s)")
         timings.append(Timing(shot, start, end_frame - start))
         start = end_frame
     total_bytes = start * SAMPLES_PER_FRAME * 2
@@ -105,5 +114,5 @@ def build(board: Storyboard, module: Module, cache: Path, wav_out: Path) -> list
         w.setnchannels(1)
         w.setsampwidth(2)
         w.setframerate(RATE)
-        w.writeframes(bytes(pcm))
+        w.writeframes(pcm)
     return timings
