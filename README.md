@@ -97,38 +97,51 @@ example when it is a different module.
 ## Cloned voice (`--voice juan`)
 
 Narrates any script in Juan's cloned voice, without recording it. Juan recorded one
-reference clip once; every script after that is generated from it with
-[F5-TTS](https://github.com/SWivid/F5-TTS) and the Spanish fine-tune
-[F5-Spanish](https://huggingface.co/jpgallegoar/F5-Spanish). The F5-Spanish weights
-are CC-BY-NC-4.0, so this is fine for a non-monetized channel only.
+reference clip once; every script after that is generated from it. Two voice engines:
+
+- **OmniVoice** (default): [k2-fsa/OmniVoice](https://huggingface.co/k2-fsa/OmniVoice),
+  a multilingual zero-shot model. In Juan's A/B test it sounded clearly better than F5 and
+  says Spanish acronyms such as IA, OIEA or ONU without help. Code Apache-2.0, weights CC-BY-NC.
+- **F5-TTS**: [F5-TTS](https://github.com/SWivid/F5-TTS) with the Spanish fine-tune
+  [F5-Spanish](https://huggingface.co/jpgallegoar/F5-Spanish), weights CC-BY-NC-4.0.
+
+Both licences are non-commercial: fine for a non-monetized channel only.
 
 ```
 .venv/bin/python -m studio build examples/gobernanza-ia.md --module 1 --voice juan
+.venv/bin/python -m studio build examples/gobernanza-ia.md --module 1 --voice juan --voice-engine f5-tts
 ```
+
+The profile's `engine:` line picks the engine; `--voice-engine` overrides it for one run.
 
 A voice profile is a folder `voices/NAME/`:
 
-- `profile.yaml`: model and generation settings.
+- `profile.yaml`: the engine, and under `engines:` each engine's model and generation
+  settings.
 - `ref.txt`: the exact words spoken in the reference clip.
 - `pronunciations.yaml`: text changes for the voice only. `translate` turns English
-  into Spanish ("Chips for Peace" -> "Chips para la Paz"), `respell` spells names the
-  way they are said ("Good Judgment Inc." -> "Gud Yóchment", "IA" -> "í a").
-  Numbers are written out: 2030s, 2025-2060, 79%. The script is never changed.
+  into Spanish ("Chips for Peace" -> "Chips para la Paz", "AGI" -> "IA general") for
+  every engine. `respell` spells names the way they are said ("Good Judgment Inc." ->
+  "Gud Yóchment") for every engine; `engine_respell` adds respellings that only one
+  engine needs (F5 needs "IA" -> "í a", OmniVoice does not). Numbers are written out:
+  2030s, 2025-2060, 79%. The script is never changed.
 - `ref.wav`: the reference clip. **Not in git**: it is a personal recording. Copy it
   into `voices/juan/` before the first run; the build says so if it is missing.
 
 How it works: the narration is generated one sentence at a time (long sentences are
 split at commas), never across a shot boundary, so cuts land exactly in the pauses:
-0.35 s between sentences, 0.7 s between paragraphs. Each piece is asked to be about
-as long as Juan would take to say it, which stops F5 from cutting sentence endings.
-Whisper then listens to every piece; if words are wrong or the end is missing, it
-is generated again with another seed (up to 3) and the best take is kept. The whole
-narration is normalized to -16 LUFS. Per-piece results (what Whisper heard, word
-error rate, seed) go to `output/moduleN_voice.json`.
+0.35 s between sentences, 0.7 s between paragraphs. F5 is asked for about as long as
+Juan would take to say each piece, which stops it from cutting sentence endings;
+OmniVoice picks the length itself. Whisper then listens to every piece; if words are
+wrong or the end is missing, it is generated again with another seed (up to 3) and
+the best take is kept. The whole narration is normalized to -16 LUFS. Per-piece
+results (what Whisper heard, word error rate, seed) go to `output/moduleN_voice.json`.
 
-Every take is cached in `cache/voice/` by a hash of the profile (reference audio,
-its text, model, settings), the text and the seed. A rebuild only generates
-sentences that changed; an interrupted run picks up where it stopped.
+Every take is cached in `cache/voice/` by a hash of the engine and the profile
+(reference audio, its text, model, settings), the text and the seed. Takes from the
+two engines never mix (F5 takes cached before the engine was part of the hash are not
+reused). A rebuild only generates sentences that changed; an
+interrupted run picks up where it stopped.
 
 To hear the narration of a module without building the video (fills the same cache):
 
@@ -138,20 +151,30 @@ To hear the narration of a module without building the video (fills the same cac
 
 ### Setup
 
-F5 needs its own virtualenv (its dependencies clash with studio's). Studio runs it as
-a separate process (`studio/f5_worker.py`) and talks to it over stdin/stdout.
+Each engine has its own virtualenv (their dependencies clash with studio's). Studio
+runs the engine as a separate process (`studio/omnivoice_worker.py` or
+`studio/f5_worker.py`) and talks to it over stdin/stdout.
+
+OmniVoice (CPU PyTorch; add `--cuda` for an NVIDIA GPU):
+
+```
+scripts/setup_omnivoice.sh
+```
+
+F5:
 
 ```
 python3.11 -m venv .venv-f5
 .venv-f5/bin/pip install f5-tts==1.1.22 "pyarrow<20" soundfile
 ```
 
-Put it elsewhere with `STUDIO_F5_PYTHON=/path/to/python`. The first run downloads the
-F5-Spanish checkpoint (about 1.3 GB) and the Whisper model.
+Put them elsewhere with `STUDIO_OMNIVOICE_PYTHON=/path/to/python` or
+`STUDIO_F5_PYTHON=/path/to/python`. The first run downloads the model (OmniVoice about
+3.3 GB, F5-Spanish about 1.3 GB) and the Whisper model. OmniVoice needs about 4 GB of RAM.
 
-Speed on an 8-core CPU: about 8x real time, so a 12-minute script takes 1.5-2 hours.
-With an NVIDIA GPU add `--voice-device cuda` (a rented RTX 4090 does a whole script
-in minutes, for well under 1 EUR).
+Speed on an 8-core CPU: both engines take about 7-9 seconds per second of speech, so a
+12-minute script takes 1.5-2 hours. With an NVIDIA GPU add `--voice-device cuda` (a
+rented RTX 4090 does a whole script in minutes, for well under 1 EUR).
 
 ## Tests
 
