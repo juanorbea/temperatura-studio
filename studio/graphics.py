@@ -689,5 +689,32 @@ def _bp_numbers(d, o: dict) -> None:
     _bp_caption(d, o.get("caption", ""))
 
 
-BP_FULL_FRAME = {"links": _bp_chain, "bars": _bp_bars, "points": _bp_share, "steps": _bp_steps,
+def _bp_path(d, o: dict) -> None:
+    """A narrow path between two cliffs, in cross-section: one abyss on each side.
+    o: kicker, title, sides: [left label, right label], path: label, highlight (0 left, 1 right, 2 path), caption."""
+    _bp_kicker(d, o["kicker"])
+    _bp_title(d, o["title"], size=64)
+    hi, rim, floor = o.get("highlight", -1), 560, 940
+    ground = [(BP_MARGIN, rim), (380, rim), (440, floor), (760, floor), (880, rim), (1040, rim),
+              (1160, floor), (1480, floor), (1540, rim), (W - BP_MARGIN, rim)]
+    d.polygon(ground + [(W - BP_MARGIN, floor + 40), (BP_MARGIN, floor + 40)], fill=T.land)
+    for x in range(BP_MARGIN, W - BP_MARGIN, 28):  # section hatching under the ground line
+        d.line((x, floor + 40, x + 40, floor), fill=T.paper, width=2)
+    d.line(ground, fill=T.ink, width=5, joint="curve")
+    d.line((880, rim, 1040, rim), fill=T.accent if hi == 2 else T.ink, width=12)
+    dimension(d, 880, rim - 40, 1040, rim - 40, "")
+    lf = font("InterDisplay-Bold.ttf", 40)
+    for i, (cx, label) in enumerate(zip((600, 1320), o["sides"])):
+        on = i == hi
+        rows = wrap(d, label, lf, 320)
+        y = 700 - 26 * len(rows)
+        for row in rows:
+            d.text((cx, y), row, font=lf, fill=T.accent if on else T.muted, anchor="ma")
+            y += 52
+    pf = font("InterDisplay-Bold.ttf", 46)
+    d.text((960, rim - 80), o.get("path", ""), font=pf, fill=T.accent if hi == 2 else T.ink, anchor="md")
+    _bp_caption(d, o.get("caption", ""), y=1012)
+
+
+BP_FULL_FRAME = {"path": _bp_path, "links": _bp_chain, "bars": _bp_bars, "points": _bp_share, "steps": _bp_steps,
                  "lot": _bp_lot, "places": _bp_map, "figures": _bp_numbers}
