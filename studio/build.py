@@ -56,13 +56,15 @@ def build_module(script: Path, number: int, board_path: Path, provider: ImagePro
         shot = t.shot
         overlay = None
         if shot.type == "title_card":
-            background = graphics.title_card(shot.title, shot.subtitle, work / f"{shot.id}.png")
+            background = graphics.title_card(shot.title, shot.subtitle, work / f"{shot.id}.png", board.theme)
         elif shot.type == "text_overlay" and not shot.prompt:
-            background = graphics.overlay_card(shot.overlay, work / f"{shot.id}.png", on_photo=False)
+            background = graphics.overlay_card(shot.overlay, work / f"{shot.id}.png", on_photo=False,
+                                              theme=board.theme)
         else:
             background = backgrounds[shot.id]
             if shot.type == "text_overlay":
-                overlay = graphics.overlay_card(shot.overlay, work / f"{shot.id}_overlay.png", on_photo=True)
+                overlay = graphics.overlay_card(shot.overlay, work / f"{shot.id}_overlay.png", on_photo=True,
+                                                theme=board.theme)
         still = shot.type == "title_card" or (shot.type == "text_overlay" and not shot.prompt)
         motion = shot.motion or ("none" if still else assemble.MOTIONS[i % len(assemble.MOTIONS)])
         clips.append(assemble.render_clip(t, background, overlay, motion, work / f"{shot.id}.mp4"))

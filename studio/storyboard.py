@@ -31,6 +31,7 @@ class Storyboard:
     style: str
     character: str
     shots: list[Shot]
+    theme: str = "charcoal"    # graphics theme (studio/graphics.py): charcoal or blueprint
 
     def image_prompt(self, shot: Shot) -> str:
         """Full prompt for an image provider: scene + character + locked style."""
@@ -47,7 +48,8 @@ def load(path: Path) -> Storyboard:
     for s in shots:
         if s.type not in SHOT_TYPES:
             raise ValueError(f"{s.id}: unknown shot type {s.type!r}")
-    return Storyboard(data["module"], data["voice"], data["style"], data["character"], shots)
+    return Storyboard(data["module"], data["voice"], data["style"], data["character"], shots,
+                      data.get("theme", "charcoal"))
 
 
 def check_coverage(board: Storyboard, module: Module) -> None:
