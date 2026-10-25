@@ -73,3 +73,14 @@ def test_juans_omnivoice_lexicon_keeps_spanish_spellings_of_english_names():
 
 def test_question_mark_left_before_a_removed_citation_is_cleaned():
     assert voice_text("¿similar al OIEA?.", Lexicon()) == "¿similar al OIEA?"
+
+
+def test_juans_lexicon_covers_the_japan_script():
+    omni = load_lexicon(Path("voices/juan/pronunciations.yaml"), "omnivoice")
+    said = voice_text("Lo hacen unas máquinas que se llaman coater/developer, con TSMC y EUV de ASML "
+                      "en un encapsulado 3D, el CoWoS, y el 0,71 % de su PIB.", omni)
+    assert said == ("Lo hacen unas máquinas que se llaman recubridoras y reveladoras, con te ese eme ce y e u uve "
+                    "de a ese eme ele en un encapsulado tres de, el Cóuos, y el cero coma setenta y uno por ciento "
+                    "de su pe i be.")
+    assert voice_text("Chris Miller, el autor de Chip War, y los hot lots.", omni) == \
+        "Cris Míler, el autor de La guerra de los chips, y los lotes prioritarios."

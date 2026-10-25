@@ -21,6 +21,12 @@ translate:   # Whisper is expected to hear these Spanish words
   "EE. UU.": "Estados Unidos"
   "EE. UU.-China": "Estados Unidos y China"
   "UE": "Unión Europea"
+  # japon-chips (video 2)
+  "coater/developer": "recubridoras y reveladoras"
+  "Chip War": "La guerra de los chips"      # title of the Spanish edition
+  "hot lots": "lotes prioritarios"
+  "gate-all-around": "de puerta envolvente"
+  "commodity": "producto genérico"
 
 respell:     # how to write it so the voice says it right (every engine)
   # Kept for OmniVoice too: English names and acronyms, so they are said the Spanish way
@@ -34,6 +40,36 @@ respell:     # how to write it so the voice says it right (every engine)
   "Stargate": "Stárgueit"
   "Microsoft": "Máicrosoft"
   "Washington": "Guáshinton"
+  # japon-chips (video 2). Acronyms: Spanish letter names; A/B with the Whisper check showed
+  # that raw EUV is heard as "EV", DRAM as "drum" and SK Hynix as "Skynix".
+  "TSMC": "te ese eme ce"
+  "EUV": "e u uve"
+  "ASML": "a ese eme ele"
+  "IBM": "i be eme"
+  "DRAM": "de ram"
+  "METI": "Méti"
+  "ABF": "a be efe"
+  "JSR": "jota ese erre"
+  "PIB": "pe i be"
+  "I+D": "i más de"
+  "3D": "tres de"
+  "CoWoS": "Cóuos"          # raw is heard as "Cowash"
+  "SK Hynix": "ese ka Jáinix"
+  "Tokyo Electron": "Tokio Eléctron"
+  "Silicon Valley": "Sílicon Váli"
+  "Soul Lot": "Sóul Lot"
+  "Titans": "Táitans"
+  "Tenstorrent": "Ténstorrent"
+  "Synopsys": "Sínopsis"
+  "Cadence": "Quéidens"
+  "GlobalFoundries": "Glóbal Fáundris"
+  "Lam Research": "Lam Ríserch"
+  "Applied Materials": "Apláid Matírials"
+  "imec": "ímec"
+  "Screen": "Scrín"
+  "Reagan": "Réigan"
+  "Chris Miller": "Cris Míler"
+  "Albany": "Álbani"
 
 engine_respell:   # only for one engine; wins over respell
   f5-tts:
