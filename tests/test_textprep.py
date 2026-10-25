@@ -23,6 +23,8 @@ def test_number_words(n, words):
 
 @pytest.mark.parametrize("text, said", [
     ("no llegará en los 2030s", "no llegará en los años dos mil treinta"),
+    ("El 0,71 % de su PIB", "El cero coma setenta y uno por ciento de su PIB"),
+    ("unos 34.000 millones y 7.300 millones", "unos treinta y cuatro mil millones y siete mil trescientos millones"),
     ("Pronósticos 2025-2060", "Pronósticos dos mil veinticinco a dos mil sesenta"),
     ("con un 79% de probabilidad", "con un setenta y nueve por ciento de probabilidad"),
     ("entre 10 y 20 años", "entre diez y veinte años"),
