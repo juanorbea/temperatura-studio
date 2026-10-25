@@ -27,6 +27,14 @@ translate:   # Whisper is expected to hear these Spanish words
   "hot lots": "lotes prioritarios"
   "gate-all-around": "de puerta envolvente"
   "commodity": "producto genérico"
+  # potencias-medias (video 3). The script glosses some terms in parentheses; the
+  # whole gloss collapses to the Spanish so it is not said twice.
+  '"seguidores rápidos" (fast followers)': "seguidores rápidos"
+  "fast followers": "seguidores rápidos"
+  "código abierto (open source)": "código abierto"
+  "open source": "código abierto"
+  "scaffolding": "andamiaje"
+  "Imports as Statecraft": "la importación como arte de Estado"
 
 respell:     # how to write it so the voice says it right (every engine)
   # Kept for OmniVoice too: English names and acronyms, so they are said the Spanish way
@@ -70,6 +78,14 @@ respell:     # how to write it so the voice says it right (every engine)
   "Reagan": "Réigan"
   "Chris Miller": "Cris Míler"
   "Albany": "Álbani"
+  # potencias-medias (video 3)
+  "APIs": "a pe í"
+  "API": "a pe í"
+  "B2B": "be dos be"
+  "Anton Leicht": "Ánton Láijt"
+  "Leicht": "Láijt"
+  "Zoom": "Sum"
+  "Cohere": "Cojír"
 
 engine_respell:   # only for one engine; wins over respell
   f5-tts:
