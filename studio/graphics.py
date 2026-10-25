@@ -492,6 +492,8 @@ def _bp_chain(d, o: dict) -> None:
             y += 46
         if on or done:
             vf = font("InterDisplay-Bold.ttf", 120 if on else 64)
+            while d.textlength(link["value"], font=vf) > w - 56:
+                vf = font("InterDisplay-Bold.ttf", vf.size - 4)
             d.text((x0 + 28, bottom - (250 if on else 190)), link["value"], font=vf, fill=T.accent if on else T.ink)
         cf = font("Inter-Regular.ttf", 26)
         y = bottom - 80
