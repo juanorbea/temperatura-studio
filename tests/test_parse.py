@@ -84,3 +84,8 @@ def test_each_script_can_have_its_own_storyboard_and_image_folders(tmp_path, mon
     (tmp_path / "storyboards" / "japon-chips").mkdir(parents=True)
     assert script_folders(Path("examples/japon-chips.md")) == (
         Path("storyboards/japon-chips"), Path("assets/images/japon-chips"))
+
+
+def test_a_number_that_ends_a_sentence_is_a_real_end():
+    assert split_sentences("Arizona, de 4. Detrás hay dinero. Pasar de 40 a 2. Saltarse dos décadas.") == [
+        "Arizona, de 4.", "Detrás hay dinero.", "Pasar de 40 a 2.", "Saltarse dos décadas."]

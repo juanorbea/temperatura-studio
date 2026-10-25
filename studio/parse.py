@@ -31,8 +31,9 @@ BLOCK_VISUAL_TAG = "[INDICACIÓN VISUAL / B-ROLL]"
 BLOCK_NARRATION_TAG = "[LOCUCIÓN / GUION]"
 # A sentence ends at . ? ! (optionally followed by a closing quote) before whitespace.
 SENTENCE_END_RE = re.compile(r'(?<=[.?!])["»”]?\s+')
-# ...but not after "EE." (of "EE. UU.") or a list number like "1.", nor before a lowercase word
-NOT_AN_END_RE = re.compile(r"(?:^|\s)(?:EE\.|\d{1,2}\.)$")
+# ...but not after "EE." (of "EE. UU.") or a list number like "1." that starts the sentence,
+# nor before a lowercase word. A number ending a sentence ("Arizona, de 4.") is a real end.
+NOT_AN_END_RE = re.compile(r"(?:(?:^|\s)EE\.|^\d{1,2}\.)$")
 
 
 @dataclass
