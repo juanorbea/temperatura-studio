@@ -75,3 +75,32 @@ def test_charcoal_stays_the_default(tmp_path):
     with Image.open(card) as img:
         r, g, b = img.convert("RGB").getpixel((10, 10))
         assert max(r, g, b) < 80  # dark charcoal
+
+
+EDITORIAL = {
+    "people": {"kicker": "2025", "title": "Plazos", "highlight": 1,
+               "people": [{"name": "A", "org": "X", "quote": "Ya", "when": "2-3 años"}, {"name": "B", "org": "Y"}]},
+    "lit": {"kicker": "Mapa", "title": "Consenso", "lit": [{"name": "San Francisco", "lon": -122.4, "lat": 37.8}],
+            "regions": [{"name": "Europa", "lon": 10, "lat": 50}]},
+    "loop": {"kicker": "Bucle", "title": "La IA mejora a la IA", "loop": ["a", "b", "c"], "step": 2},
+    "icons": {"kicker": "Energía", "title": "Centrales", "icons": 92, "shown": 40},
+    "jcurve": {"kicker": "Cuándo", "title": "Curva en J", "jcurve": ["Baja", "Sube"], "phase": 1},
+    "contrast": {"kicker": "Crecimiento", "contrast": "+0,5", "big": "20-30 %", "grow": 0.5},
+    "bars": BLUEPRINT["bars"],
+}
+
+
+@pytest.mark.parametrize("theme", ["editorial", "blueprint"])
+@pytest.mark.parametrize("name", EDITORIAL)
+def test_paper_graphics_render_in_both_paper_themes(tmp_path, theme, name):
+    out = graphics.overlay_card(EDITORIAL[name], tmp_path / f"{name}.png", on_photo=False, theme=theme)
+    with Image.open(out) as img:
+        assert img.size == (1920, 1080)
+
+
+def test_editorial_theme_does_not_leak_into_blueprint(tmp_path):
+    graphics.title_card("Título", "Introducción", tmp_path / "e.png", theme="editorial")
+    graphics.title_card("Título", "Introducción", tmp_path / "b.png", theme="blueprint")
+    with Image.open(tmp_path / "e.png") as e, Image.open(tmp_path / "b.png") as b:
+        assert e.getpixel((5, 5)) == graphics.EDITORIAL.paper
+        assert b.getpixel((5, 5)) != graphics.EDITORIAL.paper

@@ -6,7 +6,11 @@ Two themes; a storyboard picks one with `theme:`.
   blueprint  (from video 2) technical-blueprint editorial: off-white paper with a fine grid,
              bold dark navy titles, copper accent lines and labels, light grey maps and
              blueprint dimension marks. Reference: Juan's NotebookLM-style slides.
+  editorial  (from video 4) the blueprint graphics on plain cream paper: big dark serif
+             titles and figures, copper numbers, olive rounded stat boxes and a fine
+             line-art city skyline. Reference: Juan's slides in tc-assets/slide-style/tai.
 """
+import contextlib
 import json
 import math
 from dataclasses import dataclass
@@ -26,8 +30,11 @@ GOLD = (190, 156, 94)
 MARGIN = 160  # left edge of all text
 
 
+_FONT_SWAP: dict[str, str] = {}  # set while a theme that swaps fonts draws (editorial: serif display)
+
+
 def font(name: str, size: int) -> ImageFont.FreeTypeFont:
-    return ImageFont.truetype(str(FONTS / name), size)
+    return ImageFont.truetype(str(FONTS / _FONT_SWAP.get(name, name)), size)
 
 
 def wrap(draw: ImageDraw.ImageDraw, text: str, fnt, max_width: int) -> list[str]:
@@ -62,8 +69,9 @@ def charcoal_background() -> Image.Image:
 
 
 def title_card(title: str, subtitle: str, out: Path, theme: str = "charcoal") -> Path:
-    if _theme(theme) is BLUEPRINT:
-        return _bp_title_card(title, subtitle, out)
+    if _theme(theme) in PAPER_THEMES:
+        with _drawing(_theme(theme)):
+            return _bp_title_card(title, subtitle, out)
     img = charcoal_background()
     d = ImageDraw.Draw(img)
     spaced(d, (MARGIN, 300), "TEMPERATURA CERO", font("Inter-SemiBold.ttf", 26), GOLD, tracking=6)
@@ -104,8 +112,9 @@ def overlay_card(overlay: dict, out: Path, on_photo: bool, theme: str = "charcoa
       rows                  (a table of milestones and years)
     The blueprint theme has its own graphics; see _bp_overlay_card.
     """
-    if _theme(theme) is BLUEPRINT:
-        return _bp_overlay_card(overlay, out, on_photo)
+    if _theme(theme) in PAPER_THEMES:
+        with _drawing(_theme(theme)):
+            return _bp_overlay_card(overlay, out, on_photo)
     for kind, draw in FULL_FRAME.items():
         if kind in overlay:
             if on_photo:
@@ -316,7 +325,28 @@ BLUEPRINT = Theme("blueprint",
                   ink=(20, 33, 66), text=(44, 54, 78), muted=(118, 126, 142),
                   accent=(193, 108, 48), accent_soft=(240, 214, 190), line=(150, 160, 178),
                   land=(206, 210, 216), panel=(252, 252, 250))
-THEMES = {t.name: t for t in (CHARCOAL_THEME, BLUEPRINT)}
+EDITORIAL = Theme("editorial",
+                  paper=(244, 239, 227), grid=(234, 228, 214), grid_major=(222, 214, 196),
+                  ink=(33, 35, 37), text=(62, 62, 58), muted=(130, 125, 112),
+                  accent=(186, 102, 48), accent_soft=(236, 210, 184), line=(168, 160, 142),
+                  land=(214, 208, 190), panel=(250, 247, 239))
+OLIVE, OLIVE_SOFT = (108, 118, 70), (222, 224, 200)
+THEMES = {t.name: t for t in (CHARCOAL_THEME, BLUEPRINT, EDITORIAL)}
+PAPER_THEMES = (BLUEPRINT, EDITORIAL)  # both drawn by the _bp_ functions below
+SWAPS = {"editorial": {"InterDisplay-Bold.ttf": "DMSerifDisplay-Regular.ttf"}}
+
+
+@contextlib.contextmanager
+def _drawing(theme: Theme):
+    """Draw the paper graphics in one theme: its colours, and its title font."""
+    global T
+    T = theme
+    _FONT_SWAP.update(SWAPS.get(theme.name, {}))
+    try:
+        yield
+    finally:
+        T = BLUEPRINT
+        _FONT_SWAP.clear()
 
 
 def _theme(name: str) -> Theme:
@@ -333,8 +363,11 @@ MAPS = Path(__file__).resolve().parent.parent / "assets" / "maps"
 
 
 def blueprint_paper(width: int = W, height: int = H) -> Image.Image:
-    """Off-white paper with a fine 40 px grid, darker every 200 px, and corner registration marks."""
+    """Off-white paper with a fine 40 px grid, darker every 200 px, and corner registration marks.
+    Editorial: plain cream paper."""
     img = Image.new("RGB", (width, height), T.paper)
+    if T is EDITORIAL:
+        return img
     d = ImageDraw.Draw(img)
     for x in range(0, width, 40):
         d.line((x, 0, x, height), fill=T.grid_major if x % 200 == 0 else T.grid, width=1)
@@ -390,8 +423,12 @@ def _bp_title_card(title: str, subtitle: str, out: Path) -> Path:
     y += 30
     d.rectangle((BP_MARGIN, y, BP_MARGIN + 140, y + 7), fill=T.accent)
     d.text((BP_MARGIN, y + 40), subtitle, font=font("Inter-Medium.ttf", 46), fill=T.muted)
-    _chip_schematic(d, 1560, 600, 300)
-    dimension(d, BP_MARGIN, 250, W - BP_MARGIN, 250, "")
+    if T is EDITORIAL:
+        skyline(d, 1000, W - 60, 1000)
+        d.line((BP_MARGIN, 250, W - BP_MARGIN, 250), fill=T.line, width=2)
+    else:
+        _chip_schematic(d, 1560, 600, 300)
+        dimension(d, BP_MARGIN, 250, W - BP_MARGIN, 250, "")
     img.save(out)
     return out
 
@@ -432,6 +469,9 @@ def _bp_overlay_card(overlay: dict, out: Path, on_photo: bool) -> Path:
         img = blueprint_paper().convert("RGBA")
         x, y, width = BP_MARGIN, 300, 1200
     d = ImageDraw.Draw(img)
+    if T is EDITORIAL and not on_photo:
+        skyline(d, 60, W - 60, 1040, faint=True)
+        d.rounded_rectangle((x - 50, y - 60, x + width + 50, y + 600), radius=36, fill=OLIVE_SOFT, outline=OLIVE, width=3)
     d.rectangle((x, y + 4, x + 40, y + 10), fill=T.accent)
     spaced(d, (x + 56, y - 6), overlay["kicker"].upper(), font("Inter-SemiBold.ttf", 26), T.accent, tracking=4)
     y += 70
@@ -718,3 +758,207 @@ def _bp_path(d, o: dict) -> None:
 
 BP_FULL_FRAME = {"path": _bp_path, "links": _bp_chain, "bars": _bp_bars, "points": _bp_share, "steps": _bp_steps,
                  "lot": _bp_lot, "places": _bp_map, "figures": _bp_numbers}
+
+
+# ---- Editorial motif and the graphics added for video 4 (drawn in both paper themes) ---
+
+def skyline(d, x0: int, x1: int, base: int, faint: bool = False) -> None:
+    """Fine line-art city skyline standing on `base`: towers with window lines, a pyramid tower and a spire.
+    Generic shapes, no real building. Same drawing every time (fixed pattern)."""
+    color = T.grid_major if faint else T.line
+    heights = [150, 230, 120, 310, 180, 260, 140, 380, 200, 170, 290, 130, 240, 160, 330, 110, 210]
+    widths = [70, 60, 90, 55, 80, 65, 100, 50, 75, 85, 60, 95, 70, 80, 55, 90, 65]
+    x, k = x0, 0
+    scale = (x1 - x0) / 1900
+    while x < x1:
+        w = int(widths[k % len(widths)] * max(scale, 0.5))
+        h = int(heights[k % len(heights)] * max(scale, 0.5))
+        if k % 7 == 3:  # pyramid tower
+            d.polygon([(x, base), (x + w // 2, base - h - 60), (x + w, base)], outline=color)
+            d.line((x + w // 2, base - h - 60, x + w // 2, base - h - 110), fill=color, width=2)
+        else:
+            d.rectangle((x, base - h, x + w, base), outline=color, width=2)
+            for yy in range(base - h + 18, base - 8, 22):
+                d.line((x + 10, yy, x + w - 10, yy), fill=color, width=1)
+            if k % 5 == 2:
+                d.line((x + w // 2, base - h, x + w // 2, base - h - 50), fill=color, width=2)
+        x += w + 6
+        k += 1
+    d.line((x0, base, x1, base), fill=color, width=2)
+
+
+def _box(d, xy, text: str, size: int = 34) -> None:
+    """Olive rounded stat box with light text (the editorial accent box)."""
+    f = font("Inter-SemiBold.ttf", size)
+    x, y = xy
+    tw = d.textlength(text, font=f)
+    d.rounded_rectangle((x, y, x + tw + 48, y + size + 34), radius=18, fill=OLIVE)
+    d.text((x + 24, y + 14), text, font=f, fill=(246, 243, 232))
+
+
+def _bp_people(d, o: dict) -> None:
+    """Text cards for real people (never portraits). o: kicker, title,
+    people: [{name, org, quote, when}], highlight (0-based, -1 none), caption."""
+    _bp_kicker(d, o["kicker"])
+    _bp_title(d, o["title"], size=64)
+    ppl, hi = o["people"], o.get("highlight", -1)
+    gap = 50
+    w = (W - 2 * BP_MARGIN - gap * (len(ppl) - 1)) // len(ppl)
+    for i, p in enumerate(ppl):
+        x, on = BP_MARGIN + i * (w + gap), i == hi
+        d.rounded_rectangle((x, 340, x + w, 930), radius=28, fill=T.panel,
+                            outline=T.accent if on else T.line, width=4 if on else 2)
+        nf = font("InterDisplay-Bold.ttf", 56)
+        y = 380
+        for row in wrap(d, p["name"], nf, w - 60):
+            d.text((x + 30, y), row, font=nf, fill=T.ink)
+            y += 64
+        spaced(d, (x + 30, y + 8), p.get("org", "").upper(), font("Inter-SemiBold.ttf", 24), T.accent, tracking=3)
+        y += 70
+        qf = font("Inter-Regular.ttf", 32)
+        for row in wrap(d, "«" + p["quote"] + "»" if p.get("quote") else "", qf, w - 60):
+            d.text((x + 30, y), row, font=qf, fill=T.text if on or hi < 0 else T.muted)
+            y += 44
+        if p.get("when"):
+            _box(d, (x + 30, 840), p["when"], 30)
+    _bp_caption(d, o.get("caption", ""), y=1000)
+
+
+def _bp_world(d, o: dict) -> None:
+    """World map in light land colour; lit places glow in copper, regions labelled in olive.
+    o: kicker, title, lit: [{name, lon, lat}], regions: [{name, lon, lat}], caption."""
+    _bp_kicker(d, o["kicker"])
+    _bp_title(d, o["title"], size=60)
+    rings = json.loads((MAPS / "world.json").read_text())
+    box = (120, 270, 1800, 1000)
+    lon0, lon1, lat0, lat1 = -170, 190, -58, 80
+    proj = lambda lon, lat: (box[0] + (lon - lon0) * (box[2] - box[0]) / (lon1 - lon0),
+                             box[3] - (lat - lat0) * (box[3] - box[1]) / (lat1 - lat0))
+    for ring in rings:
+        d.polygon([proj(x, y) for x, y in ring], fill=T.land, outline=T.line)
+    for r in o.get("regions", []):
+        x, y = proj(r["lon"], r["lat"])
+        d.ellipse((x - 10, y - 10, x + 10, y + 10), fill=OLIVE)
+        d.text((x, y + 22), r["name"], font=font("Inter-SemiBold.ttf", 30), fill=OLIVE, anchor="ma")
+    for p in o.get("lit", []):
+        x, y = proj(p["lon"], p["lat"])
+        for r, a in ((90, T.accent_soft), (56, T.accent_soft)):
+            d.ellipse((x - r, y - r, x + r, y + r), outline=T.accent, width=2)
+        d.ellipse((x - 20, y - 20, x + 20, y + 20), fill=T.accent)
+        d.text((x + 30, y - 120), p["name"], font=font("InterDisplay-Bold.ttf", 46), fill=T.accent, anchor="ls")
+    _bp_caption(d, o.get("caption", ""), y=1012)
+
+
+def _bp_loop(d, o: dict) -> None:
+    """A self-improvement loop: labelled arrows around a circle, and a curve that takes off.
+    o: kicker, title, loop: [labels], step (how many labels are shown), caption."""
+    _bp_kicker(d, o["kicker"])
+    _bp_title(d, o["title"], size=64)
+    labels, step = o["loop"], o.get("step", len(o["loop"]))
+    cx, cy, r = 640, 650, 230
+    d.ellipse((cx - r, cy - r, cx + r, cy + r), outline=T.line, width=3)
+    n = len(labels)
+    for i, label in enumerate(labels):
+        on = i < step
+        a = -math.pi / 2 + 2 * math.pi * i / n
+        x, y = cx + r * math.cos(a), cy + r * math.sin(a)
+        d.arc((cx - r, cy - r, cx + r, cy + r), math.degrees(a) + 8, math.degrees(a) + 360 / n - 8,
+              fill=T.accent if on else T.line, width=8 if on else 3)
+        e = a + 2 * math.pi / n - 0.14  # arrow head at the end of the arc
+        hx, hy = cx + r * math.cos(e), cy + r * math.sin(e)
+        t = e + math.pi / 2
+        for s in (0.5, -0.5):
+            d.line((hx, hy, hx - 30 * math.cos(t + s), hy - 30 * math.sin(t + s)),
+                   fill=T.accent if on else T.line, width=6)
+        d.ellipse((x - 14, y - 14, x + 14, y + 14), fill=T.ink if on else T.paper, outline=T.ink, width=3)
+        lf = font("InterDisplay-Bold.ttf", 38)
+        rows = wrap(d, label, lf, 300)
+        ly = y - 22 * len(rows) + (0 if abs(math.sin(a)) < 0.9 else (-70 if math.sin(a) < 0 else 70))
+        for row in rows:
+            d.text((x + (40 if math.cos(a) > 0.2 else -40 if math.cos(a) < -0.2 else 0), ly), row, font=lf,
+                   fill=T.ink if on else T.muted, anchor="la" if math.cos(a) > 0.2 else "ra" if math.cos(a) < -0.2 else "ma")
+            ly += 46
+    # the take-off curve on the right
+    left, right, top, base = 1100, 1760, 380, 900
+    d.line((left, base, right, base), fill=T.ink, width=3)
+    d.line((left, base, left, top), fill=T.ink, width=3)
+    if step >= n:
+        pts = [(left + (right - left) * t / 40, base - (base - top) * (math.exp(4 * t / 40) - 1) / (math.e ** 4 - 1))
+               for t in range(41)]
+        d.line(pts, fill=T.accent, width=7, joint="curve")
+        d.text((right - 10, top - 20), o.get("curve", ""), font=font("InterDisplay-Bold.ttf", 44), fill=T.accent, anchor="rs")
+    _bp_caption(d, o.get("caption", ""), y=1000)
+
+
+def _plant(d, x: int, y: int, s: int, fill, outline) -> None:
+    """A cooling-tower icon (hyperbolic sides) of width s, bottom-left at (x, y), with a puff of steam."""
+    pts = [(x, y), (x + s * 0.18, y - s * 0.6), (x + s * 0.12, y - s * 1.05), (x + s * 0.88, y - s * 1.05),
+           (x + s * 0.82, y - s * 0.6), (x + s, y)]
+    d.polygon(pts, fill=fill, outline=outline)
+    d.ellipse((x + s * 0.25, y - s * 1.45, x + s * 0.7, y - s * 1.1), outline=outline, width=2)
+
+
+def _bp_icons(d, o: dict) -> None:
+    """A grid of icons, some shown: o: kicker, title, icons (total), shown, value, label, caption."""
+    _bp_kicker(d, o["kicker"])
+    _bp_title(d, o["title"], size=64)
+    total, shown = o["icons"], o.get("shown", o["icons"])
+    cols, s, gx, gy = 23, 44, 58, 96
+    x0, y0 = BP_MARGIN, 470
+    for i in range(total):
+        x, y = x0 + (i % cols) * gx, y0 + (i // cols) * gy
+        if i < shown:
+            _plant(d, x, y, s, T.ink, T.ink)
+        else:
+            _plant(d, x, y, s, None, T.grid_major)
+    vx = x0 + cols * gx + 40
+    d.text((vx, 470), str(shown), font=font("InterDisplay-Bold.ttf", 200), fill=T.accent, anchor="la")
+    for j, row in enumerate(wrap(d, o.get("label", ""), font("Inter-Regular.ttf", 34), W - BP_MARGIN - vx)):
+        d.text((vx, 720 + j * 46), row, font=font("Inter-Regular.ttf", 34), fill=T.text)
+    _bp_caption(d, o.get("caption", ""), y=1000)
+
+
+def _bp_jcurve(d, o: dict) -> None:
+    """A J-curve on a clean chart with a dashed baseline. o: kicker, title, jcurve: {down, up} labels,
+    phase (1: only the dip, 2: the whole curve), caption."""
+    _bp_kicker(d, o["kicker"])
+    _bp_title(d, o["title"], size=64)
+    left, right, top, base, zero = BP_MARGIN + 60, W - BP_MARGIN - 60, 340, 900, 640
+    d.line((left, top, left, base), fill=T.ink, width=3)
+    d.line((left, base, right, base), fill=T.ink, width=3)
+    for x in range(left, right, 36):  # dashed baseline: no gain, no loss
+        d.line((x, zero, x + 18, zero), fill=T.muted, width=3)
+    d.text((right, zero - 14), o.get("baseline", "Sin IA"), font=font("Inter-Regular.ttf", 28), fill=T.muted, anchor="rs")
+    pts = []
+    for t in range(61):
+        u = t / 60
+        pts.append((left + (right - left) * u, zero + 170 * math.sin(math.pi * min(u / 0.45, 1)) * (u < 0.45)
+                    - (0 if u < 0.45 else 330 * ((u - 0.45) / 0.55) ** 1.6)))
+    phase = o.get("phase", 2)
+    cut = 28 if phase == 1 else 61
+    d.line(pts[:cut], fill=T.accent, width=8, joint="curve")
+    labels = o["jcurve"]
+    d.text((left + (right - left) * 0.22, zero + 210), labels[0], font=font("InterDisplay-Bold.ttf", 40), fill=T.ink, anchor="ma")
+    if phase >= 2:
+        d.text((right - 20, pts[-1][1] - 24), labels[1], font=font("InterDisplay-Bold.ttf", 40), fill=T.accent, anchor="rs")
+    d.text((right, base + 20), o.get("time", "Años"), font=font("Inter-Regular.ttf", 28), fill=T.muted, anchor="ra")
+    _bp_caption(d, o.get("caption", ""), y=1000)
+
+
+def _bp_contrast(d, o: dict) -> None:
+    """A small figure next to a big one that grows. o: kicker, small, big, grow (0..1), small_label, big_label."""
+    _bp_kicker(d, o["kicker"])
+    g = max(0.0, min(1.0, o.get("grow", 1.0)))
+    d.text((BP_MARGIN, 620), o["contrast"], font=font("InterDisplay-Bold.ttf", 90), fill=T.ink, anchor="ls")
+    d.text((BP_MARGIN, 660), o.get("small_label", ""), font=font("Inter-Regular.ttf", 30), fill=T.muted)
+    size = int(140 + g * 300)
+    bf = font("InterDisplay-Bold.ttf", size)
+    while d.textlength(o["big"], font=bf) > W - 560 - BP_MARGIN:
+        size -= 10
+        bf = font("InterDisplay-Bold.ttf", size)
+    d.text((560, 620 + size * 0.35), o["big"], font=bf, fill=T.accent, anchor="ls")
+    d.text((566, 660 + size * 0.35), o.get("big_label", ""), font=font("Inter-Regular.ttf", 30), fill=T.text)
+
+
+BP_FULL_FRAME.update({"people": _bp_people, "lit": _bp_world, "loop": _bp_loop, "icons": _bp_icons,
+                      "jcurve": _bp_jcurve, "contrast": _bp_contrast})
