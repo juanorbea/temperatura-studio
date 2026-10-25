@@ -1,9 +1,11 @@
 """Turn narration into the text a cloned voice reads, and the text it should be heard as.
 
 Only the voice input changes; the script and storyboard keep their wording.
-The lexicon (voices/NAME/pronunciations.yaml) has two tables:
-  translate: English terms -> Spanish (Whisper should hear the Spanish)
-  respell:   names and acronyms -> how to spell them so the voice says them right
+The lexicon (voices/NAME/pronunciations.yaml) has these tables:
+  translate:      English terms -> Spanish (Whisper should hear the Spanish); every engine
+  respell:        names and acronyms -> how to spell them so the voice says them right; every engine
+  engine_respell: extra respellings for one engine only, e.g. {f5-tts: {"IA": "í a"}};
+                  they win over respell for the same term
 """
 import re
 from dataclasses import dataclass, field
@@ -55,9 +57,13 @@ class Lexicon:
     respell: dict[str, str] = field(default_factory=dict)
 
 
-def load_lexicon(path: Path) -> Lexicon:
+def load_lexicon(path: Path, engine: str | None = None) -> Lexicon:
+    """The lexicon as one voice engine uses it: shared tables plus that engine's respellings."""
     data = yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
-    return Lexicon(data.get("translate") or {}, data.get("respell") or {})
+    respell = dict(data.get("respell") or {})
+    if engine:
+        respell.update((data.get("engine_respell") or {}).get(engine) or {})
+    return Lexicon(data.get("translate") or {}, respell)
 
 
 def replace_terms(text: str, table: dict[str, str]) -> str:
