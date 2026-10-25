@@ -39,6 +39,8 @@ BLUEPRINT = {
                                                               {"date": "AF 2027", "label": "Producción"}]},
     "lot": {"kicker": "Lotes", "title": "25 obleas", "lot": True},
     "places": {"kicker": "Mapa", "title": "Plantas", "places": [{"name": "Chitose", "lon": 141.65, "lat": 42.82}]},
+    "path": {"kicker": "Soberanía", "title": "Un camino estrecho", "sides": ["Inacción", "Proyectos caros"],
+             "path": "Tercera vía", "highlight": 2},
     "figures": {"kicker": "Dinero", "title": "Rapidus", "figures": [{"value": "5 billones ¥", "label": "necesarios"}]},
 }
 

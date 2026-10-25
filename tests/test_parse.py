@@ -89,3 +89,37 @@ def test_each_script_can_have_its_own_storyboard_and_image_folders(tmp_path, mon
 def test_a_number_that_ends_a_sentence_is_a_real_end():
     assert split_sentences("Arizona, de 4. Detrás hay dinero. Pasar de 40 a 2. Saltarse dos décadas.") == [
         "Arizona, de 4.", "Detrás hay dinero.", "Pasar de 40 a 2.", "Saltarse dos décadas."]
+
+
+SECTIONS = """Guion temperaturacero – Prueba (v4)
+Versión 4 · las etiquetas entre corchetes son fuentes
+Duración estimada: 15-18 minutos
+Tono: Analítico
+Formato: Vídeo ensayo con indicaciones de cámara
+INTRODUCCIÓN Y EL FALSO DILEMA
+[VFX / TÍTULO EN PANTALLA: "EL MANIFIESTO"]
+[CÁMARA EN PLANO MEDIO] NARRADOR: Una reunión cualquiera [Leicht].
+No me lo invento [opinión Juan].
+SECCIÓN 1: ¿POR QUÉ?
+[B-ROLL: Centros de cómputo.]
+NARRADOR: Hay tres canales [16]:
+1. El código abierto [16].
+2. Las API comerciales [16, 17].
+CONCLUSIÓN Y HOJA DE RUTA
+NARRADOR: Necesita ese contrato.
+"""
+
+
+def test_section_format_numbers_sections_and_keeps_direction_tags_out_of_the_voice():
+    modules = parse_script(SECTIONS)
+    assert [(m.number, m.title) for m in modules] == [
+        (1, "INTRODUCCIÓN Y EL FALSO DILEMA"), (2, "¿POR QUÉ?"), (3, "CONCLUSIÓN Y HOJA DE RUTA")]
+    assert modules[0].visual == 'VFX / TÍTULO EN PANTALLA: "EL MANIFIESTO" CÁMARA EN PLANO MEDIO'
+    assert modules[0].narration.split("\n\n") == ["Una reunión cualquiera.", "No me lo invento."]
+    assert modules[1].narration.split("\n\n") == [
+        "Hay tres canales:", "1. El código abierto.", "2. Las API comerciales."]
+
+
+def test_a_list_number_after_a_colon_starts_a_sentence():
+    assert split_sentences("Hay tres canales: 1. El código abierto. 2. Las API.") == [
+        "Hay tres canales: 1. El código abierto.", "2. Las API."]

@@ -15,6 +15,11 @@ Blocks (japon-chips), with source tags in words like [Brookings] or [ensayo Juan
   [LOCUCIÓN / GUION] narration...
   more narration...     (each line is a paragraph)
 
+Sections (potencias-medias), with tags like [3], [12, 13], [Leicht] or [opinión Juan]:
+  INTRODUCCIÓN ...      (then SECCIÓN N: TITLE, and a last CONCLUSIÓN ...; numbered in order)
+  [VFX ...] [B-ROLL ...] [CÁMARA ...] visual direction, at the start of a line
+  NARRADOR: narration...  (the prefix is optional; each line is a paragraph)
+
 Every bracketed citation or source tag is removed from the narration.
 """
 import re
@@ -29,11 +34,16 @@ CITATION_RE = re.compile(r"\s*\[[^\[\]\n]+\]")
 BLOCK_RE = re.compile(r"^(?:BLOQUE\s+(\d+):\s*(.+?)|(CIERRE))\s*$", re.MULTILINE)
 BLOCK_VISUAL_TAG = "[INDICACIÓN VISUAL / B-ROLL]"
 BLOCK_NARRATION_TAG = "[LOCUCIÓN / GUION]"
+SECTION_RE = re.compile(r"^(?:INTRODUCCIÓN\b.*|SECCIÓN\s+\d+:.*|CONCLUSIÓN\b.*)$", re.MULTILINE)
+SECTION_PREFIX_RE = re.compile(r"^SECCIÓN\s+\d+:\s*")
+# Direction tags open a line: [VFX / ...], [B-ROLL: ...], [CÁMARA EN PLANO MEDIO].
+DIRECTION_RE = re.compile(r"^\s*\[((?:VFX|B-ROLL|CÁMARA)\b[^\]]*)\]")
 # A sentence ends at . ? ! (optionally followed by a closing quote) before whitespace.
 SENTENCE_END_RE = re.compile(r'(?<=[.?!])["»”]?\s+')
 # ...but not after "EE." (of "EE. UU.") or a list number like "1." that starts the sentence,
 # nor before a lowercase word. A number ending a sentence ("Arizona, de 4.") is a real end.
-NOT_AN_END_RE = re.compile(r"(?:(?:^|\s)EE\.|^\d{1,2}\.)$")
+# A list number after a colon ("tres canales: 1. El uso...") does not end one either.
+NOT_AN_END_RE = re.compile(r"(?:(?:^|\s)EE\.|^\d{1,2}\.|:\s\d{1,2}\.)$")
 
 
 @dataclass
@@ -68,8 +78,12 @@ def split_sentences(text: str) -> list[str]:
 
 
 def parse_script(text: str) -> list[Module]:
-    if BLOCK_RE.search(text) and not MODULE_RE.search(text):
+    if MODULE_RE.search(text):
+        pass
+    elif BLOCK_RE.search(text):
         return _parse_blocks(text)
+    elif SECTION_RE.search(text):
+        return _parse_sections(text)
     matches = list(MODULE_RE.finditer(text))
     modules = []
     for i, m in enumerate(matches):
@@ -100,4 +114,25 @@ def _parse_blocks(text: str) -> list[Module]:
         number = int(m.group(1)) if m.group(1) else (modules[-1].number + 1 if modules else 1)
         title = (m.group(2) or "Cierre").strip()
         modules.append(Module(number, title, visual, "\n\n".join(p for p in paragraphs if p)))
+    return modules
+
+
+def _parse_sections(text: str) -> list[Module]:
+    """INTRODUCCIÓN / SECCIÓN N / CONCLUSIÓN format: one module per section, numbered in order.
+
+    Header lines before the first section (version, duration, tone, format) are not narration."""
+    matches = list(SECTION_RE.finditer(text))
+    modules = []
+    for i, m in enumerate(matches):
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+        visuals, paragraphs = [], []
+        for line in text[m.end():end].splitlines():
+            while tag := DIRECTION_RE.match(line):
+                visuals.append(tag.group(1).strip())
+                line = line[tag.end():]
+            line = re.sub(r"^\s*NARRADOR:\s*", "", line)
+            if paragraph := strip_source_tags(" ".join(line.split())):
+                paragraphs.append(paragraph)
+        title = SECTION_PREFIX_RE.sub("", m.group(0)).strip()
+        modules.append(Module(i + 1, title, " ".join(visuals), "\n\n".join(paragraphs)))
     return modules

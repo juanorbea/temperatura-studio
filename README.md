@@ -4,8 +4,8 @@ Turns a Spanish narration script into a narrated video for the YouTube channel
 @temperaturacero: a Spanish voiceover, a new image every few seconds in one
 consistent look, and simple code-made graphics, cut to the voice with ffmpeg.
 
-Two scripts have storyboards and images: `examples/gobernanza-ia.md` (video 1)
-and `examples/japon-chips.md` (video 2).
+Three scripts have storyboards and images: `examples/gobernanza-ia.md` (video 1),
+`examples/japon-chips.md` (video 2) and `examples/potencias-medias.md` (video 3).
 
 ## How it works
 
@@ -17,6 +17,11 @@ and `examples/japon-chips.md` (video 2).
      and `[LOCUCIÓN / GUION]` (video 2). Each block is one module, `CIERRE` the
      last one, and every bracketed source tag such as `[Reuters]` is dropped from
      the narration and the on-screen text.
+   - `INTRODUCCIÓN ...`, `SECCIÓN N: TÍTULO` and `CONCLUSIÓN ...` (video 3), one module
+     each, numbered in order. `[VFX ...]`, `[B-ROLL ...]` and `[CÁMARA ...]` at the start
+     of a line are visual direction; `NARRADOR:` is optional; every other line is a
+     paragraph. Header lines (Versión, Duración, Tono, Formato) are skipped and source
+     tags such as `[3]`, `[12, 13]` or `[opinión Juan]` are dropped.
 2. **Storyboard** (`storyboards/module1.yaml`): a list of shots. Each shot
    covers a piece of the narration and is an `image`, a `title_card` or a
    `text_overlay`. Shots cut only at sentence ends.
@@ -25,8 +30,8 @@ and `examples/japon-chips.md` (video 2).
    overlays can also be full-frame data graphics, picked by one key:
    `links` (chain of links with a share counter), `bars`, `points` (a share
    going from one value to another), `steps` (dated timeline), `lot` (a 25-wafer
-   lot against single wafers), `places` (map of Japan) and `figures` (big
-   numbers). See `storyboards/japon-chips/` for examples.
+   lot against single wafers), `places` (map of Japan), `figures` (big
+   numbers) and `path` (a narrow path between two cliffs). See `storyboards/japon-chips/` for examples.
 3. **Voice**: either your own recording (see below), or a free Microsoft neural
    voice through edge-tts (`es-ES-AlvaroNeural`), one paragraph at a time.
    Word timings decide where each shot starts and ends.
@@ -81,7 +86,8 @@ A script with its own folder `storyboards/STEM/` (STEM is the file name without
 
 The Japan storyboards are written by `scripts/make_japon_boards.py`
 (`.venv/bin/python -m scripts.make_japon_boards`), which also checks that each
-block's shots cover its sentences.
+block's shots cover its sentences. `scripts/make_potencias_boards.py` does the
+same for video 3.
 
 If a shot has no image yet, the build stops and prints the shot id and the
 full prompt to generate it with.
