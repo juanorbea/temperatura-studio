@@ -6,7 +6,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from studio.build import build_module, build_script, narrate_module
+from studio.build import build_module, build_script, narrate_module, script_folders
 from studio.clone import ENGINES, VoiceError
 from studio.align import AlignmentError
 from studio.images import FolderProvider, MissingImages
@@ -21,9 +21,10 @@ def main() -> int:
     b.add_argument("script", type=Path)
     b.add_argument("--module", required=True,
                    help="module number, or 'all' to build every module and join them into one video")
-    b.add_argument("--storyboard", type=Path, help="default: storyboards/moduleN.yaml")
+    b.add_argument("--storyboard", type=Path,
+                   help="default: storyboards/SCRIPT/moduleN.yaml if that folder exists, else storyboards/moduleN.yaml")
     b.add_argument("--images", type=Path,
-                   help="default: assets/images/moduleN (with --module all: the folder holding moduleN/)")
+                   help="default: assets/images[/SCRIPT]/moduleN (with --module all: the folder holding moduleN/)")
     b.add_argument("--audio", type=Path,
                    help="your own recording of the module narration (m4a, mp3, wav); "
                         "default: synthesized voice")
@@ -62,17 +63,20 @@ def main() -> int:
             print("--module all takes no --audio or --storyboard", file=sys.stderr)
             return 1
         numbers = [m.number for m in parse_script(args.script.read_text(encoding="utf-8"))]
+        boards, images_root = script_folders(args.script)
         try:
-            build_script(args.script, numbers, args.images or Path("assets/images"), args.out,
-                         args.cache, args.whisper_model, args.voice, args.voice_device, args.voice_engine)
+            build_script(args.script, numbers, args.images or images_root, args.out,
+                         args.cache, args.whisper_model, args.voice, args.voice_device, args.voice_engine,
+                         boards)
         except (MissingImages, VoiceError) as e:
             print(e, file=sys.stderr)
             return 1
         return 0
 
     n = int(args.module)
-    board = args.storyboard or Path(f"storyboards/module{n}.yaml")
-    images = FolderProvider(args.images or Path(f"assets/images/module{n}"))
+    boards, images_root = script_folders(args.script)
+    board = args.storyboard or boards / f"module{n}.yaml"
+    images = FolderProvider(args.images or images_root / f"module{n}")
     try:
         build_module(args.script, n, board, images, args.out, args.cache,
                      args.audio, args.whisper_model, args.voice, args.voice_device, args.voice_engine)

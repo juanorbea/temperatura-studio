@@ -56,13 +56,15 @@ def build_module(script: Path, number: int, board_path: Path, provider: ImagePro
         shot = t.shot
         overlay = None
         if shot.type == "title_card":
-            background = graphics.title_card(shot.title, shot.subtitle, work / f"{shot.id}.png")
+            background = graphics.title_card(shot.title, shot.subtitle, work / f"{shot.id}.png", board.theme)
         elif shot.type == "text_overlay" and not shot.prompt:
-            background = graphics.overlay_card(shot.overlay, work / f"{shot.id}.png", on_photo=False)
+            background = graphics.overlay_card(shot.overlay, work / f"{shot.id}.png", on_photo=False,
+                                              theme=board.theme)
         else:
             background = backgrounds[shot.id]
             if shot.type == "text_overlay":
-                overlay = graphics.overlay_card(shot.overlay, work / f"{shot.id}_overlay.png", on_photo=True)
+                overlay = graphics.overlay_card(shot.overlay, work / f"{shot.id}_overlay.png", on_photo=True,
+                                                theme=board.theme)
         still = shot.type == "title_card" or (shot.type == "text_overlay" and not shot.prompt)
         motion = shot.motion or ("none" if still else assemble.MOTIONS[i % len(assemble.MOTIONS)])
         clips.append(assemble.render_clip(t, background, overlay, motion, work / f"{shot.id}.mp4"))
@@ -78,16 +80,26 @@ def build_module(script: Path, number: int, board_path: Path, provider: ImagePro
     return out
 
 
+def script_folders(script: Path) -> tuple[Path, Path]:
+    """Storyboards and images of a script: storyboards/STEM/ and assets/images/STEM/ when
+    that storyboard folder exists (one folder per script), else storyboards/ and assets/images/."""
+    own = Path("storyboards") / script.stem
+    if own.is_dir():
+        return own, Path("assets/images") / script.stem
+    return Path("storyboards"), Path("assets/images")
+
+
 def build_script(script: Path, numbers: list[int], images_root: Path, out_dir: Path, cache: Path,
                  whisper_model: str = recording.WHISPER_MODEL, voice: str | None = None,
-                 voice_device: str = "cpu", voice_engine: str | None = None) -> Path:
+                 voice_device: str = "cpu", voice_engine: str | None = None,
+                 storyboards: Path = Path("storyboards")) -> Path:
     """Build several modules (each from storyboards/moduleN.yaml and images_root/moduleN)
     and join them, in order, into one video named after the script."""
     from studio.images import FolderProvider
     videos = []
     for n in numbers:
         print(f"\n=== module {n} ===")
-        videos.append(build_module(script, n, Path(f"storyboards/module{n}.yaml"),
+        videos.append(build_module(script, n, storyboards / f"module{n}.yaml",
                                    FolderProvider(images_root / f"module{n}"), out_dir, cache,
                                    None, whisper_model, voice, voice_device, voice_engine))
     out = out_dir / f"{script.stem}_full.mp4"

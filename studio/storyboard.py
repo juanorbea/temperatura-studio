@@ -4,7 +4,7 @@ from pathlib import Path
 
 import yaml
 
-from studio.parse import CITATION_RE, Module, split_sentences
+from studio.parse import CITATION_RE, Module, split_sentences  # CITATION_RE also matches source tags
 
 SHOT_TYPES = {"image", "title_card", "text_overlay"}
 
@@ -31,6 +31,7 @@ class Storyboard:
     style: str
     character: str
     shots: list[Shot]
+    theme: str = "charcoal"    # graphics theme (studio/graphics.py): charcoal or blueprint
 
     def image_prompt(self, shot: Shot) -> str:
         """Full prompt for an image provider: scene + character + locked style."""
@@ -47,14 +48,15 @@ def load(path: Path) -> Storyboard:
     for s in shots:
         if s.type not in SHOT_TYPES:
             raise ValueError(f"{s.id}: unknown shot type {s.type!r}")
-    return Storyboard(data["module"], data["voice"], data["style"], data["character"], shots)
+    return Storyboard(data["module"], data["voice"], data["style"], data["character"], shots,
+                      data.get("theme", "charcoal"))
 
 
 def check_coverage(board: Storyboard, module: Module) -> None:
     """Fail unless the shots, in order, cover the module narration exactly once."""
     for s in board.shots:
         if CITATION_RE.search(s.text):
-            raise ValueError(f"{s.id}: citation marker left in voice text: {s.text!r}")
+            raise ValueError(f"{s.id}: citation or source tag left in voice text: {s.text!r}")
     joined = " ".join(s.text.strip() for s in board.shots)
     expected = " ".join(module.narration.split())
     if joined != expected:

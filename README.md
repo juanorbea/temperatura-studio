@@ -4,22 +4,34 @@ Turns a Spanish narration script into a narrated video for the YouTube channel
 @temperaturacero: a Spanish voiceover, a new image every few seconds in one
 consistent look, and simple code-made graphics, cut to the voice with ffmpeg.
 
-Right now it builds one module at a time, and only module 1 has a storyboard
-and images.
+Two scripts have storyboards and images: `examples/gobernanza-ia.md` (video 1)
+and `examples/japon-chips.md` (video 2).
 
 ## How it works
 
-1. **Parse** the script (`examples/gobernanza-ia.md`): split it into modules,
-   keep the visual direction, take the narration and drop citation markers
-   like `[8, 30]`.
+1. **Parse** the script: split it into modules, keep the visual direction,
+   take the narration and drop citation markers. Two formats:
+   - `MÓDULO N: título` with `Dirección visual:` and `Locución:` (video 1);
+     markers like `[8, 30]` are dropped.
+   - `BLOQUE N: TÍTULO` and a final `CIERRE`, each with `[INDICACIÓN VISUAL / B-ROLL]`
+     and `[LOCUCIÓN / GUION]` (video 2). Each block is one module, `CIERRE` the
+     last one, and every bracketed source tag such as `[Reuters]` is dropped from
+     the narration and the on-screen text.
 2. **Storyboard** (`storyboards/module1.yaml`): a list of shots. Each shot
    covers a piece of the narration and is an `image`, a `title_card` or a
-   `text_overlay`. Written by hand for now.
+   `text_overlay`. Shots cut only at sentence ends.
+   A storyboard may set `theme: blueprint` (Juan's paper-and-grid slide look,
+   navy ink and a copper accent) instead of the default `charcoal`. Blueprint
+   overlays can also be full-frame data graphics, picked by one key:
+   `links` (chain of links with a share counter), `bars`, `points` (a share
+   going from one value to another), `steps` (dated timeline), `lot` (a 25-wafer
+   lot against single wafers), `places` (map of Japan) and `figures` (big
+   numbers). See `storyboards/japon-chips/` for examples.
 3. **Voice**: either your own recording (see below), or a free Microsoft neural
    voice through edge-tts (`es-ES-AlvaroNeural`), one paragraph at a time.
    Word timings decide where each shot starts and ends.
-4. **Images and graphics**: images are read from `assets/images/moduleN/`,
-   named by shot id. Title cards and text overlays are drawn with Pillow.
+4. **Images and graphics**: images are read from `assets/images/moduleN/`
+   (or `assets/images/STEM/moduleN/`, see below), named by shot id. Title cards and text overlays are drawn with Pillow.
 5. **Assemble**: ffmpeg renders each shot with a slow zoom or pan, joins them
    with clean cuts and adds the voice. 1920x1080, 30 fps.
 
@@ -59,6 +71,17 @@ paragraphs that changed.
 Builds every module from `storyboards/moduleN.yaml` and `assets/images/moduleN/`,
 then joins them, in order, into `output/gobernanza-ia_full.mp4`. Each module
 starts with its own title card.
+
+A script with its own folder `storyboards/STEM/` (STEM is the file name without
+`.md`) uses that folder and `assets/images/STEM/` instead:
+
+```
+.venv/bin/python -m studio build examples/japon-chips.md --module all --voice juan --out output/japon-chips
+```
+
+The Japan storyboards are written by `scripts/make_japon_boards.py`
+(`.venv/bin/python -m scripts.make_japon_boards`), which also checks that each
+block's shots cover its sentences.
 
 If a shot has no image yet, the build stops and prints the shot id and the
 full prompt to generate it with.
@@ -134,7 +157,9 @@ split at commas), never across a shot boundary, so cuts land exactly in the paus
 Juan would take to say each piece, which stops it from cutting sentence endings;
 OmniVoice picks the length itself. Whisper then listens to every piece; if words are
 wrong or the end is missing, it is generated again with another seed (up to 3) and
-the best take is kept. The whole narration is normalized to -16 LUFS. Per-piece
+the best take is kept. A take counts as right if it matches either the script (with
+translations) or the respelled text the engine was given, since Whisper often writes
+a well-said "de ram" as spelled. The whole narration is normalized to -16 LUFS. Per-piece
 results (what Whisper heard, word error rate, seed) go to `output/moduleN_voice.json`.
 
 Every take is cached in `cache/voice/` by a hash of the engine and the profile

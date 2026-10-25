@@ -40,3 +40,12 @@ def test_pieces_follow_shots_and_get_the_right_pause():
         (1, "en este plano.", PARAGRAPH_GAP),
         (2, "Nuevo párrafo.", PARAGRAPH_GAP),
     ]
+
+
+def test_a_respelled_name_heard_as_respelled_is_not_flagged():
+    from studio.clone import score
+    expect, say = "Su fuerte era la memoria DRAM.", "Su fuerte era la memoria de ram."
+    assert score(expect, say, "Su fuerte era la memoria de Ram.") == (0.0, True)
+    assert score(expect, say, "Su fuerte era la memoria DRAM.") == (0.0, True)
+    wer, tail_ok = score(expect, say, "Su fuerte era la memoria.")
+    assert wer > 0 and not tail_ok
