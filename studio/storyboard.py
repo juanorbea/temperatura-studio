@@ -4,7 +4,7 @@ from pathlib import Path
 
 import yaml
 
-from studio.parse import CITATION_RE, Module, split_sentences
+from studio.parse import CITATION_RE, Module, split_sentences  # CITATION_RE also matches source tags
 
 SHOT_TYPES = {"image", "title_card", "text_overlay"}
 
@@ -54,7 +54,7 @@ def check_coverage(board: Storyboard, module: Module) -> None:
     """Fail unless the shots, in order, cover the module narration exactly once."""
     for s in board.shots:
         if CITATION_RE.search(s.text):
-            raise ValueError(f"{s.id}: citation marker left in voice text: {s.text!r}")
+            raise ValueError(f"{s.id}: citation or source tag left in voice text: {s.text!r}")
     joined = " ".join(s.text.strip() for s in board.shots)
     expected = " ".join(module.narration.split())
     if joined != expected:
