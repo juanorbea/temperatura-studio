@@ -9,3 +9,4 @@ __pycache__/
 voices/*/*.wav
 voices/*/*.m4a
 voices/*/*.mp3
+.venv-omnivoice

@@ -1,17 +1,28 @@
 # Juan's cloned voice. Recorded once (juan_reference_v2.m4a, 24 Oct 2026), reused for every script.
-engine: f5-tts
-# F5-Spanish fine-tune; weights are CC-BY-NC-4.0 (non-commercial use only).
-checkpoint: hf://jpgallegoar/F5-Spanish/model_1250000.safetensors
+# engine picks the voice model; `--voice-engine f5-tts` uses the other one for a single run.
+engine: omnivoice
 reference:
   # Personal recording, NOT in git (see .gitignore). 10.85 s cut from 4.45-15.30 s of the
   # original memo, high-pass 70 Hz, +4 dB, 24 kHz mono. Copy it here before using --voice juan.
   audio: ref.wav
   text: ref.txt            # the exact words spoken in ref.wav
-lexicon: pronunciations.yaml
-generation:
-  nfe_step: 24             # 32: a bit cleaner, 1.45x slower; 16: 1.5x faster, slightly more slips
-  cfg_strength: 2.0
-  sway_sampling_coef: -1.0
-  letters_per_second: 13.5 # Juan speaks ~14.9 letters/s; asking for a bit more time avoids cut endings
-  pad_seconds: 0.35
-  max_chunk_chars: 160     # longer sentences are split at commas
+lexicon: pronunciations.yaml   # shared tables plus engine_respell per engine
+engines:
+  omnivoice:
+    # OmniVoice code is Apache-2.0; its weights are CC-BY-NC (non-commercial use only).
+    model: k2-fsa/OmniVoice
+    generation:
+      language: es
+      num_step: 32           # OmniVoice default; no pace setting: it picks each sentence's length itself
+      guidance_scale: 2.0
+      max_chunk_chars: 160   # longer sentences are split at commas
+  f5-tts:
+    # F5-Spanish fine-tune; weights are CC-BY-NC-4.0 (non-commercial use only).
+    model: hf://jpgallegoar/F5-Spanish/model_1250000.safetensors
+    generation:
+      nfe_step: 24             # 32: a bit cleaner, 1.45x slower; 16: 1.5x faster, slightly more slips
+      cfg_strength: 2.0
+      sway_sampling_coef: -1.0
+      letters_per_second: 13.5 # Juan speaks ~14.9 letters/s; asking for a bit more time avoids cut endings
+      pad_seconds: 0.35
+      max_chunk_chars: 160     # longer sentences are split at commas

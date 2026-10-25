@@ -1,12 +1,13 @@
 """Command line: python -m studio build SCRIPT --module N [--audio FILE | --voice NAME]
                python -m studio build SCRIPT --module all [--voice NAME]   (one video of all modules)
-               python -m studio narrate SCRIPT --module N --voice NAME"""
+               python -m studio narrate SCRIPT --module N --voice NAME
+               --voice-engine omnivoice|f5-tts picks the engine for --voice (default: the profile's)"""
 import argparse
 import sys
 from pathlib import Path
 
 from studio.build import build_module, build_script, narrate_module
-from studio.clone import VoiceError
+from studio.clone import ENGINES, VoiceError
 from studio.align import AlignmentError
 from studio.images import FolderProvider, MissingImages
 from studio.parse import parse_script
@@ -28,6 +29,8 @@ def main() -> int:
                         "default: synthesized voice")
     b.add_argument("--voice", help="narrate with a cloned voice profile from voices/NAME (e.g. juan)")
     b.add_argument("--voice-device", default="cpu", help="device for the cloned voice: cpu or cuda")
+    b.add_argument("--voice-engine", choices=sorted(ENGINES),
+                   help="voice engine for --voice (default: the profile's engine, normally omnivoice)")
     b.add_argument("--whisper-model", default=WHISPER_MODEL,
                    help=f"faster-whisper model for --audio and for checking --voice (default: {WHISPER_MODEL})")
     b.add_argument("--out", type=Path, default=Path("output"))
@@ -38,6 +41,7 @@ def main() -> int:
     v.add_argument("--module", type=int, nargs="+", required=True)
     v.add_argument("--voice", required=True)
     v.add_argument("--voice-device", default="cpu")
+    v.add_argument("--voice-engine", choices=sorted(ENGINES))
     v.add_argument("--whisper-model", default=WHISPER_MODEL)
     v.add_argument("--out", type=Path, default=Path("output"))
     v.add_argument("--cache", type=Path, default=Path("cache"))
@@ -47,7 +51,7 @@ def main() -> int:
         try:
             for n in args.module:
                 narrate_module(args.script, n, args.voice, args.out, args.cache,
-                               args.voice_device, args.whisper_model)
+                               args.voice_device, args.whisper_model, args.voice_engine)
         except VoiceError as e:
             print(e, file=sys.stderr)
             return 1
@@ -60,7 +64,7 @@ def main() -> int:
         numbers = [m.number for m in parse_script(args.script.read_text(encoding="utf-8"))]
         try:
             build_script(args.script, numbers, args.images or Path("assets/images"), args.out,
-                         args.cache, args.whisper_model, args.voice, args.voice_device)
+                         args.cache, args.whisper_model, args.voice, args.voice_device, args.voice_engine)
         except (MissingImages, VoiceError) as e:
             print(e, file=sys.stderr)
             return 1
@@ -71,7 +75,7 @@ def main() -> int:
     images = FolderProvider(args.images or Path(f"assets/images/module{n}"))
     try:
         build_module(args.script, n, board, images, args.out, args.cache,
-                     args.audio, args.whisper_model, args.voice, args.voice_device)
+                     args.audio, args.whisper_model, args.voice, args.voice_device, args.voice_engine)
     except (MissingImages, AlignmentError, VoiceError) as e:
         print(e, file=sys.stderr)
         return 1

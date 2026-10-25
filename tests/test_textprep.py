@@ -56,9 +56,17 @@ def test_list_numbers_quotes_dashes_and_parentheses_are_tidied():
 
 
 def test_juans_lexicon_loads_and_covers_the_script_terms():
-    lex = load_lexicon(Path("voices/juan/pronunciations.yaml"))
-    said = voice_text("la IA de EE. UU. y Chips for Peace en EuroHPC con poder de cómputo (compute)", lex)
-    assert said == "la í a de Estados Unidos y Chips para la Paz en Euro hache pe ce con poder de cómputo"
+    text = "la IA de EE. UU. y Chips for Peace en EuroHPC con poder de cómputo (compute)"
+    f5 = load_lexicon(Path("voices/juan/pronunciations.yaml"), "f5-tts")
+    assert voice_text(text, f5) == "la í a de Estados Unidos y Chips para la Paz en Euro hache pe ce con poder de cómputo"
+    omni = load_lexicon(Path("voices/juan/pronunciations.yaml"), "omnivoice")
+    assert voice_text(text, omni) == "la IA de Estados Unidos y Chips para la Paz en Euro hache pe ce con poder de cómputo"
+
+
+def test_juans_omnivoice_lexicon_keeps_spanish_spellings_of_english_names():
+    omni = load_lexicon(Path("voices/juan/pronunciations.yaml"), "omnivoice")
+    said = voice_text("la AGI según Good Judgment Inc., la OPCW y el OIEA", omni)
+    assert said == "la IA general según Gud Yóchment, la o pe ce uve doble y el OIEA"
 
 
 def test_question_mark_left_before_a_removed_citation_is_cleaned():

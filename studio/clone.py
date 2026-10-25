@@ -1,16 +1,21 @@
-"""Narrate with a cloned voice (F5-TTS) from a saved voice profile.
+"""Narrate with a cloned voice from a saved voice profile.
+
+Two voice engines, each in its own virtualenv and run as a worker process:
+  omnivoice   OmniVoice (k2-fsa/OmniVoice), studio/omnivoice_worker.py, .venv-omnivoice (default)
+  f5-tts      F5-TTS with the F5-Spanish checkpoint, studio/f5_worker.py, .venv-f5
 
 A profile is a folder voices/NAME/ with:
-  profile.yaml          model and generation settings
+  profile.yaml          which engine, and each engine's model and generation settings
   ref.txt               the exact words spoken in the reference clip
-  pronunciations.yaml   synthesis-only lexicon (see studio/textprep.py)
+  pronunciations.yaml   synthesis-only lexicon, partly per engine (see studio/textprep.py)
   ref.wav               the reference clip itself; personal, kept out of git
 
 Narration is generated one sentence at a time (long sentences are split at commas),
 and never across a shot boundary, so every cut falls exactly in a pause we put there.
 Each piece is checked with Whisper; if words are wrong or the end is missing it is
 generated again with another seed (up to 3) and the best take is kept.
-Every take is cached under cache/voice/ by a hash of everything that shapes it.
+Every take is cached under cache/voice/ by a hash of everything that shapes it,
+the engine included, so takes from different engines never mix.
 """
 import hashlib
 import json
@@ -35,7 +40,24 @@ RATE = 48000
 SENTENCE_GAP, PARAGRAPH_GAP, CHUNK_GAP = 0.35, 0.7, 0.15
 GOOD_WER = 0.10
 SEEDS = (0, 1, 2)
-DEFAULT_F5_PYTHON = Path(".venv-f5/bin/python")
+
+
+@dataclass(frozen=True)
+class Engine:
+    name: str
+    worker: str          # script in studio/, run with the engine's own python
+    python: Path         # default interpreter (relative to the repo)
+    python_env: str      # environment variable that overrides it
+    setup: str           # how to build the virtualenv (README, "Cloned voice")
+
+
+ENGINES = {
+    "omnivoice": Engine("omnivoice", "omnivoice_worker.py", Path(".venv-omnivoice/bin/python"),
+                        "STUDIO_OMNIVOICE_PYTHON", "scripts/setup_omnivoice.sh"),
+    "f5-tts": Engine("f5-tts", "f5_worker.py", Path(".venv-f5/bin/python"),
+                     "STUDIO_F5_PYTHON", "see README, 'Cloned voice'"),
+}
+DEFAULT_ENGINE = "omnivoice"
 
 
 class VoiceError(Exception):
@@ -48,23 +70,42 @@ class Profile:
     folder: Path
     ref_audio: Path
     ref_text: str
-    checkpoint: str
+    engine: str
+    model: str           # F5 checkpoint or OmniVoice model id
     lexicon: Lexicon
     settings: dict
 
     def fingerprint(self) -> str:
-        """Changes whenever anything that shapes the generated audio changes."""
+        """Changes whenever anything that shapes the generated audio changes, the engine included."""
         h = hashlib.sha256()
         h.update(self.ref_audio.read_bytes())
-        h.update(json.dumps([self.ref_text, self.checkpoint, self.settings], sort_keys=True).encode())
+        h.update(json.dumps([self.engine, self.ref_text, self.model, self.settings], sort_keys=True).encode())
         return h.hexdigest()[:16]
 
+    def worker_config(self, device: str) -> dict:
+        """First message to the engine's worker."""
+        base = {"ref_audio": str(self.ref_audio), "ref_text": self.ref_text, "device": device}
+        if self.engine == "f5-tts":
+            s = self.settings
+            return {**base, "checkpoint": self.model, "nfe_step": s["nfe_step"],
+                    "cfg_strength": s["cfg_strength"], "sway_sampling_coef": s["sway_sampling_coef"]}
+        return {**base, "model": self.model, **self.settings}
 
-def load_profile(name: str, voices: Path = Path("voices")) -> Profile:
+
+def load_profile(name: str, voices: Path = Path("voices"), engine: str | None = None) -> Profile:
+    """Load voices/NAME; engine overrides the profile's own choice (None: the profile's, else omnivoice)."""
     folder = voices / name
     if not (folder / "profile.yaml").exists():
         raise VoiceError(f"no voice profile {name!r}: {folder}/profile.yaml not found")
     data = yaml.safe_load((folder / "profile.yaml").read_text(encoding="utf-8"))
+    engine = engine or data.get("engine") or DEFAULT_ENGINE
+    if engine not in ENGINES:
+        raise VoiceError(f"unknown voice engine {engine!r}; use one of: {', '.join(ENGINES)}")
+    engines = data.get("engines") or {}
+    if engine not in engines:
+        raise VoiceError(f"voice profile {name!r} has no settings for engine {engine!r} "
+                         f"(engines: in {folder}/profile.yaml)")
+    conf = engines[engine]
     ref_audio = Path(os.path.expanduser(data["reference"]["audio"]))
     if not ref_audio.is_absolute():
         ref_audio = folder / ref_audio
@@ -74,18 +115,22 @@ def load_profile(name: str, voices: Path = Path("voices")) -> Profile:
             "It is a personal recording and is not in git: copy the reference clip there "
             "(see README, 'Cloned voice').")
     ref_text = (folder / data["reference"]["text"]).read_text(encoding="utf-8").strip()
-    lexicon = load_lexicon(folder / data["lexicon"])
-    return Profile(name, folder, ref_audio, ref_text, data["checkpoint"], lexicon, data["generation"])
+    lexicon = load_lexicon(folder / data["lexicon"], engine)
+    return Profile(name, folder, ref_audio, ref_text, engine, conf["model"], lexicon, conf.get("generation") or {})
 
 
-def cache_key(fingerprint: str, text: str, seconds: float, seed: int) -> str:
-    """Same profile + same voice text + same length + same seed = same audio."""
-    raw = json.dumps([fingerprint, text, round(seconds, 2), seed], ensure_ascii=False)
+def cache_key(fingerprint: str, text: str, seconds: float | None, seed: int) -> str:
+    """Same profile (engine included) + same voice text + same length + same seed = same audio."""
+    raw = json.dumps([fingerprint, text, None if seconds is None else round(seconds, 2), seed],
+                     ensure_ascii=False)
     return hashlib.sha256(raw.encode()).hexdigest()[:20]
 
 
-def estimate_seconds(text: str, settings: dict) -> float:
-    """Length to ask F5 for: letters at the speaker's pace plus a little room to finish."""
+def estimate_seconds(text: str, settings: dict) -> float | None:
+    """Length to ask the engine for: letters at the speaker's pace plus a little room to finish.
+    None when the profile sets no pace (OmniVoice picks the length itself)."""
+    if "letters_per_second" not in settings:
+        return None
     letters = len(re.findall(r"[^\W\d_]", text))
     return max(1.0, letters / settings["letters_per_second"] + settings["pad_seconds"])
 
@@ -142,32 +187,36 @@ def word_error_rate(expected: str, heard: str) -> tuple[float, bool]:
     return errors / len(ref), bool(hyp) and ref[-1] in hyp[-3:]
 
 
+def engine_python(engine: Engine) -> Path:
+    """The interpreter of the engine's virtualenv; its environment variable wins."""
+    return Path(os.environ.get(engine.python_env, engine.python))
+
+
 class _Worker:
-    """The F5 model in its own virtualenv, started only if something is not cached yet."""
+    """The voice model in its own virtualenv, started only if something is not cached yet."""
 
     def __init__(self, profile: Profile, device: str, log: Path):
-        python = Path(os.environ.get("STUDIO_F5_PYTHON", DEFAULT_F5_PYTHON))
+        engine = ENGINES[profile.engine]
+        python = engine_python(engine)
         if not python.exists():
-            raise VoiceError(f"F5 virtualenv not found ({python}); see README, 'Cloned voice', "
-                             "or set STUDIO_F5_PYTHON")
-        script = Path(__file__).with_name("f5_worker.py")
+            raise VoiceError(f"{engine.name} virtualenv not found ({python}); build it with "
+                             f"{engine.setup}, or set {engine.python_env}")
+        script = Path(__file__).with_name(engine.worker)
+        self.engine = engine.name
         self.log = open(log, "a")
         self.proc = subprocess.Popen([str(python), str(script)], stdin=subprocess.PIPE,
                                      stdout=subprocess.PIPE, stderr=self.log, text=True)
-        s = profile.settings
-        self._send({"checkpoint": profile.checkpoint, "ref_audio": str(profile.ref_audio),
-                    "ref_text": profile.ref_text, "device": device, "nfe_step": s["nfe_step"],
-                    "cfg_strength": s["cfg_strength"], "sway_sampling_coef": s["sway_sampling_coef"]})
+        self._send(profile.worker_config(device))
 
     def _send(self, msg: dict) -> dict:
         self.proc.stdin.write(json.dumps(msg, ensure_ascii=False) + "\n")
         self.proc.stdin.flush()
         line = self.proc.stdout.readline()
         if not line:
-            raise VoiceError(f"F5 worker stopped; see {self.log.name}")
+            raise VoiceError(f"{self.engine} worker stopped; see {self.log.name}")
         return json.loads(line)
 
-    def generate(self, text: str, seconds: float, seed: int, out: Path) -> dict:
+    def generate(self, text: str, seconds: float | None, seed: int, out: Path) -> dict:
         return self._send({"text": text, "seconds": seconds, "seed": seed, "out": str(out)})
 
     def close(self) -> None:
@@ -222,7 +271,7 @@ class Narrator:
                 self.reused += 1
             else:
                 if self.worker is None:
-                    self.worker = _Worker(self.profile, self.device, self.cache / "f5_worker.log")
+                    self.worker = _Worker(self.profile, self.device, self.cache / f"{self.profile.engine}_worker.log")
                 result = self.worker.generate(say, seconds, seed, wav)
                 heard = self.checker.heard(wav)
                 wer, tail_ok = word_error_rate(expect, heard)
@@ -300,7 +349,7 @@ def narrate_shots(narrator: Narrator, shots: list[Shot], paragraph_ends: set[int
         audio.append(silence(shot.tail + gap / 2)); pos += len(audio[-1])
         ends.append(pos / RATE)                       # cut halfway through the pause
         audio.append(silence(gap / 2)); pos += len(audio[-1])
-    print(f"voice: {narrator.generated} takes generated ({narrator.gen_seconds:.0f}s), "
+    print(f"voice ({narrator.profile.engine}): {narrator.generated} takes generated ({narrator.gen_seconds:.0f}s), "
           f"{narrator.reused} reused from cache, {time.time() - start:.0f}s", flush=True)
     pcm = np.concatenate(audio)
     ends[-1] = len(pcm) / RATE
