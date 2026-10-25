@@ -187,6 +187,17 @@ def word_error_rate(expected: str, heard: str) -> tuple[float, bool]:
     return errors / len(ref), bool(hyp) and ref[-1] in hyp[-3:]
 
 
+def score(expect: str, say: str, heard: str) -> tuple[float, bool]:
+    """Word error rate and tail check against what should be heard, or against the respelled text
+    the engine was given ("de ram" for DRAM), whichever matches better: Whisper often writes a
+    well-said respelled name the way it is spelled to the engine."""
+    best = word_error_rate(expect, heard)
+    if say != expect:
+        alt = word_error_rate(say, heard)
+        best = min(best, alt, key=lambda r: (not r[1], r[0]))
+    return best
+
+
 def engine_python(engine: Engine) -> Path:
     """The interpreter of the engine's virtualenv; its environment variable wins."""
     return Path(os.environ.get(engine.python_env, engine.python))
@@ -264,17 +275,16 @@ class Narrator:
             wav, meta = self.cache / f"{key}.wav", self.cache / f"{key}.json"
             if wav.exists() and meta.exists():
                 take = json.loads(meta.read_text(encoding="utf-8"))
-                if take["expect"] != expect:  # lexicon changed what should be heard: re-score
-                    take["expect"] = expect
-                    take["wer"], take["tail_ok"] = word_error_rate(expect, take["heard"])
-                    take["wer"] = round(take["wer"], 3)
+                take["expect"] = expect  # re-score: the lexicon or the scoring may have changed
+                wer, take["tail_ok"] = score(expect, say, take["heard"])
+                take["wer"] = round(wer, 3)
                 self.reused += 1
             else:
                 if self.worker is None:
                     self.worker = _Worker(self.profile, self.device, self.cache / f"{self.profile.engine}_worker.log")
                 result = self.worker.generate(say, seconds, seed, wav)
                 heard = self.checker.heard(wav)
-                wer, tail_ok = word_error_rate(expect, heard)
+                wer, tail_ok = score(expect, say, heard)
                 take = {"text": text, "say": say, "expect": expect, "seed": seed, "heard": heard,
                         "wer": round(wer, 3), "tail_ok": tail_ok, "seconds": result["seconds"],
                         "took": result["took"]}
