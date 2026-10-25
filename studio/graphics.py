@@ -798,7 +798,7 @@ def _box(d, xy, text: str, size: int = 34) -> None:
 
 def _bp_people(d, o: dict) -> None:
     """Text cards for real people (never portraits). o: kicker, title,
-    people: [{name, org, quote, when}], highlight (0-based, -1 none), caption."""
+    people: [{name, org, quote or note, when}], highlight (0-based, -1 none), caption."""
     _bp_kicker(d, o["kicker"])
     _bp_title(d, o["title"], size=64)
     ppl, hi = o["people"], o.get("highlight", -1)
@@ -816,7 +816,7 @@ def _bp_people(d, o: dict) -> None:
         spaced(d, (x + 30, y + 8), p.get("org", "").upper(), font("Inter-SemiBold.ttf", 24), T.accent, tracking=3)
         y += 70
         qf = font("Inter-Regular.ttf", 32)
-        for row in wrap(d, "«" + p["quote"] + "»" if p.get("quote") else "", qf, w - 60):
+        for row in wrap(d, "«" + p["quote"] + "»" if p.get("quote") else p.get("note", ""), qf, w - 60):
             d.text((x + 30, y), row, font=qf, fill=T.text if on or hi < 0 else T.muted)
             y += 44
         if p.get("when"):
@@ -882,7 +882,7 @@ def _bp_loop(d, o: dict) -> None:
     left, right, top, base = 1100, 1760, 380, 900
     d.line((left, base, right, base), fill=T.ink, width=3)
     d.line((left, base, left, top), fill=T.ink, width=3)
-    if step >= n:
+    if step >= n and o.get("curve"):
         pts = [(left + (right - left) * t / 40, base - (base - top) * (math.exp(4 * t / 40) - 1) / (math.e ** 4 - 1))
                for t in range(41)]
         d.line(pts, fill=T.accent, width=7, joint="curve")
@@ -903,8 +903,8 @@ def _bp_icons(d, o: dict) -> None:
     _bp_kicker(d, o["kicker"])
     _bp_title(d, o["title"], size=64)
     total, shown = o["icons"], o.get("shown", o["icons"])
-    cols, s, gx, gy = 23, 44, 58, 96
-    x0, y0 = BP_MARGIN, 470
+    cols, s, gx, gy = 20, 44, 58, 92
+    x0, y0 = BP_MARGIN, 440
     for i in range(total):
         x, y = x0 + (i % cols) * gx, y0 + (i // cols) * gy
         if i < shown:
@@ -950,7 +950,8 @@ def _bp_contrast(d, o: dict) -> None:
     _bp_kicker(d, o["kicker"])
     g = max(0.0, min(1.0, o.get("grow", 1.0)))
     d.text((BP_MARGIN, 620), o["contrast"], font=font("InterDisplay-Bold.ttf", 90), fill=T.ink, anchor="ls")
-    d.text((BP_MARGIN, 660), o.get("small_label", ""), font=font("Inter-Regular.ttf", 30), fill=T.muted)
+    for j, row in enumerate(wrap(d, o.get("small_label", ""), font("Inter-Regular.ttf", 30), 340)):
+        d.text((BP_MARGIN, 660 + 40 * j), row, font=font("Inter-Regular.ttf", 30), fill=T.muted)
     size = int(140 + g * 300)
     bf = font("InterDisplay-Bold.ttf", size)
     while d.textlength(o["big"], font=bf) > W - 560 - BP_MARGIN:
@@ -958,6 +959,7 @@ def _bp_contrast(d, o: dict) -> None:
         bf = font("InterDisplay-Bold.ttf", size)
     d.text((560, 620 + size * 0.35), o["big"], font=bf, fill=T.accent, anchor="ls")
     d.text((566, 660 + size * 0.35), o.get("big_label", ""), font=font("Inter-Regular.ttf", 30), fill=T.text)
+    _bp_caption(d, o.get("caption", ""), y=1000)
 
 
 BP_FULL_FRAME.update({"people": _bp_people, "lit": _bp_world, "loop": _bp_loop, "icons": _bp_icons,
