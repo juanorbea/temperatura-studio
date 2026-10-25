@@ -80,16 +80,26 @@ def build_module(script: Path, number: int, board_path: Path, provider: ImagePro
     return out
 
 
+def script_folders(script: Path) -> tuple[Path, Path]:
+    """Storyboards and images of a script: storyboards/STEM/ and assets/images/STEM/ when
+    that storyboard folder exists (one folder per script), else storyboards/ and assets/images/."""
+    own = Path("storyboards") / script.stem
+    if own.is_dir():
+        return own, Path("assets/images") / script.stem
+    return Path("storyboards"), Path("assets/images")
+
+
 def build_script(script: Path, numbers: list[int], images_root: Path, out_dir: Path, cache: Path,
                  whisper_model: str = recording.WHISPER_MODEL, voice: str | None = None,
-                 voice_device: str = "cpu", voice_engine: str | None = None) -> Path:
+                 voice_device: str = "cpu", voice_engine: str | None = None,
+                 storyboards: Path = Path("storyboards")) -> Path:
     """Build several modules (each from storyboards/moduleN.yaml and images_root/moduleN)
     and join them, in order, into one video named after the script."""
     from studio.images import FolderProvider
     videos = []
     for n in numbers:
         print(f"\n=== module {n} ===")
-        videos.append(build_module(script, n, Path(f"storyboards/module{n}.yaml"),
+        videos.append(build_module(script, n, storyboards / f"module{n}.yaml",
                                    FolderProvider(images_root / f"module{n}"), out_dir, cache,
                                    None, whisper_model, voice, voice_device, voice_engine))
     out = out_dir / f"{script.stem}_full.mp4"

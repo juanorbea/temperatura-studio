@@ -74,3 +74,13 @@ def test_juans_japan_script_parses_cleanly():
 
 def test_old_format_still_drops_numeric_citations():
     assert parse_script(SCRIPT)[0].narration.startswith("Hay cuatro temas:")
+
+
+def test_each_script_can_have_its_own_storyboard_and_image_folders(tmp_path, monkeypatch):
+    from pathlib import Path
+    from studio.build import script_folders
+    monkeypatch.chdir(tmp_path)
+    assert script_folders(Path("examples/gobernanza-ia.md")) == (Path("storyboards"), Path("assets/images"))
+    (tmp_path / "storyboards" / "japon-chips").mkdir(parents=True)
+    assert script_folders(Path("examples/japon-chips.md")) == (
+        Path("storyboards/japon-chips"), Path("assets/images/japon-chips"))
