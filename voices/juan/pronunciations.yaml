@@ -22,10 +22,10 @@ translate:   # Whisper is expected to hear these Spanish words
   "EE. UU.-China": "Estados Unidos y China"
   "UE": "Unión Europea"
 
-respell:     # how to write it so the voice says it right
-  "IA": "í a"          # stress on the i, two syllables, like Juan says it
+respell:     # how to write it so the voice says it right (every engine)
+  # Kept for OmniVoice too: English names and acronyms, so they are said the Spanish way
+  # (Juan's rule), and spellings that tested as good or better with OmniVoice.
   "Good Judgment": "Gud Yóchment"
-  "OIEA": "o i e a"
   "OPCW": "o pe ce uve doble"
   "INAISI": "Ináisi"
   "CERN": "Cern"
@@ -34,5 +34,13 @@ respell:     # how to write it so the voice says it right
   "Stargate": "Stárgueit"
   "Microsoft": "Máicrosoft"
   "Washington": "Guáshinton"
-  "ONU": "Onu"
-  "diez hitos": "diez, hitos"   # otherwise heard as "diécitos"
+
+engine_respell:   # only for one engine; wins over respell
+  f5-tts:
+    # OmniVoice says these right as written: in an A/B on the script's sentences
+    # (Whisper check, 2 seeds each) these spellings did not help it, and "í a" made
+    # Whisper hear "ya" or "guía" instead of "IA".
+    "IA": "í a"          # stress on the i, two syllables, like Juan says it
+    "OIEA": "o i e a"
+    "ONU": "Onu"
+    "diez hitos": "diez, hitos"   # otherwise heard as "diécitos"
