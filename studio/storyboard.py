@@ -31,7 +31,7 @@ class Storyboard:
     style: str
     character: str
     shots: list[Shot]
-    theme: str = "charcoal"    # graphics theme (studio/graphics.py): charcoal, blueprint or editorial
+    theme: str = "charcoal"    # graphics theme (studio/graphics.py): charcoal, blueprint, editorial or pizarra
 
     def image_prompt(self, shot: Shot) -> str:
         """Full prompt for an image provider: scene + character + locked style."""

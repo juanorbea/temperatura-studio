@@ -17,6 +17,7 @@ Blocks (japon-chips), with source tags in words like [Brookings] or [ensayo Juan
 
 Sections (potencias-medias), with tags like [3], [12, 13], [Leicht] or [opinión Juan]:
   INTRODUCCIÓN ...      (then SECCIÓN N: TITLE, and a last CONCLUSIÓN ...; numbered in order)
+  or, in brackets (caballo): [INTRODUCCIÓN: TITLE], [PARTE N: TITLE]
   [VFX ...] [B-ROLL ...] [CÁMARA ...] visual direction, at the start of a line
   NARRADOR: narration...  (the prefix is optional; each line is a paragraph)
 
@@ -34,14 +35,19 @@ CITATION_RE = re.compile(r"\s*\[[^\[\]\n]+\]")
 BLOCK_RE = re.compile(r"^(?:BLOQUE\s+(\d+):\s*(.+?)|(CIERRE))\s*$", re.MULTILINE)
 BLOCK_VISUAL_TAG = "[INDICACIÓN VISUAL / B-ROLL]"
 BLOCK_NARRATION_TAG = "[LOCUCIÓN / GUION]"
-SECTION_RE = re.compile(r"^(?:INTRODUCCIÓN\b.*|SECCIÓN\s+\d+:.*|CONCLUSIÓN\b.*)$", re.MULTILINE)
+SECTION_RE = re.compile(
+    r"^(?:INTRODUCCIÓN\b.*|SECCIÓN\s+\d+:.*|CONCLUSIÓN\b.*"
+    r"|\[(?:INTRODUCCIÓN|PARTE\s+\d+|CONCLUSIÓN)\b[^\]\n]*\])$", re.MULTILINE)
 SECTION_PREFIX_RE = re.compile(r"^SECCIÓN\s+\d+:\s*")
+# Bracketed headers (caballo): [INTRODUCCIÓN: title], [PARTE N: title]; the title is what follows the colon.
+BRACKET_HEADER_RE = re.compile(r"^\[(?:INTRODUCCIÓN|PARTE\s+\d+|CONCLUSIÓN)\s*:?\s*(.*?)\]$")
 # Direction tags open a line: [VFX / ...], [B-ROLL: ...], [CÁMARA EN PLANO MEDIO].
 DIRECTION_RE = re.compile(r"^\s*\[((?:VFX|B-ROLL|CÁMARA)\b[^\]]*)\]")
-# A sentence ends at . ? ! (optionally followed by a closing quote) before whitespace.
-SENTENCE_END_RE = re.compile(r'(?<=[.?!])["»”]?\s+')
+# A sentence ends at . ? ! (optionally followed by a closing quote, which it keeps) before whitespace.
+SENTENCE_END_RE = re.compile(r'(?<=[.?!])\s+|(?<=[.?!]["»”])\s+')
 # ...but not after "EE." (of "EE. UU.") or a list number like "1." that starts the sentence,
-# nor before a lowercase word. A number ending a sentence ("Arizona, de 4.") is a real end.
+# nor before a lowercase word or a bracketed gloss ("«¿...?» (Will humans...?).").
+# A number ending a sentence ("Arizona, de 4.") is a real end.
 # A list number after a colon ("tres canales: 1. El uso...") does not end one either.
 NOT_AN_END_RE = re.compile(r"(?:(?:^|\s)EE\.|^\d{1,2}\.|:\s\d{1,2}\.)$")
 
@@ -70,7 +76,8 @@ def split_sentences(text: str) -> list[str]:
     for part in (p.strip() for p in SENTENCE_END_RE.split(flat)):
         if not part:
             continue
-        if sentences and (NOT_AN_END_RE.search(sentences[-1]) or part[0].islower()):
+        if sentences and (NOT_AN_END_RE.search(sentences[-1]) or part[0].islower()
+                          or part[0] == "("):
             sentences[-1] += " " + part
         else:
             sentences.append(part)
@@ -133,6 +140,7 @@ def _parse_sections(text: str) -> list[Module]:
             line = re.sub(r"^\s*NARRADOR:\s*", "", line)
             if paragraph := strip_source_tags(" ".join(line.split())):
                 paragraphs.append(paragraph)
-        title = SECTION_PREFIX_RE.sub("", m.group(0)).strip()
+        header = BRACKET_HEADER_RE.match(m.group(0))
+        title = header.group(1).strip() if header else SECTION_PREFIX_RE.sub("", m.group(0)).strip()
         modules.append(Module(i + 1, title, " ".join(visuals), "\n\n".join(paragraphs)))
     return modules
