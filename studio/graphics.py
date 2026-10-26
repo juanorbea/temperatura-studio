@@ -9,6 +9,8 @@ Two themes; a storyboard picks one with `theme:`.
   editorial  (from video 4) the blueprint graphics on plain cream paper: big dark serif
              titles and figures, copper numbers, olive rounded stat boxes and a fine
              line-art city skyline. Reference: Juan's slides in tc-assets/slide-style/tai.
+  pizarra    (from video 5) minimalist 2D whiteboard cartoon on very light blue, handwritten
+             Kalam, a continuous ground line; drawn by studio/pizarra.py.
 """
 import contextlib
 import json
@@ -69,6 +71,9 @@ def charcoal_background() -> Image.Image:
 
 
 def title_card(title: str, subtitle: str, out: Path, theme: str = "charcoal") -> Path:
+    if theme == "pizarra":
+        from studio import pizarra
+        return pizarra.title_card(title, subtitle, out)
     if _theme(theme) in PAPER_THEMES:
         with _drawing(_theme(theme)):
             return _bp_title_card(title, subtitle, out)
@@ -110,8 +115,11 @@ def overlay_card(overlay: dict, out: Path, on_photo: bool, theme: str = "charcoa
       events (+ highlight)  (a timeline of median years)
       columns (+ show)      (two cards side by side)
       rows                  (a table of milestones and years)
-    The blueprint theme has its own graphics; see _bp_overlay_card.
+    The blueprint theme has its own graphics; see _bp_overlay_card. Pizarra: studio/pizarra.py.
     """
+    if theme == "pizarra":
+        from studio import pizarra
+        return pizarra.overlay_card(overlay, out, on_photo)
     if _theme(theme) in PAPER_THEMES:
         with _drawing(_theme(theme)):
             return _bp_overlay_card(overlay, out, on_photo)

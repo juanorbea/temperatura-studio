@@ -104,3 +104,44 @@ def test_editorial_theme_does_not_leak_into_blueprint(tmp_path):
     with Image.open(tmp_path / "e.png") as e, Image.open(tmp_path / "b.png") as b:
         assert e.getpixel((5, 5)) == graphics.EDITORIAL.paper
         assert b.getpixel((5, 5)) != graphics.EDITORIAL.paper
+
+
+PIZARRA = {
+    "phrase": {"phrase": "las personas no somos caballos", "quote": True, "strike": "no", "note": "Se equivocan"},
+    "stat": {"big": "6,6 millones", "label": "de caballos", "icon": "horse", "icons": 3},
+    "gauge": {"gauge": 89, "kicker": "1920", "title": "Fuerza de tiro"},
+    "parcels": {"parcels": True, "kicker": "1880-1920", "feed": True},
+    "manure": {"pile": 1.0, "value": "900-1.800 t", "kicker": "Nueva York"},
+    "herd": {"kicker": "Granjas", "rows": [{"label": "Caballos", "text": "3 M", "icon": "horse", "value": 3, "ghost": 26.7},
+                                           {"label": "Tractores", "text": "4,5 M", "icon": "tractor", "value": 4.5}]},
+    "jobs": {"kicker": "1910-1930", "bars": [{"label": "Mozos", "before": 100, "after": 10, "text": "-90 %"}]},
+    "week": {"week": True, "value": 57, "kicker": "Semana"},
+    "ratio": {"of": 10, "hit": 8, "kicker": "Ocupaciones"},
+    "grid": {"of": 100, "hit": 59, "kicker": "Empleos"},
+    "list": {"kicker": "Eran", "list": ["mejores", "más rápidas"], "show": 1},
+    "text": {"kicker": "Tesis", "title": "Tú eres el próximo caballo"},
+}
+
+
+@pytest.mark.parametrize("name", PIZARRA)
+def test_pizarra_graphics_render_on_light_blue_with_the_ground_line(tmp_path, name):
+    out = graphics.overlay_card(PIZARRA[name], tmp_path / f"{name}.png", on_photo=False, theme="pizarra")
+    with Image.open(out) as img:
+        rgb = img.convert("RGB")
+        assert img.size == (1920, 1080)
+        assert rgb.getpixel((10, 10)) == (228, 244, 253)     # #e4f4fd paper
+        assert rgb.getpixel((10, 1070)) == (201, 233, 252)   # #c9e9fc band under the ground line
+
+
+def test_pizarra_overlays_on_a_picture_are_transparent_and_full_frame_ones_refuse(tmp_path):
+    over = graphics.overlay_card({"placard": "las personas no somos caballos", "box": [100, 100, 600, 400],
+                                  "strike": "no"}, tmp_path / "p.png", on_photo=True, theme="pizarra")
+    with Image.open(over) as img:
+        assert img.mode == "RGBA" and img.getpixel((1900, 1060))[3] == 0
+    with pytest.raises(ValueError):
+        graphics.overlay_card(PIZARRA["gauge"], tmp_path / "x.png", on_photo=True, theme="pizarra")
+    with pytest.raises(ValueError):
+        graphics.overlay_card({"note": "hola"}, tmp_path / "x.png", on_photo=False, theme="pizarra")
+    card = graphics.title_card("Tú eres el próximo caballo", "Introducción", tmp_path / "t.png", theme="pizarra")
+    with Image.open(card) as img:
+        assert img.convert("RGB").getpixel((10, 10)) == (228, 244, 253)
