@@ -123,3 +123,29 @@ def test_section_format_numbers_sections_and_keeps_direction_tags_out_of_the_voi
 def test_a_list_number_after_a_colon_starts_a_sentence():
     assert split_sentences("Hay tres canales: 1. El código abierto. 2. Las API.") == [
         "Hay tres canales: 1. El código abierto.", "2. Las API."]
+
+
+BRACKETED = """GUION DE VÍDEO: Tú Eres el Próximo Caballo
+
+[INTRODUCCIÓN: El caballo moderno]
+¿Cuándo fue la última vez que viste un caballo en persona?
+Piénsalo por un segundo. Hoy quedan 6,6 millones (American Horse Council).
+
+[PARTE 1: El Imperio del Caballo]
+Los caballos lo movían todo.
+
+[PARTE 2: Cómo las máquinas reemplazaron al caballo]
+Entonces llegaron las máquinas.
+"""
+
+
+def test_bracketed_headers_give_one_module_each_and_the_title_after_the_colon():
+    modules = parse_script(BRACKETED)
+    assert [(m.number, m.title) for m in modules] == [
+        (1, "El caballo moderno"), (2, "El Imperio del Caballo"),
+        (3, "Cómo las máquinas reemplazaron al caballo")]
+    assert modules[0].narration.split("\n\n") == [
+        "¿Cuándo fue la última vez que viste un caballo en persona?",
+        "Piénsalo por un segundo. Hoy quedan 6,6 millones (American Horse Council)."]
+    assert "GUION" not in modules[0].narration and "[" not in modules[1].narration
+    assert modules[2].narration == "Entonces llegaron las máquinas."

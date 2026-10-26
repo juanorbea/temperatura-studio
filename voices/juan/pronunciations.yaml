@@ -5,6 +5,18 @@
 # (2030s -> "años dos mil treinta", 2025-2060 -> "dos mil veinticinco a dos mil sesenta", 79% -> "setenta y nueve por ciento").
 
 translate:   # Whisper is expected to hear these Spanish words
+  # caballo: English glosses in brackets are dropped from the voice; the Spanish already says it
+  "Consejo Ecuestre Estadounidense (American Horse Council)": "Consejo Ecuestre Estadounidense"
+  "equipos de caballos (teams of horses)": "equipos de caballos"
+  "«¿Seguirán los humanos el camino de los caballos?» (Will humans go the way of horses?).": "«¿Seguirán los humanos el camino de los caballos?»."
+  "trabajo de pensamiento (thinking work)": "trabajo de pensamiento"
+  "demanda derivada (derived demand)": "demanda derivada"
+  "demanda esencial (essential demand)": "demanda esencial"
+  "economía post-laboral (post-labor economics)": "economía post-laboral"
+  "entre 900 y 1.800 toneladas": "entre novecientas y mil ochocientas toneladas"
+  "siglo XIX": "siglo diecinueve"
+  "siglo XX": "siglo veinte"
+  "del XX": "del veinte"
   "Global AI Governance and Strategic Cooperation Forecasts 2025-2060": "Pronósticos sobre la gobernanza global de la IA y la cooperación estratégica, de 2025 a 2060"
   "Global AI Governance and Strategic Outcomes Forecasts 2025-2060": "Pronósticos sobre la gobernanza global de la IA y sus resultados estratégicos, de 2025 a 2060"
   "Chips for Peace": "Chips para la Paz"
@@ -118,6 +130,15 @@ respell:     # how to write it so the voice says it right (every engine)
   "Acemoglu": "Darón Ayémolu"
   "keynesiano": "keinesiano"
   "Saturno V": "Saturno cinco"
+  "grunt work": "grant guork"
+  "Teamsters": "Tímsters"
+  "Wassily Leontief": "Vasíli Leóntief"
+  "Leontief": "Leóntief"
+  "MIT": "eme i te"
+  "McKinsey": "Mekínsi"
+  "LinkedIn": "Línkedin"
+  "Waymo": "Uéimo"
+  "John Deere": "Yon Díar"
 
 engine_respell:   # only for one engine; wins over respell
   f5-tts:
