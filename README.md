@@ -4,9 +4,11 @@ Turns a Spanish narration script into a narrated video for the YouTube channel
 @temperaturacero: a Spanish voiceover, a new image every few seconds in one
 consistent look, and simple code-made graphics, cut to the voice with ffmpeg.
 
-Four scripts have storyboards and images: `examples/gobernanza-ia.md` (video 1),
-`examples/japon-chips.md` (video 2), `examples/potencias-medias.md` (video 3) and
-`examples/consenso-sf.md` (video 4, first of the series "Economía de la IA transformadora").
+Five scripts have storyboards and images: `examples/gobernanza-ia.md` (video 1),
+`examples/japon-chips.md` (video 2), `examples/potencias-medias.md` (video 3),
+`examples/consenso-sf.md` (video 4, first of the series "Economía de la IA transformadora")
+and `examples/caballo.md` (video 5, "Tú eres el próximo caballo", headers like
+`[PARTE 1: ...]`, pizarra theme; 26 pictures reused across 57 shots).
 
 ## How it works
 
@@ -40,6 +42,20 @@ Four scripts have storyboards and images: `examples/gobernanza-ia.md` (video 1),
    (world map with lit places), `loop` (a self-improvement loop and a take-off
    curve), `icons` (a grid of power-plant icons, some shown), `jcurve` and
    `contrast` (a small figure next to a big one that grows).
+   `theme: pizarra` (video 5, `studio/pizarra.py`) is a minimalist whiteboard
+   cartoon: very light blue paper (#e4f4fd), a ground line with a pale blue band
+   (#c9e9fc) at the same height on every card, thin black outlines, handwritten
+   Kalam (SIL OFL) and red only to strike text out. Its full-frame graphics:
+   `phrase` (a big phrase, optionally with a red `strike` through part of it),
+   `big` (a number that pops on, with doodles on the ground), `gauge` (a dial),
+   `parcels` (farmland, one column of oats and hay), `pile` (manure against
+   buildings), `rows` (horses and tractors as doodles, one per million),
+   `bars` (before/after bars), `week` (Monday to Friday filled up to a percent),
+   `of` + `hit` (8 of 10 figures, or a 10 x 10 grid) and `list` (a checklist
+   ticked one item per shot). On a picture: `note` (handwritten words in the
+   empty sky) and `placard` (words written on a blank placard at `box`).
+   Kinetic typography is done shot by shot: the next card adds the strike, the
+   tick or the number. Picture shots pan with `motion: pan_right`/`pan_left`.
 3. **Voice**: either your own recording (see below), or a free Microsoft neural
    voice through edge-tts (`es-ES-AlvaroNeural`), one paragraph at a time.
    Word timings decide where each shot starts and ends.
