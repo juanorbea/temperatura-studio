@@ -149,3 +149,12 @@ def test_bracketed_headers_give_one_module_each_and_the_title_after_the_colon():
         "Piénsalo por un segundo. Hoy quedan 6,6 millones (American Horse Council)."]
     assert "GUION" not in modules[0].narration and "[" not in modules[1].narration
     assert modules[2].narration == "Entonces llegaron las máquinas."
+
+
+def test_a_closing_quote_stays_with_its_sentence_and_a_bracketed_gloss_does_not_start_one():
+    text = ("Un ensayo titulado «¿Seguirán los humanos el camino de los caballos?» (Will humans go the way of horses?). "
+            "Su respuesta fue no: «no somos caballos». Otro dijo «Tú no eres un caballo».")
+    assert split_sentences(text) == [
+        "Un ensayo titulado «¿Seguirán los humanos el camino de los caballos?» (Will humans go the way of horses?).",
+        "Su respuesta fue no: «no somos caballos».", "Otro dijo «Tú no eres un caballo»."]
+    assert split_sentences("¿Dijo «basta»? Sí.") == ["¿Dijo «basta»?", "Sí."]

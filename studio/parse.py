@@ -43,10 +43,11 @@ SECTION_PREFIX_RE = re.compile(r"^SECCIÓN\s+\d+:\s*")
 BRACKET_HEADER_RE = re.compile(r"^\[(?:INTRODUCCIÓN|PARTE\s+\d+|CONCLUSIÓN)\s*:?\s*(.*?)\]$")
 # Direction tags open a line: [VFX / ...], [B-ROLL: ...], [CÁMARA EN PLANO MEDIO].
 DIRECTION_RE = re.compile(r"^\s*\[((?:VFX|B-ROLL|CÁMARA)\b[^\]]*)\]")
-# A sentence ends at . ? ! (optionally followed by a closing quote) before whitespace.
-SENTENCE_END_RE = re.compile(r'(?<=[.?!])["»”]?\s+')
+# A sentence ends at . ? ! (optionally followed by a closing quote, which it keeps) before whitespace.
+SENTENCE_END_RE = re.compile(r'(?<=[.?!])\s+|(?<=[.?!]["»”])\s+')
 # ...but not after "EE." (of "EE. UU.") or a list number like "1." that starts the sentence,
-# nor before a lowercase word. A number ending a sentence ("Arizona, de 4.") is a real end.
+# nor before a lowercase word or a bracketed gloss ("«¿...?» (Will humans...?).").
+# A number ending a sentence ("Arizona, de 4.") is a real end.
 # A list number after a colon ("tres canales: 1. El uso...") does not end one either.
 NOT_AN_END_RE = re.compile(r"(?:(?:^|\s)EE\.|^\d{1,2}\.|:\s\d{1,2}\.)$")
 
@@ -75,7 +76,8 @@ def split_sentences(text: str) -> list[str]:
     for part in (p.strip() for p in SENTENCE_END_RE.split(flat)):
         if not part:
             continue
-        if sentences and (NOT_AN_END_RE.search(sentences[-1]) or part[0].islower()):
+        if sentences and (NOT_AN_END_RE.search(sentences[-1]) or part[0].islower()
+                          or part[0] == "("):
             sentences[-1] += " " + part
         else:
             sentences.append(part)
