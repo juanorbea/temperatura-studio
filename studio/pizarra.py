@@ -228,8 +228,13 @@ def _phrase(d, o):
     text = o["phrase"]
     if o.get("quote"):
         text = f"«{text}»"
-    f = _fit(d, text, HAND_BOLD, o.get("size", 120), W - 2 * MARGIN, 60)
-    rows = _wrap(d, text, f, W - 2 * MARGIN)
+    size = o.get("size", 120)
+    while True:  # long phrases wrap onto up to three lines before the letters get smaller
+        f = font(HAND_BOLD, size)
+        rows = _wrap(d, text, f, W - 2 * MARGIN)
+        if size <= 60 or (len(rows) <= 3 and all(d.textlength(r, font=f) <= W - 2 * MARGIN for r in rows)):
+            break
+        size -= 6
     line_h = int(f.size * 1.2)
     y = 470 - line_h * len(rows) // 2
     hit = o.get("strike", "")
