@@ -35,6 +35,8 @@ translate:   # Whisper is expected to hear these Spanish words
   "open source": "código abierto"
   "scaffolding": "andamiaje"
   "Imports as Statecraft": "la importación como arte de Estado"
+  # consenso-sf (video 4)
+  "ex-CEO": "ex consejero delegado"
 
 respell:     # how to write it so the voice says it right (every engine)
   # Kept for OmniVoice too: English names and acronyms, so they are said the Spanish way
@@ -86,6 +88,36 @@ respell:     # how to write it so the voice says it right (every engine)
   "Leicht": "Láijt"
   "Zoom": "Sum"
   "Cohere": "Cojír"
+  # consenso-sf (video 4)
+  "TAI": "te a i"
+  "LLMs": "ele ele eme"
+  "LLM": "ele ele eme"
+  "ChatGPT": "chat ye pe té"
+  "OpenAI": "Óupen ei ái"
+  "DeepMind": "Dip Máind"
+  "Anthropic": "Anzrópic"
+  "Sam Altman": "Sam Áltman"
+  "Demis Hassabis": "Démis Jasábis"
+  "Dario Amodei": "Dário Amodéi"
+  "Eric Schmidt": "Érik Smit"
+  "Schmidt": "Smit"
+  "Yann LeCun": "Yan Lecún"
+  "LeCun": "Yan Lecún"
+  "Fei-Fei Li": "Fei Fei Li"
+  "Peter Thiel": "Píter Til"
+  "Thiel": "Til"
+  "Emily Dickinson": "Émili Díkinson"
+  "Twitter": "Tuíter"
+  "The Digitalist Papers": "los Diyitalist Péipers"
+  "Federalist Papers": "Féderalist Péipers"
+  "Google": "Gúgel"
+  "David Autor": "Déivid Ótor"
+  "Joseph Stiglitz": "Yósef Stíglits"
+  "Erik Brynjolfsson": "Érik Brínyolfson"
+  "Daron Acemoglu": "Darón Ayémolu"
+  "Acemoglu": "Darón Ayémolu"
+  "keynesiano": "keinesiano"
+  "Saturno V": "Saturno cinco"
 
 engine_respell:   # only for one engine; wins over respell
   f5-tts:

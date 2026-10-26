@@ -4,8 +4,9 @@ Turns a Spanish narration script into a narrated video for the YouTube channel
 @temperaturacero: a Spanish voiceover, a new image every few seconds in one
 consistent look, and simple code-made graphics, cut to the voice with ffmpeg.
 
-Three scripts have storyboards and images: `examples/gobernanza-ia.md` (video 1),
-`examples/japon-chips.md` (video 2) and `examples/potencias-medias.md` (video 3).
+Four scripts have storyboards and images: `examples/gobernanza-ia.md` (video 1),
+`examples/japon-chips.md` (video 2), `examples/potencias-medias.md` (video 3) and
+`examples/consenso-sf.md` (video 4, first of the series "Economía de la IA transformadora").
 
 ## How it works
 
@@ -32,6 +33,13 @@ Three scripts have storyboards and images: `examples/gobernanza-ia.md` (video 1)
    going from one value to another), `steps` (dated timeline), `lot` (a 25-wafer
    lot against single wafers), `places` (map of Japan), `figures` (big
    numbers) and `path` (a narrow path between two cliffs). See `storyboards/japon-chips/` for examples.
+   `theme: editorial` (video 4) draws the same graphics on cream paper with serif
+   titles (DM Serif Display), copper numbers, olive stat boxes and a line-art
+   skyline. Extra full-frame graphics in both paper themes: `people` (text cards
+   for real people: name, company, quote, timeline; never portraits), `lit`
+   (world map with lit places), `loop` (a self-improvement loop and a take-off
+   curve), `icons` (a grid of power-plant icons, some shown), `jcurve` and
+   `contrast` (a small figure next to a big one that grows).
 3. **Voice**: either your own recording (see below), or a free Microsoft neural
    voice through edge-tts (`es-ES-AlvaroNeural`), one paragraph at a time.
    Word timings decide where each shot starts and ends.
@@ -86,8 +94,8 @@ A script with its own folder `storyboards/STEM/` (STEM is the file name without
 
 The Japan storyboards are written by `scripts/make_japon_boards.py`
 (`.venv/bin/python -m scripts.make_japon_boards`), which also checks that each
-block's shots cover its sentences. `scripts/make_potencias_boards.py` does the
-same for video 3.
+block's shots cover its sentences. `scripts/make_potencias_boards.py` and
+`scripts/make_consenso_boards.py` do the same for videos 3 and 4.
 
 If a shot has no image yet, the build stops and prints the shot id and the
 full prompt to generate it with.
