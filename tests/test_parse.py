@@ -158,3 +158,80 @@ def test_a_closing_quote_stays_with_its_sentence_and_a_bracketed_gloss_does_not_
         "Un ensayo titulado «¿Seguirán los humanos el camino de los caballos?» (Will humans go the way of horses?).",
         "Su respuesta fue no: «no somos caballos».", "Otro dijo «Tú no eres un caballo»."]
     assert split_sentences("¿Dijo «basta»? Sí.") == ["¿Dijo «basta»?", "Sí."]
+
+
+ANTHROPIC = """Anthropic sale a bolsa: una apuesta a la curva (guion v2)
+Versión 2 · 27 oct 2026 · fuente principal: S-1 de Anthropic (SEC)
+Duración estimada: 13-15 minutos
+Tono: Divulgativo, directo, con opinión propia
+Formato: Vídeo ensayo con indicaciones de cámara
+INTRODUCCIÓN: LA PÉRDIDA QUE NO ES
+[B-ROLL: Portada del S-1.]
+[CÁMARA EN PLANO MEDIO] NARRADOR: 80.700 millones de dólares [S-1 p.64].
+Y lo publica [S-1].
+[VFX / GRÁFICO EN PANTALLA: Cita «Because these instruments are marked to market.»]
+NARRADOR: La pérdida es contable [cálculo]. Lo dijo Nicolas Bustamante [X: Bustamante].
+SECCIÓN 1: UNA APUESTA A LA CURVA
+[B-ROLL: Carta de los fundadores.]
+NARRADOR: Los cofundadores firman una carta [S-1, carta de los fundadores].
+Yo me la creo [opinión Juan].
+SECCIÓN 2: EN QUÉ SE VA EL DINERO
+NARRADOR: En una nota sí separa el coste [S-1 p.F-40].
+SECCIÓN 3: NO ES CONCENTRACIÓN
+NARRADOR: Unos 250 clientes [S-1 p.9-10].
+SECCIÓN 4: BAJAR EL PRECIO
+[VFX / GRÁFICO EN PANTALLA: Gráfico de OpenRouter. [check etiquetas: verificar "Sonnet 5.5"]]
+NARRADOR: Viene de OpenRouter [OpenRouter]. El índice de Ornn [Ornn] [check base del índice].
+Un comentario en X [X] [check].
+SECCIÓN 5: LO QUE PODRÍA SALIR MAL
+NARRADOR: Pagos mínimos [S-1 nota 17]. Un analista [X: hilo S-1] [check: cifra de crecimiento Q3].
+CONCLUSIÓN: EL MINUTO CINCO
+[CÁMARA EN PLANO MEDIO] NARRADOR: Mirado en el minuto cinco.
+"""
+
+
+def test_anthropic_section_headers_make_seven_modules_and_skip_meta():
+    modules = parse_script(ANTHROPIC)
+    assert [(m.number, m.title) for m in modules] == [
+        (1, "INTRODUCCIÓN: LA PÉRDIDA QUE NO ES"),
+        (2, "UNA APUESTA A LA CURVA"),
+        (3, "EN QUÉ SE VA EL DINERO"),
+        (4, "NO ES CONCENTRACIÓN"),
+        (5, "BAJAR EL PRECIO"),
+        (6, "LO QUE PODRÍA SALIR MAL"),
+        (7, "CONCLUSIÓN: EL MINUTO CINCO"),
+    ]
+    joined = " ".join(m.narration for m in modules)
+    assert "Versión" not in joined and "Duración" not in joined and "Formato" not in joined
+    assert "guion v2" not in joined
+
+
+def test_anthropic_nested_vfx_check_tag_stays_out_of_the_voice():
+    modules = parse_script(ANTHROPIC)
+    assert all("[" not in m.narration and "]" not in m.narration for m in modules)
+    assert "check" not in modules[4].narration.lower()
+    assert "OpenRouter" in modules[4].visual
+    assert "check etiquetas" in modules[4].visual
+    assert modules[4].narration.split("\n\n")[0].startswith("Viene de OpenRouter")
+
+
+def test_anthropic_source_tags_and_cam_narrator_on_same_line():
+    modules = parse_script(ANTHROPIC)
+    assert modules[0].narration.split("\n\n") == [
+        "80.700 millones de dólares.",
+        "Y lo publica.",
+        "La pérdida es contable. Lo dijo Nicolas Bustamante.",
+    ]
+    assert "CÁMARA EN PLANO MEDIO" in modules[0].visual
+    assert "«Because these instruments are marked to market.»" in modules[0].visual
+
+
+def test_juans_anthropic_script_parses_cleanly():
+    from pathlib import Path
+    modules = parse_script(Path("examples/anthropic.md").read_text(encoding="utf-8"))
+    assert len(modules) == 7
+    text = " ".join(m.narration for m in modules)
+    assert "[" not in text and "]" not in text
+    assert "opinión Juan" not in text and "cálculo" not in text
+    assert "OpenRouter" in text  # the word stays; only the [OpenRouter] tag goes
+    assert modules[0].narration.startswith("80.700 millones")

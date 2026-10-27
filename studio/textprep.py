@@ -40,6 +40,13 @@ def number_words(n: int) -> str:
     return head + ("" if rest == 0 else " " + number_words(rest))
 
 
+def _frac_words(frac: str) -> str:
+    """Say the digits after a decimal comma. Keep a leading zero (2,08 -> 'cero ocho')."""
+    if frac.startswith("0") and len(frac) > 1:
+        return " ".join(number_words(int(c)) for c in frac)
+    return number_words(int(frac))
+
+
 def numbers_to_words(text: str) -> str:
     """Write numbers the way they are said: 2030s, 2025-2060, 79%, 0,71 %, 1,5, 34.000 and plain numbers."""
     text = re.sub(r"\b(\d{1,3}(?:\.\d{3})+)\b", lambda m: str(int(m[1].replace(".", ""))), text)  # 34.000
@@ -47,9 +54,9 @@ def numbers_to_words(text: str) -> str:
     text = re.sub(r"\b(\d{1,6})\s*-\s*(\d{1,6})\b",
                   lambda m: f"{number_words(int(m[1]))} a {number_words(int(m[2]))}", text)
     text = re.sub(r"\b(\d{1,6}),(\d{1,2})\s*%",
-                  lambda m: f"{number_words(int(m[1]))} coma {number_words(int(m[2]))} por ciento", text)
+                  lambda m: f"{number_words(int(m[1]))} coma {_frac_words(m[2])} por ciento", text)
     text = re.sub(r"\b(\d{1,6}),(\d{1,2})\b",
-                  lambda m: f"{number_words(int(m[1]))} coma {number_words(int(m[2]))}", text)
+                  lambda m: f"{number_words(int(m[1]))} coma {_frac_words(m[2])}", text)
     text = re.sub(r"\b(\d{1,6})\s*%", lambda m: f"{number_words(int(m[1]))} por ciento", text)
     return re.sub(r"\b\d{1,6}\b", lambda m: number_words(int(m[0])), text)
 
