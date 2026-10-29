@@ -757,8 +757,11 @@ def _bp_steps(d, o: dict) -> None:
         d.line((x, axis - r if up else axis + r, x, y_stem), fill=T.line, width=2)
         df = font("InterDisplay-Bold.ttf", 44 if on else 36)
         lf = font("Inter-Medium.ttf" if on else "Inter-Regular.ttf", 28)
-        rows = wrap(d, s["label"], lf, int(step) + 40)
+        rows = wrap(d, s["label"], lf, min(int(step) + 40, 520))
         color = T.ink if on or past else T.muted
+        # keep labels and dates inside the frame (first and last steps sit near the edges)
+        half = max([d.textlength(r, font=lf) for r in rows] + [d.textlength(s["date"], font=df)]) / 2
+        x = min(max(x, BP_MARGIN - 60 + half), W - BP_MARGIN + 60 - half)
         if up:
             y = y_stem - 12 - 36 * len(rows)
             for row in rows:
