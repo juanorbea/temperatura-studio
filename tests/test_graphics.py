@@ -184,3 +184,59 @@ def test_opinion_tab_in_copper_only_when_asked(tmp_path):
 def test_vermilion_is_the_one_new_colour():
     assert graphics.VERMILION == (178, 52, 40)
     assert graphics.VERMILION not in {getattr(graphics.BLUEPRINT, f) for f in graphics.BLUEPRINT.__dataclass_fields__}
+
+
+J_SEAL = {"big": "J", "lines": ["禁 jìn", "PROHIBIDO"], "ink": "j"}
+X_SEAL = {"big": "X", "lines": ["限 xiàn", "RESTRINGIDO"], "ink": "x"}
+CHINA = {
+    "stamp": {"stamp": [J_SEAL, X_SEAL]},
+    "doc": {"doc": "Catálogo", "tag": "BORRADOR", "columns": [{"label": "Código", "width": 500}, {"label": "Nivel"}],
+            "rows": [[{"code": "266402J", "focus": 1}, {"seals": [J_SEAL]}], [{"code": "266404X", "focus": 1}, None]],
+            "foot": ["Conclusión", {"label": "pendiente"}]},
+    "expediente": graphics.opener(1),
+}
+
+
+@pytest.mark.parametrize("name", CHINA)
+def test_china_series_graphics_render_on_blueprint(tmp_path, name):
+    out = graphics.overlay_card(CHINA[name], tmp_path / f"{name}.png", on_photo=False, theme="blueprint")
+    with Image.open(out) as img:
+        assert img.size == (1920, 1080)
+
+
+def test_j_seal_is_vermilion_and_x_seal_is_hollow_navy():
+    j, x = graphics.seal_image({**J_SEAL, "angle": 0}), graphics.seal_image({**X_SEAL, "angle": 0})
+    colours = lambda im: {px[:3] for px in im.get_flattened_data() if px[3] > 200}
+    assert graphics.VERMILION in colours(j) and graphics.BLUEPRINT.ink not in colours(j)
+    assert graphics.BLUEPRINT.ink in colours(x) and graphics.VERMILION not in colours(x)
+    # hollow: the middle of the big X's stroke is not inked as it would be with a solid letter
+    solid = graphics.seal_image({**X_SEAL, "ink": "ink", "angle": 0})
+    assert sum(p[3] > 200 for p in x.get_flattened_data()) < sum(p[3] > 200 for p in solid.get_flattened_data())
+
+
+def test_a_stamp_is_the_same_every_time():
+    assert graphics.seal_image(J_SEAL).tobytes() == graphics.seal_image(J_SEAL).tobytes()
+
+
+def test_seals_can_go_on_any_blueprint_graphic(tmp_path):
+    base = {"kicker": "Hoy", "title": "Cifras", "figures": [{"value": "40", "label": "tecnologías"}]}
+    a = graphics.overlay_card(base, tmp_path / "a.png", on_photo=False, theme="blueprint")
+    b = graphics.overlay_card({**base, "seals": [{"lines": ["16 OCT 2026"], "at": [1500, 300]}]},
+                              tmp_path / "b.png", on_photo=False, theme="blueprint")
+    with Image.open(a) as ia, Image.open(b) as ib:
+        assert ia.tobytes() != ib.tobytes()
+
+
+def test_opener_says_the_episode_and_its_status():
+    assert graphics.opener(2, "próximamente") == {"expediente": {"series": "CHINA Y LA IA", "number": 2,
+                                                                 "status": "próximamente"}}
+
+
+def test_highlighted_quote_marks_only_the_phrase(tmp_path):
+    quote = {"kicker": "MOFCOM", "title": "«actores no estatales» y nada más"}
+    a = graphics.overlay_card(quote, tmp_path / "a.png", on_photo=False, theme="blueprint")
+    b = graphics.overlay_card({**quote, "highlight": ["actores no estatales"]}, tmp_path / "b.png",
+                              on_photo=False, theme="blueprint")
+    with Image.open(a) as ia, Image.open(b) as ib:
+        assert graphics.BLUEPRINT.accent_soft not in set(ia.convert("RGB").get_flattened_data())
+        assert graphics.BLUEPRINT.accent_soft in set(ib.convert("RGB").get_flattened_data())
