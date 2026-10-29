@@ -39,7 +39,7 @@ En España solemos mirar la IA china como una amenaza o como una copia barata de
 
 Cuando DeepSeek publicó sus modelos abiertos a principios de 2025, medio mundo descubrió que China estaba mucho más cerca de la frontera de lo que creía. La otra mitad de la historia llegó con menos fuerza: los ministerios, las reglas, los juristas que discuten entre ellos. Esa es la que quiero contar.
 
-Hoy la cuento con dos boletines de Concordia AI, una organización que sigue la seguridad de la IA en China. Los firman Gabriel Wagner y Erik Lindblad [1] [2]. Casi todo lo que vas a oír sale de ahí. Y para que sepas quién habla: Concordia AI busca gente para trabajar en Pekín o en Singapur [2]. Mira China desde muy cerca, y es una sola fuente.
+Hoy la cuento apoyándome en dos análisis de Concordia AI, una organización que sigue de cerca la seguridad de la IA en China, firmados por Gabriel Wagner y Erik Lindblad [1] [2].
 
 Empecemos por el documento.
 
@@ -293,8 +293,8 @@ En octubre de 2026, para los modelos abiertos del nivel restringido, el minister
 
 El mismo catálogo y el mismo trámite. Más de cinco años de espera en un caso. «Presentar y salir» en el otro.
 
-[B-ROLL: PENDIENTE DE JUAN, sin locución todavía: «Lo que separa los dos casos no es la norma. Es si Pekín quiere abrir la puerta.»]
+Lo que separa los dos casos no es la norma. Es la voluntad de quien la aplica [opinión Juan].
 
 [VFX / GRÁFICO EN PANTALLA: La X en blanco. La J en rojo.]
 
-[B-ROLL: PENDIENTE DE JUAN, sin locución todavía: «Y desde ahora, también la letra la escribe Pekín.»]
+NARRADOR: Y desde ahora, esa norma la escribe Pekín.
