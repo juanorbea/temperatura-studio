@@ -73,7 +73,7 @@ def g06_who(step=1):
     """G6. Who regulates what [1]. 1: CAC; 2: + MOFCOM and MOST at the border; 3: + NDRC (Manus);
     4: MOFCOM also hosts the consultation mechanism with the US."""
     cards = [
-        {"name": "CAC", "org": "Administración del Ciberespacio", "note": "La IA como servicio dentro de China"},
+        {"name": "CAC", "org": "Ciberespacio", "note": "La IA como servicio dentro de China"},
         {"name": "MOFCOM + MOST", "org": "Comercio · Ciencia y Tecnología",
          "note": "La tecnología cuando sale de China: pesos · puntos de control · arquitectura · software del agente"},
         {"name": "NDRC", "org": "Desarrollo y Reforma", "note": "Seguridad de inversión extranjera (Manus)"}]
