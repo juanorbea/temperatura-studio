@@ -1,6 +1,6 @@
 """The full-frame graphics render at video size, and refuse to go on top of a photo."""
 import pytest
-from PIL import Image
+from PIL import Image, ImageDraw
 
 from studio import graphics
 
@@ -145,3 +145,42 @@ def test_pizarra_overlays_on_a_picture_are_transparent_and_full_frame_ones_refus
     card = graphics.title_card("Tú eres el próximo caballo", "Introducción", tmp_path / "t.png", theme="pizarra")
     with Image.open(card) as img:
         assert img.convert("RGB").getpixel((10, 10)) == (228, 244, 253)
+
+
+def _glyph(text):
+    img = Image.new("RGB", (200, 120), "white")
+    graphics.draw_text(ImageDraw.Draw(img), (20, 20), text, graphics.font("Inter-Bold.ttf", 80), "black")
+    return img
+
+
+def test_chinese_characters_draw_with_the_cjk_font():
+    # with a font that lacks them, both would be the same empty box
+    assert _glyph("禁").tobytes() != _glyph("限").tobytes()
+    assert graphics.cjk_font(graphics.font("Inter-Bold.ttf", 40)).path.endswith("NotoSerifCJKsc-Bold.otf")
+    assert graphics.cjk_font(graphics.font("Inter-Regular.ttf", 40)).path.endswith("NotoSerifCJKsc-Regular.otf")
+
+
+def test_text_without_chinese_draws_exactly_as_before():
+    a = Image.new("RGB", (400, 120), "white")
+    b = a.copy()
+    f = graphics.font("Inter-Regular.ttf", 40)
+    ImageDraw.Draw(a).text((10, 10), "Catálogo «J»", font=f, fill="black")
+    graphics.draw_text(ImageDraw.Draw(b), (10, 10), "Catálogo «J»", f, "black")
+    assert a.tobytes() == b.tobytes()
+
+
+def test_opinion_tab_in_copper_only_when_asked(tmp_path):
+    card = {"kicker": "Idea 1", "title": "De defenderse a imponer"}
+    plain = graphics.overlay_card(card, tmp_path / "a.png", on_photo=False, theme="blueprint")
+    tab = graphics.overlay_card({**card, "opinion": True}, tmp_path / "b.png", on_photo=False, theme="blueprint")
+    with Image.open(plain) as a, Image.open(tab) as b:
+        assert a.convert("RGB").getpixel((1700, 20)) != graphics.BLUEPRINT.accent
+        assert b.convert("RGB").getpixel((1700, 20)) == graphics.BLUEPRINT.accent
+    only = graphics.overlay_card({"opinion": True}, tmp_path / "c.png", on_photo=True, theme="blueprint")
+    with Image.open(only) as c:
+        assert c.getpixel((960, 540))[3] == 0 and c.getpixel((1700, 20))[3] == 255
+
+
+def test_vermilion_is_the_one_new_colour():
+    assert graphics.VERMILION == (178, 52, 40)
+    assert graphics.VERMILION not in {getattr(graphics.BLUEPRINT, f) for f in graphics.BLUEPRINT.__dataclass_fields__}

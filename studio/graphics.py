@@ -13,6 +13,7 @@ Two themes; a storyboard picks one with `theme:`.
              Kalam, a continuous ground line; drawn by studio/pizarra.py.
 """
 import contextlib
+import functools
 import json
 import math
 from dataclasses import dataclass
@@ -30,20 +31,77 @@ BURGUNDY = (128, 30, 48)
 GOLD = (190, 156, 94)
 
 MARGIN = 160  # left edge of all text
+# Seal vermilion (series "China y la IA"): the only colour added to blueprint, and only for the
+# J level / "prohibido" and its seal. Never a background, never "China = red".
+VERMILION = (178, 52, 40)
 
 
 _FONT_SWAP: dict[str, str] = {}  # set while a theme that swaps fonts draws (editorial: serif display)
 
 
 def font(name: str, size: int) -> ImageFont.FreeTypeFont:
-    return ImageFont.truetype(str(FONTS / _FONT_SWAP.get(name, name)), size)
+    return _load_font(str(FONTS / _FONT_SWAP.get(name, name)), size)
+
+
+@functools.lru_cache(maxsize=256)
+def _load_font(path: str, size: int) -> ImageFont.FreeTypeFont:
+    return ImageFont.truetype(path, size)
+
+
+# ---- Chinese characters ----------------------------------------------------------------
+# Inter, DM Serif and Kalam have no Chinese. Runs of Chinese characters are drawn with
+# Noto Serif CJK SC (SIL OFL, a subset: see scripts/subset_cjk_font.py) at the same size,
+# bold for bold and semibold text, on the same baseline. Text without them draws as before.
+
+def _is_cjk(ch: str) -> bool:
+    return ("\u2e80" <= ch <= "\u9fff" or "\uf900" <= ch <= "\ufaff"
+            or "\uff00" <= ch <= "\uffef")
+
+
+def cjk_font(fnt) -> ImageFont.FreeTypeFont:
+    """The Chinese font that goes with a Latin font: same size, bold or regular."""
+    bold = "Bold" in Path(getattr(fnt, "path", "")).name
+    return font("NotoSerifCJKsc-Bold.otf" if bold else "NotoSerifCJKsc-Regular.otf", int(fnt.size))
+
+
+def _runs(text: str, fnt) -> list[tuple[str, object]]:
+    """Split text into runs that one font can draw: (text, font)."""
+    runs: list[list] = []
+    for ch in text:
+        cjk = _is_cjk(ch)
+        if runs and runs[-1][1] == cjk:
+            runs[-1][0] += ch
+        else:
+            runs.append([ch, cjk])
+    return [(run, cjk_font(fnt) if cjk else fnt) for run, cjk in runs]
+
+
+def text_length(d: ImageDraw.ImageDraw, text: str, fnt) -> float:
+    if not any(_is_cjk(c) for c in text):
+        return d.textlength(text, font=fnt)
+    return sum(d.textlength(run, font=f) for run, f in _runs(text, fnt))
+
+
+def draw_text(d: ImageDraw.ImageDraw, xy, text: str, fnt, fill, anchor: str = "la") -> None:
+    """d.text that also draws Chinese characters. Anchors: l/m/r and a/m/s/d (Pillow's)."""
+    if not any(_is_cjk(c) for c in text):
+        d.text(xy, text, font=fnt, fill=fill, anchor=anchor)
+        return
+    x, y = xy
+    x -= {"l": 0, "m": text_length(d, text, fnt) / 2, "r": text_length(d, text, fnt)}[anchor[0]]
+    ascent, descent = fnt.getmetrics()
+    baseline = {"a": y + ascent, "t": y + ascent, "s": y, "d": y - descent,
+                "m": y + (ascent - descent) / 2}[anchor[1]]
+    for run, f in _runs(text, fnt):
+        d.text((x, baseline), run, font=f, fill=fill, anchor="ls")
+        x += d.textlength(run, font=f)
 
 
 def wrap(draw: ImageDraw.ImageDraw, text: str, fnt, max_width: int) -> list[str]:
     lines, line = [], ""
     for word in text.split():
         trial = f"{line} {word}".strip()
-        if draw.textlength(trial, font=fnt) <= max_width or not line:
+        if text_length(draw, trial, fnt) <= max_width or not line:
             line = trial
         else:
             lines.append(line)
@@ -55,8 +113,8 @@ def spaced(draw, xy, text, fnt, fill, tracking=4):
     """Draw text with extra letter spacing (for small uppercase labels)."""
     x, y = xy
     for ch in text:
-        draw.text((x, y), ch, font=fnt, fill=fill)
-        x += draw.textlength(ch, font=fnt) + tracking
+        draw_text(draw, (x, y), ch, fnt, fill)
+        x += text_length(draw, ch, fnt) + tracking
 
 
 def charcoal_background() -> Image.Image:
@@ -412,7 +470,7 @@ def _bp_kicker(d, text: str, x: int = BP_MARGIN, y: int = 96) -> None:
 def _bp_title(d, text: str, x: int = BP_MARGIN, y: int = 140, size: int = 76, width: int = W - 2 * BP_MARGIN) -> int:
     f = font("InterDisplay-Bold.ttf", size)
     for row in wrap(d, text, f, width):
-        d.text((x, y), row, font=f, fill=T.ink)
+        draw_text(d, (x, y), row, f, T.ink)
         y += int(size * 1.15)
     return y
 
@@ -465,8 +523,14 @@ def _bp_overlay_card(overlay: dict, out: Path, on_photo: bool) -> Path:
                 raise ValueError(f"a {kind!r} graphic fills the frame; give the shot no prompt")
             img = blueprint_paper()
             draw(ImageDraw.Draw(img), overlay)
+            _finish(img, overlay)
             img.save(out)
             return out
+    if on_photo and not overlay.get("kicker"):  # only the MI LECTURA tab on top of a picture
+        img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        _finish(img, overlay)
+        img.save(out)
+        return out
     if on_photo:
         img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         card = blueprint_paper(780, 760).convert("RGBA")
@@ -504,10 +568,30 @@ def _bp_overlay_card(overlay: dict, out: Path, on_photo: bool) -> Path:
         y += 30
         body = font("Inter-Regular.ttf", 38)
         for row in wrap(d, overlay.get("body", ""), body, width):
-            d.text((x, y), row, font=body, fill=T.text)
+            draw_text(d, (x, y), row, body, T.text)
             y += 54
+    _finish(img, overlay)
     img.save(out)
     return out
+
+
+OPINION_TAB = "MI LECTURA"
+
+
+def opinion_tab(img: Image.Image) -> None:
+    """Copper tab in the top right corner: this shot is Juan's opinion, not data."""
+    d = ImageDraw.Draw(img)
+    f = font("Inter-SemiBold.ttf", 28)
+    width = int(sum(d.textlength(c, font=f) + 5 for c in OPINION_TAB)) + 64
+    x1 = W - 120
+    d.rounded_rectangle((x1 - width, -20, x1, 74), radius=14, fill=T.accent)
+    spaced(d, (x1 - width + 32, 22), OPINION_TAB, f, T.panel, tracking=5)
+
+
+def _finish(img: Image.Image, overlay: dict) -> None:
+    """What goes on top of any blueprint graphic: the opinion tab (`opinion: true`)."""
+    if overlay.get("opinion"):
+        opinion_tab(img)
 
 
 def _bp_chain(d, o: dict) -> None:
@@ -819,13 +903,13 @@ def _bp_people(d, o: dict) -> None:
         nf = font("InterDisplay-Bold.ttf", 56)
         y = 380
         for row in wrap(d, p["name"], nf, w - 60):
-            d.text((x + 30, y), row, font=nf, fill=T.ink)
+            draw_text(d, (x + 30, y), row, nf, T.ink)
             y += 64
         spaced(d, (x + 30, y + 8), p.get("org", "").upper(), font("Inter-SemiBold.ttf", 24), T.accent, tracking=3)
         y += 70
         qf = font("Inter-Regular.ttf", 32)
         for row in wrap(d, "«" + p["quote"] + "»" if p.get("quote") else p.get("note", ""), qf, w - 60):
-            d.text((x + 30, y), row, font=qf, fill=T.text if on or hi < 0 else T.muted)
+            draw_text(d, (x + 30, y), row, qf, T.text if on or hi < 0 else T.muted)
             y += 44
         if p.get("when"):
             _box(d, (x + 30, 840), p["when"], 30)

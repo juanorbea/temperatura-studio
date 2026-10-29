@@ -35,6 +35,12 @@ and `examples/caballo.md` (video 5, "Tú eres el próximo caballo", headers like
    going from one value to another), `steps` (dated timeline), `lot` (a 25-wafer
    lot against single wafers), `places` (map of Japan), `figures` (big
    numbers) and `path` (a narrow path between two cliffs). See `storyboards/japon-chips/` for examples.
+   Series «China y la IA» (video 7) adds to blueprint one colour only, seal vermilion
+   (`graphics.VERMILION`, used only for the J level / «prohibido»), and a copper «MI LECTURA»
+   tab for Juan's opinion shots: `opinion: true` on any blueprint overlay (on a picture, an
+   overlay with only `opinion: true` draws just the tab). Chinese characters in any blueprint
+   text are drawn with Noto Serif CJK SC (SIL OFL; a 2.6 MB subset per weight of the 3,755
+   common characters, rebuilt with `python3 -m scripts.subset_cjk_font --text "..."`).
    `theme: editorial` (video 4) draws the same graphics on cream paper with serif
    titles (DM Serif Display), copper numbers, olive stat boxes and a line-art
    skyline. Extra full-frame graphics in both paper themes: `people` (text cards
