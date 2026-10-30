@@ -25,6 +25,12 @@ shots:
 - id: c6-02
   type: text_overlay
   overlay:
+    kicker: Ministerio de Comercio · traducción
+    title: Lo esencial
+  text: 'Te leo lo esencial, traducido:'
+- id: c6-03
+  type: text_overlay
+  overlay:
     kicker: MOFCOM · traducción desde la versión inglesa de Concordia AI
     size: 56
     title: «Tecnologías como la generación y mutación autónoma de código malicioso impulsada por IA pueden usarse
@@ -32,9 +38,9 @@ shots:
     highlight:
     - actores no estatales o entidades maliciosas
     - la seguridad común de la humanidad
-  text: 'Te leo lo esencial, traducido: «Tecnologías como la generación y mutación autónoma de código malicioso
-    impulsada por IA pueden usarse para atacar infraestructuras críticas de información,'
-- id: c6-03
+  text: «Tecnologías como la generación y mutación autónoma de código malicioso impulsada por IA pueden usarse para
+    atacar infraestructuras críticas de información,
+- id: c6-04
   type: text_overlay
   overlay:
     kicker: MOFCOM · traducción desde la versión inglesa de Concordia AI
@@ -44,7 +50,7 @@ shots:
     - actores no estatales o entidades maliciosas
     - la seguridad común de la humanidad
   text: la industria de defensa y militar, asuntos clave del Gobierno y otros sistemas sensibles.
-- id: c6-04
+- id: c6-05
   type: text_overlay
   overlay:
     kicker: MOFCOM · traducción desde la versión inglesa de Concordia AI
@@ -56,34 +62,52 @@ shots:
     - la seguridad común de la humanidad
   text: Si las adquirieran actores no estatales o entidades maliciosas, podrían dañar la seguridad nacional y la
     seguridad común de la humanidad».
-- id: c6-05
+- id: c6-06
   type: text_overlay
   overlay:
     kicker: El miedo concreto
     from: EE. UU. copia un modelo chino
     to: No es eso
   text: Fíjate en el miedo concreto. No es que Estados Unidos copie un modelo chino.
-- id: c6-06
+- id: c6-07
   type: text_overlay
   overlay:
     kicker: El miedo concreto
     title: Un grupo criminal con una herramienta que escribe código malicioso que se modifica solo
   text: Es que un grupo criminal se haga con una herramienta que escribe código malicioso que se modifica solo.
-- id: c6-07
+- id: c6-08
   type: text_overlay
   overlay:
     kicker: Concordia AI
     title: No sale de la nada
   text: Y no sale de la nada.
-- id: c6-08
+- id: c6-09
+  type: text_overlay
+  overlay:
+    kicker: Concordia AI
+    title: Meses de preocupación
+    body: Dentro de la administración china
+  text: Según Concordia AI, la preocupación por los ciberataques con IA
+- id: c6-10
+  type: text_overlay
+  overlay:
+    kicker: Concordia AI
+    title: Meses de preocupación
+    body: Dentro de la administración china
+    punch:
+      zoom: 1.35
+      at:
+      - 700
+      - 540
+  text: llevaba meses creciendo dentro de la administración china,
+- id: c6-11
   type: text_overlay
   overlay:
     kicker: Concordia AI
     title: Meses de preocupación
     body: 'Ciberataques con IA: hasta ahora, solo en declaraciones de intenciones'
-  text: Según Concordia AI, la preocupación por los ciberataques con IA llevaba meses creciendo dentro de la administración
-    china, pero solo en declaraciones de intenciones.
-- id: c6-09
+  text: pero solo en declaraciones de intenciones.
+- id: c6-12
   type: text_overlay
   overlay:
     doc: Catálogo de tecnologías prohibidas o restringidas para la exportación
@@ -112,7 +136,7 @@ shots:
       - 1400
       - 760
   text: Este borrador le pondría dientes.
-- id: c6-10
+- id: c6-13
   type: text_overlay
   prompt: The empty control room of a power plant with gauges and switches. Calm, uncluttered left third of the
     frame. Plain unbranded objects with no logos and no readable text.

@@ -80,9 +80,18 @@ shots:
     kicker: Fuentes
     title: Análisis de Concordia AI
     body: 'Gabriel Wagner y Erik Lindblad · boletines #30 y #31'
-  text: Hoy la cuento apoyándome en dos análisis de Concordia AI, una organización que sigue de cerca la seguridad
-    de la IA en China, firmados por Gabriel Wagner y Erik Lindblad.
+  text: Hoy la cuento apoyándome en dos análisis de Concordia AI,
 - id: c3-08
+  type: text_overlay
+  prompt: 'A generic quiet street in a large modern East Asian city at dawn: plane trees, a few cyclists seen from
+    behind, shop signs out of focus and unreadable, no monuments, no landmarks, no flags, no official buildings.
+    Calm, uncluttered left third of the frame. Plain unbranded objects with no logos and no readable text.'
+  overlay:
+    kicker: Fuentes
+    title: Análisis de Concordia AI
+    body: 'Gabriel Wagner y Erik Lindblad · boletines #30 y #31'
+  text: una organización que sigue de cerca la seguridad de la IA en China, firmados por Gabriel Wagner y Erik Lindblad.
+- id: c3-09
   type: text_overlay
   overlay:
     doc: Catálogo de tecnologías prohibidas o restringidas para la exportación

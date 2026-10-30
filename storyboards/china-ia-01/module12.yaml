@@ -117,29 +117,39 @@ shots:
   overlay:
     kicker: Portavoz del Ministerio de Exteriores de China
     title: «Valora la posición de EE. UU. y respeta la formulación estadounidense»
-  text: Cuando le preguntaron, un portavoz del Ministerio de Exteriores chino respondió que China «valora la posición
-    de EE. UU. y respeta la formulación estadounidense».
+  text: Cuando le preguntaron, un portavoz del Ministerio de Exteriores chino respondió
 - id: c12-09
+  type: text_overlay
+  overlay:
+    kicker: Portavoz del Ministerio de Exteriores de China
+    title: «Valora la posición de EE. UU. y respeta la formulación estadounidense»
+    punch:
+      zoom: 1.3
+      at:
+      - 760
+      - 540
+  text: que China «valora la posición de EE. UU. y respeta la formulación estadounidense».
+- id: c12-10
   type: text_overlay
   overlay:
     kicker: Traducción libre
     title: «Llamadlo como queráis»
     opinion: true
   text: 'Una forma muy diplomática de decir: llamadlo como queráis.'
-- id: c12-10
+- id: c12-11
   type: text_overlay
   overlay:
     kicker: ¿Y en noviembre?
     title: No hay agenda oficial
   text: ¿Y de qué hablarán en noviembre? No hay agenda oficial.
-- id: c12-11
+- id: c12-12
   type: text_overlay
   overlay:
     kicker: Una propuesta
     title: Yuyuan Tantian 玉渊谭天
     body: Cuenta de WeChat que depende de CCTV
   text: Pero Yuyuan Tantian, una cuenta de WeChat que depende de CCTV, propone una.
-- id: c12-12
+- id: c12-13
   type: text_overlay
   overlay:
     kicker: Una propuesta
@@ -154,14 +164,14 @@ shots:
       - 1250
       - 760
   text: No es una postura oficial, aunque al estar ligada al Estado puede reflejar lo que se espera.
-- id: c12-13
+- id: c12-14
   type: text_overlay
   overlay:
     kicker: Punto 1 · el canal de incidentes
     title: «No puede quedarse en un acuerdo verbal»
     size: 80
   text: 'Primero, concretar el canal de incidentes, que «no puede quedarse en un acuerdo verbal»:'
-- id: c12-14
+- id: c12-15
   type: text_overlay
   overlay:
     kicker: Yuyuan Tantian 玉渊谭天 · cuenta ligada a CCTV · no es una postura oficial
@@ -179,7 +189,7 @@ shots:
       org: Lo peor primero
       note: Que las capacidades más peligrosas no caigan en manos de terroristas
   text: qué incidentes se comunican, en cuánto tiempo, qué información se comparte y qué pasa si alguien no avisa.
-- id: c12-15
+- id: c12-16
   type: text_overlay
   overlay:
     kicker: Punto 2 · las definiciones
@@ -188,7 +198,7 @@ shots:
     size: 60
   text: Segundo, las definiciones. «¿Qué cuenta como un riesgo grave? ¿Qué comportamientos de un modelo constituyen
     una pérdida de control seria?».
-- id: c12-16
+- id: c12-17
   type: text_overlay
   overlay:
     kicker: Yuyuan Tantian 玉渊谭天 · cuenta ligada a CCTV · no es una postura oficial
@@ -206,7 +216,7 @@ shots:
       org: Lo peor primero
       note: Que las capacidades más peligrosas no caigan en manos de terroristas
   text: Tercero, empezar por lo peor, como evitar que las capacidades más peligrosas caigan en manos de terroristas.
-- id: c12-17
+- id: c12-18
   type: text_overlay
   prompt: 'Wide shot: the character sits at a long negotiation table with two small desk microphones; the chair
     opposite is empty. No flags, no emblems. White cotton archival gloves on both hands. Plain unbranded objects
@@ -215,7 +225,7 @@ shots:
   overlay:
     opinion: true
   text: Esta es la cuarta idea. Se vuelve a hablar, y se habla de cosas pequeñas y concretas. Nada de grandes tratados.
-- id: c12-18
+- id: c12-19
   type: text_overlay
   overlay:
     kicker: ¿Quién regula qué?
@@ -238,7 +248,7 @@ shots:
       - 960
       - 640
   text: Y la conexión con el catálogo no es casual. El Ministerio de Comercio, el que firma el borrador,
-- id: c12-19
+- id: c12-20
   type: text_overlay
   overlay:
     kicker: ¿Quién regula qué?
@@ -257,20 +267,20 @@ shots:
     highlight: 1
   text: también gestiona el mecanismo de consultas económicas y comerciales con Estados Unidos, donde parecen estar
     alojadas las conversaciones sobre IA.
-- id: c12-20
+- id: c12-21
   type: text_overlay
   overlay:
     kicker: Mi lectura
     title: El ministerio que habla con Washington decide qué IA sale de China
     opinion: true
   text: El ministerio que habla con Washington es el mismo que ahora decide qué IA sale de China.
-- id: c12-21
+- id: c12-22
   type: text_overlay
   overlay:
     kicker: Las dos notas de la cumbre
     title: Ni rastro de los controles de exportación
   text: Pero los controles de exportación no aparecieron en ninguna de las dos notas de la cumbre.
-- id: c12-22
+- id: c12-23
   type: text_overlay
   overlay:
     kicker: Propuesta de expertos chinos
@@ -285,7 +295,7 @@ shots:
       note: Controles de exportación, chips
   text: Y varios expertos chinos proponen llevarlos a una «lista de diferencias» aparte, para que no bloqueen la
     cooperación en riesgos comunes.
-- id: c12-23
+- id: c12-24
   type: image
   prompt: The character slides one plain folder to the side of the desk, setting a topic aside. White cotton archival
     gloves on both hands. Plain unbranded objects with no logos and no readable text.

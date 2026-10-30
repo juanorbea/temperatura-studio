@@ -101,8 +101,6 @@ P13 = ("Wide shot down the aisle of a quiet archive: the character, from behind,
        "under his arm.")
 P14 = "The character slides one plain folder to the side of the desk, setting a topic aside." + GLOVES
 P15 = "The character pulls a plain folder halfway out of an open grey filing-cabinet drawer." + GLOVES
-HAND = ("Close-up: an anonymous hand in a navy suit cuff (no face, no insignia) holds a blank rubber stamp raised "
-        "and still above a sheet with a blank ruled table.")
 SEAL_TEETH = {"lines": ["DIENTES"], "ink": "ink", "size": 130, "at": [1400, 760]}
 KB = "zoom_in"  # the five slow pushes the review allows: hook codes, map, a MATIZ on the card, G26 to scale, last stamps
 
@@ -115,8 +113,14 @@ SPLITS = [
     "Un comentario vinculado a CCTV, la televisión estatal china, lo dice casi así:",
     "a medida que China llega a la frontera en más campos, gestionar su propia tecnología se ha convertido en una "
     "nueva prioridad,",
-    "Te leo lo esencial, traducido: «Tecnologías como la generación y mutación autónoma de código malicioso "
+    "Te leo lo esencial, traducido:",
+    "«Tecnologías como la generación y mutación autónoma de código malicioso "
     "impulsada por IA pueden usarse para atacar infraestructuras críticas de información,",
+    "Según Concordia AI, la preocupación por los ciberataques con IA",
+    "llevaba meses creciendo dentro de la administración china,",
+    "Según Concordia AI, la preocupación por los ciberataques con IA llevaba meses creciendo dentro de la "
+    "administración china,",
+    "En 2020, China revisó este mismo catálogo y añadió, entre otras cosas,",
     "La bloqueó la Comisión Nacional de Desarrollo y Reforma, la NDRC,",
     "El Ministerio de Comercio lo dice así: «Para apoyar la construcción de un ecosistema de innovación de código "
     "abierto en IA,",
@@ -137,6 +141,8 @@ SPLITS = [
     "de IA»,",
     "En el otro lado, Shou Bu, de la Universidad Jiao Tong de Shanghái, lee el plan legislativo justo al revés:",
     "En Washington casi no hubo tiempo,",
+    "Hoy la cuento apoyándome en dos análisis de Concordia AI,",
+    "Cuando le preguntaron, un portavoz del Ministerio de Exteriores chino respondió",
 ]
 
 
@@ -212,6 +218,8 @@ P = {
   (1, pj(P3, src="p03-pila.jpg")),
   (1, photo(STREET, "Fuentes", "Análisis de Concordia AI", "Gabriel Wagner y Erik Lindblad · boletines #30 y #31",
             src="calle.jpg")),
+  (1, photo(STREET, "Fuentes", "Análisis de Concordia AI", "Gabriel Wagner y Erik Lindblad · boletines #30 y #31",
+            src="calle-cerca.jpg")),  # the same street, cut in closer: no still holds more than 8 s
   (1, g(CAT(heading=True))),
  ],
  4: [  # Qué ha propuesto China
@@ -261,6 +269,7 @@ P = {
   (2, photo("An empty modern cybersecurity operations room with abstract network graphs on the screens.",
             "¿Por qué lo hace?", "Por seguridad", "Lo dice el Ministerio de Comercio, de forma explícita",
             src="ciberseguridad.jpg")),
+  (1, card(kicker="Ministerio de Comercio · traducción", title="Lo esencial")),
   (1, g(G.g09_mofcom_security(1))),
   (1, g(G.g09_mofcom_security(2))),
   (1, g(G.g09_mofcom_security(3))),
@@ -268,6 +277,9 @@ P = {
   (1, card(kicker="El miedo concreto", title="Un grupo criminal con una herramienta que escribe código malicioso "
            "que se modifica solo")),
   (1, card(kicker="Concordia AI", title="No sale de la nada")),
+  (1, card(kicker="Concordia AI", title="Meses de preocupación", body="Dentro de la administración china")),
+  (1, card(kicker="Concordia AI", title="Meses de preocupación", body="Dentro de la administración china",
+           punch={"zoom": 1.35, "at": [700, 540]})),
   (1, card(kicker="Concordia AI", title="Meses de preocupación",
            body="Ciberataques con IA: hasta ahora, solo en declaraciones de intenciones")),
   (1, g({**CAT(focus=True, heading=True), "seals": [SEAL_TEETH]})),
@@ -298,6 +310,7 @@ P = {
  8: [  # Lo que pesa una licencia: TikTok
   (2, card(title="¿Solo restringido?", stamp=[G.X])),
   (1, card(kicker="El caso", title="TikTok", body="Propiedad de ByteDance")),
+  (1, g(G.g08b_row2020(level=False))),
   (1, g(G.g08b_row2020())),
   (1, card(kicker="Dicho en castellano", title="El algoritmo que decide qué vídeo ves después")),
   (1, photo("A generic unbranded smartphone on a pale desk showing a blurred abstract video feed.", "Con esa línea",
@@ -385,6 +398,7 @@ P = {
   (2, g({**G.g20_notes(1), "highlight": 0})),
   (1, g({**G.g20_notes(1), "highlight": 1})),
   (1, g(G.g20_notes(2))),
+  (1, g(punch(G.g20_notes(2), 760, 540, zoom=1.3))),
   (1, card(kicker="Traducción libre", title="«Llamadlo como queráis»", opinion=True)),
   (2, card(kicker="¿Y en noviembre?", title="No hay agenda oficial")),
   (1, card(kicker="Una propuesta", title="Yuyuan Tantian 玉渊谭天", body="Cuenta de WeChat que depende de CCTV")),
@@ -478,7 +492,7 @@ P = {
   (1, g(G.g26_columns(2))),
   (1, g({**G.g26_columns(2, tiktok_grey=True), "opinion": True,
          "seals": [{"lines": ["LA MISMA NORMA"], "ink": "ink", "size": 110, "at": [960, 950]}]})),
-  (1, dict(type="text_overlay", prompt=HAND + NO_TEXT, overlay={"opinion": True}, src="mano-tampon.jpg", tail=0.5)),
+  (1, dict(stamps({"lines": ["LA VOLUNTAD", "DE QUIEN", "LA APLICA"], "ink": "ink"}, opinion=True), tail=0.5)),
   (1, dict(g(G.g02_seals("both")), motion=KB)),
  ],
 }

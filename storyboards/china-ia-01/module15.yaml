@@ -164,9 +164,13 @@ shots:
   text: Lo que separa los dos casos no es la norma.
 - id: c15-08
   type: text_overlay
-  prompt: 'Close-up: an anonymous hand in a navy suit cuff (no face, no insignia) holds a blank rubber stamp raised
-    and still above a sheet with a blank ruled table. Plain unbranded objects with no logos and no readable text.'
   overlay:
+    stamp:
+    - lines:
+      - LA VOLUNTAD
+      - DE QUIEN
+      - LA APLICA
+      ink: ink
     opinion: true
   tail: 0.5
   text: Es la voluntad de quien la aplica.
