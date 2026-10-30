@@ -6,7 +6,8 @@ says a fact is missing (the text of the catalogue entries, a count by type, the 
 the catalogue, the 2020 code of TikTok's entry) the graphic shows grey bars or leaves it out.
 Each function returns the overlay of one shot; arguments pick the state of a graphic that is
 built up shot by shot. CHARTS lists every state, for scripts/render_charts.py.
-Source of each graphic in the docstring: [1] brief #31 (29 oct 2026), [2] brief #30 (15 oct 2026).
+Source of each graphic in the docstring: [1] brief #31 (29 oct 2026), [2] brief #30 (15 oct 2026),
+[3] BIS rule of 7 Oct 2022, 87 FR 62186, [4] MOFCOM/MOST announcement no. 38 of 28 Aug 2020.
 """
 from studio.graphics import opener
 
@@ -15,6 +16,10 @@ X = {"big": "X", "lines": ["限 xiàn", "RESTRINGIDO"], "ink": "x"}
 ARGUED = {"lines": ["ARGUMENTADA"], "ink": "ink"}
 NUANCE = {"lines": ["MATIZ"], "ink": "copper"}
 CATALOGUE = "Catálogo de tecnologías prohibidas o restringidas para la exportación"
+# Chinese title and the 2020 entry, from MOFCOM/MOST announcement no. 38 of 28 Aug 2020 [4]
+# (https://www.gov.cn/gongbao/content/2020/content_5560294.htm): item 45 adds control point 21,
+# 基于数据分析的个性化信息推送服务技术, under 信息处理技术, entry 056101X.
+CATALOGUE_ZH = "《中国禁止出口限制出口技术目录》"
 CONCORDIA_EN = "traducción desde la versión inglesa de Concordia AI"
 
 
@@ -84,8 +89,8 @@ def g06_who(step=1):
 
 
 def g07_precedents(state=1):
-    """G7. Precedents. 2020 the catalogue and TikTok [1]; 2022 US chip controls (no source in
-    sources.md, given as common knowledge); 2023 gallium and germanium [1].
+    """G7. Precedents. 2020 the catalogue and TikTok [1][4]; 2022 US chip controls (BIS rule in force
+    7 Oct 2022, 87 FR 62186 [3]); 2023 gallium and germanium [1].
     state 1: 2022 and 2023 lit, 2020 grey; state 2: 2020 and 2023 lit, 2022 grey."""
     steps = [{"date": "2020", "label": "China revisa su catálogo (TikTok)"},
              {"date": "2022", "label": "EE. UU. restringe chips y máquinas"},
@@ -301,12 +306,14 @@ def g25_jurists(show=2):
          "note": "Lee el plan como una renuncia a una ley de IA independiente"}])
 
 
-def g26_columns(show=2):
+def g26_columns(show=2, tiktok_grey=False):
     """G26, the two columns of the closing [1] (v3): left TikTok, a licence asked for in 2020 and never
     granted, the algorithm licensed early 2026, more than five years. Right: open models at level X,
     automatic licence «presentar y salir» (a promise of the draft); DeepSeek and MiniMax passed the
-    provisional registration, which is not the licence yet, in less than two weeks."""
-    return dict(kicker="El mismo catálogo", title="Cinco años o «presentar y salir»", show=show, highlight=show - 1,
+    provisional registration, which is not the licence yet, in less than two weeks.
+    tiktok_grey: the after-shot of the closing, the TikTok column gone grey, the right one still lit."""
+    return dict(kicker="El mismo catálogo", title="Cinco años o «presentar y salir»", show=show,
+                highlight=1 if tiktok_grey else (show - 1 if show < 2 else -1),
                 people=[{"name": "TikTok", "org": "Licencia",
                          "note": "Pedida en 2020 · nunca concedida · algoritmo licenciado a principios de 2026",
                          "when": "Más de cinco años"},
@@ -316,13 +323,25 @@ def g26_columns(show=2):
 
 
 def g26_scale(stamp=True):
-    """G26, the two waits to scale: more than 60 months against less than half a month (2 weeks)."""
+    """G26, the two waits to scale: more than 60 months against less than half a month (2 weeks),
+    under one «MISMO CATÁLOGO» stamp that spans both."""
     o = dict(kicker="El mismo catálogo", title="La espera, a escala", max=62, highlight=1, bars=[
         {"label": "TikTok", "note": "licencia", "value": 62, "text": "Más de 5 años"},
-        {"label": "Nivel X", "note": "registro provisional", "value": 0.45, "text": "Menos de 2 semanas"}])
+        {"label": "DeepSeek y MiniMax", "note": "registro provisional", "value": 0.45, "text": "Menos de 2 semanas"}])
     if stamp:
-        o["seals"] = [{"lines": ["MISMO CATÁLOGO"], "ink": "ink", "size": 54, "at": [1560, 190]}]
+        o["seals"] = [{"lines": ["MISMO CATÁLOGO"], "ink": "ink", "size": 110, "at": [1380, 300], "angle": -3}]
     return o
+
+
+def g08b_row2020(level=True):
+    """TikTok's line in the 2020 revision of the catalogue [4]: entry 056101X (信息处理技术), control
+    point 21, personalised information push services based on data analysis. X = restricted."""
+    return dict(doc=CATALOGUE_ZH + " · revisión de 2020", tag="ANUNCIO 38/2020",
+                columns=[{"label": "Código", "width": 380}, {"label": "Tecnología", "width": 800},
+                         {"label": "Nivel"}],
+                rows=[[{"code": "056101X", "focus": 1},
+                       "Recomendación de servicios de información personalizada basada en el análisis de datos",
+                       {"seals": [{**X, "size": 56}]} if level else ""]], highlight=0)
 
 
 IDEAS = ["De defenderse de los controles a imponer los suyos",
@@ -334,18 +353,42 @@ IDEAS = ["De defenderse de los controles a imponer los suyos",
 
 def g03_card(shown=5, argued=0, nuances=0, footer=""):
     """G3. Juan's five ideas (script v3) with their state: PENDIENTE, ARGUMENTADA (one per idea as
-    the video argues it) and MATIZ (six: one per idea and a sixth on idea 5)."""
+    the video argues it) and MATIZ (six: one per idea and a sixth on idea 5, shown as «2 MATICES»).
+    Stamps big enough to read at 1080p; the full text of each nuance is on g03_idea."""
     rows = []
     for i, idea in enumerate(IDEAS):
         seals = [ARGUED] if i < argued else []
-        n = 1 if i < nuances else 0
-        if i == 4 and nuances >= 6:
-            n = 2
-        seals += [NUANCE] * n
+        n = (1 if i < nuances else 0) + (1 if i == 4 and nuances >= 6 else 0)
+        if n:
+            seals.append({"lines": ["MATIZ" if n == 1 else f"{n} MATICES"], "ink": "copper"})
         rows.append([str(i + 1), idea, {"seals": seals} if seals else {"label": "Pendiente"}])
-    o = dict(kicker="Mi lectura", doc="Expediente 01 · Ficha de lectura", opinion=True, reveal=shown,
-             columns=[{"label": "Nº", "width": 110}, {"label": "Idea", "width": 1000}, {"label": "Estado"}],
-             rows=rows, highlight=shown - 1 if 0 < shown < 5 and not argued else -1, caption=footer)
+    return dict(kicker="Mi lectura", doc="Expediente 01 · Ficha de lectura", opinion=True, reveal=shown,
+                columns=[{"label": "Nº", "width": 90}, {"label": "Idea", "width": 760}, {"label": "Estado"}],
+                rows=rows, highlight=shown - 1 if 0 < shown < 5 and not argued else -1, caption=footer,
+                seal_size=74)
+
+
+PENDING = {"lines": ["PENDIENTE"], "ink": "muted"}
+NUANCES = ["Es un borrador: comentarios hasta el 15 de noviembre",
+           "Mucho ruido para un formulario",
+           "La J es poco probable, no está descartada",
+           "El catálogo ya existía en 2020; a Manus lo frenó la NDRC",
+           "Poco tiempo, agenda sin confirmar, ni el mismo nombre",
+           "Muchas voces no es decidir de forma descentralizada"]
+NUANCE_IDEA = [1, 2, 3, 4, 5, 5]  # the idea each nuance answers (the sixth is the second one on idea 5)
+
+
+def g03_idea(n, state="pendiente", nuance=0):
+    """One idea of the card on its own, with a stamp you can read: PENDIENTE (the opening), ARGUMENTADA
+    (when the video has argued it) or, with nuance (1-6), a big MATIZ stamp with the nuance's text."""
+    o = dict(kicker=f"Mi lectura · idea {n} de 5", title=IDEAS[n - 1], opinion=True)
+    seal = {"pendiente": PENDING, "argumentada": ARGUED}[state]
+    if nuance:
+        o["body"] = NUANCES[nuance - 1]
+        o["seals"] = [{**seal, "size": 90, "at": [1500, 250]},
+                      {"lines": [f"MATIZ {nuance}"], "ink": "copper", "size": 150, "at": [1380, 760]}]
+    else:
+        o["seals"] = [{**seal, "size": 150, "at": [1380, 720]}]
     return o
 
 
@@ -372,7 +415,9 @@ CHARTS = {
     "G19-a": g19_summit(1), "G19-b": g19_summit(2), "G20-a": g20_notes(1), "G20-b": g20_notes(2),
     "G21-agenda": g21_agenda(3), "G22-carpetas": g22_folders(), "G23-a": g23_rules(1), "G23-b": g23_rules(2),
     "G24-borradores": g24_drafts(), "G25-juristas": g25_jurists(2),
-    "G26-a-columnas": g26_columns(2), "G26-b-escala": g26_scale(),
+    "G26-a-columnas": g26_columns(2), "G26-b-escala": g26_scale(), "G26-c-tiktok-gris": g26_columns(2, True),
+    "G08b-2020": g08b_row2020(), "G03-idea-1": g03_idea(1), "G03-idea-2-arg": g03_idea(2, "argumentada"),
+    "G03-matiz-6": g03_idea(5, "argumentada", 6),
     "ident-expediente-01": opener(1), "cierre-expediente-01": opener(1, "cerrado"),
     "pantalla-final-expediente-02": opener(2, "próximamente"),
 }
