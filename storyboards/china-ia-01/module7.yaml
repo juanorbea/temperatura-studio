@@ -30,15 +30,29 @@ shots:
     title: Meta y Manus
     people:
     - name: Meta
-      org: Compradora
+      org: Quiso comprarla
+      note: ''
+    - name: Manus
+      org: Agentes de IA
+      note: ''
+    highlight: -1
+  text: 'Y hay un caso que lo ilustra muy bien: Meta y Manus.'
+- id: c7-03
+  type: text_overlay
+  overlay:
+    kicker: Un caso
+    title: Meta y Manus
+    people:
+    - name: Meta
+      org: Quiso comprarla
       note: ''
     - name: Manus
       org: Agentes de IA
       note: Origen chino · constituida en Singapur
     highlight: 1
-  text: 'Y hay un caso que lo ilustra muy bien: Meta y Manus. Manus es una empresa de agentes de IA de origen chino,
-    aunque formalmente está constituida en Singapur, y Meta quiso comprarla.'
-- id: c7-03
+  text: Manus es una empresa de agentes de IA de origen chino, aunque formalmente está constituida en Singapur,
+    y Meta quiso comprarla.
+- id: c7-04
   type: text_overlay
   overlay:
     kicker: Meta y Manus
@@ -53,7 +67,7 @@ shots:
       label: Borrador del catálogo
   text: En enero de 2026, el Ministerio de Comercio anunció que revisaría si la operación cumplía, entre otras,
     las normas de control de exportaciones.
-- id: c7-04
+- id: c7-05
   type: text_overlay
   overlay:
     kicker: Meta y Manus
@@ -66,10 +80,22 @@ shots:
       label: La NDRC la bloquea (revisión de seguridad de inversión extranjera)
     - date: 16 oct 2026
       label: Borrador del catálogo
-  text: En abril, la compra se bloqueó. Pero no la bloqueó el Ministerio de Comercio. La bloqueó la Comisión Nacional
-    de Desarrollo y Reforma, la NDRC, el gran organismo de planificación económica de China, con una revisión de
-    seguridad de inversión extranjera.
-- id: c7-05
+  text: En abril, la compra se bloqueó. Pero no la bloqueó el Ministerio de Comercio.
+- id: c7-06
+  type: text_overlay
+  overlay:
+    kicker: Quién la bloqueó
+    title: La NDRC
+    body: Comisión Nacional de Desarrollo y Reforma
+  text: La bloqueó la Comisión Nacional de Desarrollo y Reforma, la NDRC,
+- id: c7-07
+  type: text_overlay
+  overlay:
+    kicker: Quién la bloqueó
+    title: La NDRC
+    body: El gran organismo de planificación económica de China · revisión de seguridad de inversión extranjera
+  text: el gran organismo de planificación económica de China, con una revisión de seguridad de inversión extranjera.
+- id: c7-08
   type: text_overlay
   overlay:
     kicker: ¿Quién regula qué?
@@ -86,53 +112,67 @@ shots:
       note: Seguridad de inversión extranjera (Manus)
     show: 3
     highlight: 2
-  text: Concordia AI apunta que operaciones como esta pueden haber pesado en la revisión. Con el catálogo nuevo,
-    el Ministerio de Comercio tendría más que decir en casos parecidos.
-- id: c7-06
+  text: Concordia AI apunta que operaciones como esta pueden haber pesado en la revisión.
+- id: c7-09
+  type: text_overlay
+  overlay:
+    kicker: ¿Quién regula qué?
+    title: Tres organismos
+    people:
+    - name: CAC
+      org: Ciberespacio
+      note: La IA como servicio dentro de China
+    - name: MOFCOM + MOST
+      org: Comercio · Ciencia y Tecnología
+      note: 'La tecnología cuando sale de China: pesos · puntos de control · arquitectura · software del agente'
+    - name: NDRC
+      org: Desarrollo y Reforma
+      note: Seguridad de inversión extranjera (Manus)
+    show: 2
+    highlight: 1
+    punch:
+      zoom: 1.45
+      at:
+      - 960
+      - 640
+  text: Con el catálogo nuevo, el Ministerio de Comercio tendría más que decir en casos parecidos.
+- id: c7-10
   type: text_overlay
   prompt: 'Medium shot: the character holds one plain buff folder in each hand at the same height, like a balance
-    scale. Plain unbranded objects with no logos and no readable text.'
+    scale. White cotton archival gloves on both hands. Plain unbranded objects with no logos and no readable text.'
   character: true
   overlay:
     opinion: true
   text: Y aquí está la segunda idea.
-- id: c7-07
+- id: c7-11
   type: text_overlay
   overlay:
-    kicker: Mi lectura
-    doc: Expediente 01 · Ficha de lectura
+    kicker: Mi lectura · idea 2 de 5
+    title: La seguridad es un motivo real, pero no el único
     opinion: true
-    reveal: 5
-    columns:
-    - label: Nº
-      width: 110
-    - label: Idea
-      width: 1000
-    - label: Estado
-    rows:
-    - - '1'
-      - De defenderse de los controles a imponer los suyos
-      - seals:
-        - lines:
-          - ARGUMENTADA
-          ink: ink
-    - - '2'
-      - La seguridad es un motivo real, pero no el único
-      - seals:
-        - lines:
-          - ARGUMENTADA
-          ink: ink
-    - - '3'
-      - Los modelos abiertos, protegidos. Por ahora
-      - label: Pendiente
-    - - '4'
-      - 'Washington y Pekín vuelven a hablar: poco y en concreto'
-      - label: Pendiente
-    - - '5'
-      - Más plural y más discutido de lo que creemos
-      - label: Pendiente
-    highlight: -1
-    caption: ''
+    seals:
+    - lines:
+      - PENDIENTE
+      ink: muted
+      size: 150
+      at:
+      - 1380
+      - 720
   text: Una norma que permite frenar la venta de una empresa china de agentes a un gigante americano no es solo
-    una herramienta contra hackers. También sirve para que la tecnología se quede en casa. Las dos cosas pueden
-    ser ciertas a la vez. Y creo que lo son.
+    una herramienta contra hackers.
+- id: c7-12
+  type: text_overlay
+  overlay:
+    kicker: Mi lectura · idea 2 de 5
+    title: La seguridad es un motivo real, pero no el único
+    opinion: true
+    seals:
+    - lines:
+      - ARGUMENTADA
+      ink: ink
+      size: 150
+      at:
+      - 1380
+      - 720
+  text: También sirve para que la tecnología se quede en casa. Las dos cosas pueden ser ciertas a la vez. Y creo
+    que lo son.

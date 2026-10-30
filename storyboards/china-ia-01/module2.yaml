@@ -16,7 +16,8 @@ shots:
 - id: c2-01
   type: text_overlay
   prompt: 'Medium shot: the character sits at a wooden desk by a window and opens a plain buff case folder with
-    blank pages. Plain unbranded objects with no logos and no readable text.'
+    blank pages. White cotton archival gloves on both hands. Plain unbranded objects with no logos and no readable
+    text.'
   character: true
   overlay:
     opinion: true
@@ -24,162 +25,77 @@ shots:
 - id: c2-02
   type: text_overlay
   overlay:
-    kicker: Mi lectura
-    doc: Expediente 01 · Ficha de lectura
+    kicker: Mi lectura · idea 1 de 5
+    title: De defenderse de los controles a imponer los suyos
     opinion: true
-    reveal: 1
-    columns:
-    - label: Nº
-      width: 110
-    - label: Idea
-      width: 1000
-    - label: Estado
-    rows:
-    - - '1'
-      - De defenderse de los controles a imponer los suyos
-      - label: Pendiente
-    - - '2'
-      - La seguridad es un motivo real, pero no el único
-      - label: Pendiente
-    - - '3'
-      - Los modelos abiertos, protegidos. Por ahora
-      - label: Pendiente
-    - - '4'
-      - 'Washington y Pekín vuelven a hablar: poco y en concreto'
-      - label: Pendiente
-    - - '5'
-      - Más plural y más discutido de lo que creemos
-      - label: Pendiente
-    highlight: 0
-    caption: ''
+    seals:
+    - lines:
+      - PENDIENTE
+      ink: muted
+      size: 150
+      at:
+      - 1380
+      - 720
   text: Creo que China está pasando de defenderse de los controles de otros a imponer los suyos.
 - id: c2-03
   type: text_overlay
   overlay:
-    kicker: Mi lectura
-    doc: Expediente 01 · Ficha de lectura
+    kicker: Mi lectura · idea 2 de 5
+    title: La seguridad es un motivo real, pero no el único
     opinion: true
-    reveal: 2
-    columns:
-    - label: Nº
-      width: 110
-    - label: Idea
-      width: 1000
-    - label: Estado
-    rows:
-    - - '1'
-      - De defenderse de los controles a imponer los suyos
-      - label: Pendiente
-    - - '2'
-      - La seguridad es un motivo real, pero no el único
-      - label: Pendiente
-    - - '3'
-      - Los modelos abiertos, protegidos. Por ahora
-      - label: Pendiente
-    - - '4'
-      - 'Washington y Pekín vuelven a hablar: poco y en concreto'
-      - label: Pendiente
-    - - '5'
-      - Más plural y más discutido de lo que creemos
-      - label: Pendiente
-    highlight: 1
-    caption: ''
+    seals:
+    - lines:
+      - PENDIENTE
+      ink: muted
+      size: 150
+      at:
+      - 1380
+      - 720
   text: Creo que la seguridad es un motivo real para hacerlo, pero no el único.
 - id: c2-04
   type: text_overlay
   overlay:
-    kicker: Mi lectura
-    doc: Expediente 01 · Ficha de lectura
+    kicker: Mi lectura · idea 3 de 5
+    title: Los modelos abiertos, protegidos. Por ahora
     opinion: true
-    reveal: 3
-    columns:
-    - label: Nº
-      width: 110
-    - label: Idea
-      width: 1000
-    - label: Estado
-    rows:
-    - - '1'
-      - De defenderse de los controles a imponer los suyos
-      - label: Pendiente
-    - - '2'
-      - La seguridad es un motivo real, pero no el único
-      - label: Pendiente
-    - - '3'
-      - Los modelos abiertos, protegidos. Por ahora
-      - label: Pendiente
-    - - '4'
-      - 'Washington y Pekín vuelven a hablar: poco y en concreto'
-      - label: Pendiente
-    - - '5'
-      - Más plural y más discutido de lo que creemos
-      - label: Pendiente
-    highlight: 2
-    caption: ''
+    seals:
+    - lines:
+      - PENDIENTE
+      ink: muted
+      size: 150
+      at:
+      - 1380
+      - 720
   text: Creo que los modelos abiertos chinos salen protegidos de esta propuesta, al menos por ahora.
 - id: c2-05
   type: text_overlay
   overlay:
-    kicker: Mi lectura
-    doc: Expediente 01 · Ficha de lectura
+    kicker: Mi lectura · idea 4 de 5
+    title: 'Washington y Pekín vuelven a hablar: poco y en concreto'
     opinion: true
-    reveal: 4
-    columns:
-    - label: Nº
-      width: 110
-    - label: Idea
-      width: 1000
-    - label: Estado
-    rows:
-    - - '1'
-      - De defenderse de los controles a imponer los suyos
-      - label: Pendiente
-    - - '2'
-      - La seguridad es un motivo real, pero no el único
-      - label: Pendiente
-    - - '3'
-      - Los modelos abiertos, protegidos. Por ahora
-      - label: Pendiente
-    - - '4'
-      - 'Washington y Pekín vuelven a hablar: poco y en concreto'
-      - label: Pendiente
-    - - '5'
-      - Más plural y más discutido de lo que creemos
-      - label: Pendiente
-    highlight: 3
-    caption: ''
+    seals:
+    - lines:
+      - PENDIENTE
+      ink: muted
+      size: 150
+      at:
+      - 1380
+      - 720
   text: Creo que Washington y Pekín vuelven a hablar de IA, y que lo hacen de una forma estrecha y práctica.
 - id: c2-06
   type: text_overlay
   overlay:
-    kicker: Mi lectura
-    doc: Expediente 01 · Ficha de lectura
+    kicker: Mi lectura · idea 5 de 5
+    title: Más plural y más discutido de lo que creemos
     opinion: true
-    reveal: 5
-    columns:
-    - label: Nº
-      width: 110
-    - label: Idea
-      width: 1000
-    - label: Estado
-    rows:
-    - - '1'
-      - De defenderse de los controles a imponer los suyos
-      - label: Pendiente
-    - - '2'
-      - La seguridad es un motivo real, pero no el único
-      - label: Pendiente
-    - - '3'
-      - Los modelos abiertos, protegidos. Por ahora
-      - label: Pendiente
-    - - '4'
-      - 'Washington y Pekín vuelven a hablar: poco y en concreto'
-      - label: Pendiente
-    - - '5'
-      - Más plural y más discutido de lo que creemos
-      - label: Pendiente
-    highlight: -1
-    caption: ''
+    seals:
+    - lines:
+      - PENDIENTE
+      ink: muted
+      size: 150
+      at:
+      - 1380
+      - 720
   text: Y creo que la política china de IA es mucho más plural, y está mucho más discutida, de lo que solemos suponer
     desde fuera.
 - id: c2-07
@@ -191,9 +107,9 @@ shots:
     reveal: 5
     columns:
     - label: Nº
-      width: 110
+      width: 90
     - label: Idea
-      width: 1000
+      width: 760
     - label: Estado
     rows:
     - - '1'
@@ -213,6 +129,7 @@ shots:
       - label: Pendiente
     highlight: -1
     caption: ''
+    seal_size: 74
   text: Son cinco ideas, pero van juntas.
 - id: c2-08
   type: text_overlay
@@ -238,9 +155,9 @@ shots:
     reveal: 5
     columns:
     - label: Nº
-      width: 110
+      width: 90
     - label: Idea
-      width: 1000
+      width: 760
     - label: Estado
     rows:
     - - '1'
@@ -260,12 +177,14 @@ shots:
       - label: Pendiente
     highlight: -1
     caption: ''
+    seal_size: 74
     seals:
     - lines:
       - 'VER: LO QUE NO ENCAJA'
       ink: copper
-      size: 44
+      size: 110
       at:
-      - 1540
-      - 1010
+      - 1300
+      - 960
+      angle: -5
   text: Y al final te enseño también lo que no encaja con ellas, que lo hay.

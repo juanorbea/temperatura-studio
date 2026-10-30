@@ -26,17 +26,60 @@ shots:
     - name: Licencia
       org: Cuando el catálogo sea definitivo
       note: El proceso que vendrá después
-  text: Una parte de esto ya funciona, aunque el catálogo sea un borrador. Desde que se publicó, quien exporte una
-    tecnología del catálogo tiene que registrarla. No es la licencia. Es un mecanismo temporal para que los reguladores
-    recojan información hasta que el catálogo sea definitivo.
+  text: Una parte de esto ya funciona, aunque el catálogo sea un borrador.
 - id: c9-02
+  type: text_overlay
+  overlay:
+    kicker: Registro ≠ licencia
+    title: Dos trámites distintos
+    highlight: 0
+    people:
+    - name: Registro
+      org: Ya en vigor · temporal
+      note: Para que los reguladores recojan información hasta que el catálogo sea definitivo
+    - name: Licencia
+      org: Cuando el catálogo sea definitivo
+      note: El proceso que vendrá después
+    punch:
+      zoom: 1.45
+      at:
+      - 1360
+      - 640
+  text: Desde que se publicó, quien exporte una tecnología del catálogo tiene que registrarla.
+- id: c9-03
+  type: text_overlay
+  overlay:
+    kicker: Registro ≠ licencia
+    title: Dos trámites distintos
+    highlight: 0
+    people:
+    - name: Registro
+      org: Ya en vigor · temporal
+      note: Para que los reguladores recojan información hasta que el catálogo sea definitivo
+    - name: Licencia
+      org: Cuando el catálogo sea definitivo
+      note: El proceso que vendrá después
+    punch:
+      zoom: 1.45
+      at:
+      - 560
+      - 640
+  text: No es la licencia. Es un mecanismo temporal para que los reguladores recojan información hasta que el catálogo
+    sea definitivo.
+- id: c9-04
   type: text_overlay
   overlay:
     kicker: Nota al margen
     title: ¿Suspender exportaciones?
     body: Algunos abogados creen que el registro podría usarse para eso
   text: Algunos abogados creen que podría usarse para suspender exportaciones muy sensibles.
-- id: c9-03
+- id: c9-05
+  type: text_overlay
+  overlay:
+    kicker: Fuente
+    title: Una cuenta de redes sociales afiliada al Estado chino
+  text: Y aquí viene el dato que más me gusta.
+- id: c9-06
   type: text_overlay
   overlay:
     kicker: Ya en vigor
@@ -47,18 +90,24 @@ shots:
       label: Se publica el borrador. Empieza el registro
     - date: Menos de 2 semanas
       label: DeepSeek y MiniMax ya constan como registrados «sin problemas»
-    caption: Según una cuenta de redes sociales afiliada al Estado chino
-  text: Y aquí viene el dato que más me gusta. Según una cuenta de redes sociales afiliada al Estado chino, DeepSeek
-    y MiniMax ya han completado este registro «sin problemas». Concordia AI supone que lo han hecho para sus últimos
-    modelos, los publicados después del borrador.
-- id: c9-04
+  text: Según una cuenta de redes sociales afiliada al Estado chino, DeepSeek y MiniMax ya han completado este registro
+    «sin problemas».
+- id: c9-07
+  type: text_overlay
+  overlay:
+    kicker: Concordia AI supone
+    title: Para sus últimos modelos
+    body: Los publicados después del borrador
+  text: Concordia AI supone que lo han hecho para sus últimos modelos, los publicados después del borrador.
+- id: c9-08
   type: image
-  prompt: 'Medium shot at a service counter window: the character slides a sheet through; an anonymous hand in a
-    navy cuff (no face) stamps it. Plain unbranded objects with no logos and no readable text.'
+  prompt: 'Medium shot at a service counter window: the character slides a sheet through; an anonymous gloved hand
+    in a navy cuff (no face) stamps it. White cotton archival gloves on both hands. Plain unbranded objects with
+    no logos and no readable text.'
   character: true
   text: Piénsalo. En menos de dos semanas desde el borrador, dos de los laboratorios más conocidos del país ya están
     dentro del sistema. Y el Estado se preocupa de contarlo en redes.
-- id: c9-05
+- id: c9-09
   type: text_overlay
   overlay:
     kicker: Un mensaje en dos direcciones
@@ -70,11 +119,26 @@ shots:
     - name: Hacia fuera
       org: Tranquilos
       note: Los modelos siguen saliendo
-    highlight: -1
+    highlight: 0
+    show: 1
     opinion: true
-  text: 'Para mí, eso es un mensaje en dos direcciones. Hacia dentro: esto va en serio, registraos. Hacia fuera:
-    tranquilos, que los modelos siguen saliendo.'
-- id: c9-06
+  text: 'Para mí, eso es un mensaje en dos direcciones. Hacia dentro: esto va en serio, registraos.'
+- id: c9-10
+  type: text_overlay
+  overlay:
+    kicker: Un mensaje en dos direcciones
+    title: Registraos, y tranquilos
+    people:
+    - name: Hacia dentro
+      org: Esto va en serio
+      note: Registraos
+    - name: Hacia fuera
+      org: Tranquilos
+      note: Los modelos siguen saliendo
+    highlight: 1
+    opinion: true
+  text: 'Hacia fuera: tranquilos, que los modelos siguen saliendo.'
+- id: c9-11
   type: image
   prompt: A large origami elephant of plain grey paper in an empty bright room. Plain unbranded objects with no
     logos and no readable text.

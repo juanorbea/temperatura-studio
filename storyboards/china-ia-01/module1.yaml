@@ -16,88 +16,6 @@ shots:
 - id: c1-01
   type: text_overlay
   overlay:
-    doc: ''
-    tag: ''
-    columns:
-    - label: Código
-      width: 520
-    - label: Tecnología
-      width: 700
-    - label: Nivel
-    rows:
-    - - code: 266402J
-        focus: 0
-      - null
-      - ''
-  lead_in: 0.6
-  text: 266402J.
-- id: c1-02
-  type: text_overlay
-  overlay:
-    doc: ''
-    tag: ''
-    columns:
-    - label: Código
-      width: 520
-    - label: Tecnología
-      width: 700
-    - label: Nivel
-    rows:
-    - - code: 266402J
-        focus: 0
-      - null
-      - ''
-    - - code: 266404X
-        focus: 0
-      - null
-      - ''
-  text: 266404X.
-- id: c1-03
-  type: text_overlay
-  overlay:
-    doc: ''
-    tag: ''
-    columns:
-    - label: Código
-      width: 520
-    - label: Tecnología
-      width: 700
-    - label: Nivel
-    rows:
-    - - code: 266402J
-        focus: 1
-      - null
-      - ''
-    - - code: 266404X
-        focus: 1
-      - null
-      - ''
-  text: Parecen números de serie.
-- id: c1-04
-  type: text_overlay
-  overlay:
-    doc: Catálogo de tecnologías prohibidas o restringidas para la exportación
-    tag: BORRADOR
-    columns:
-    - label: Código
-      width: 520
-    - label: Tecnología
-      width: 700
-    - label: Nivel
-    rows:
-    - - code: 266402J
-        focus: 1
-      - null
-      - ''
-    - - code: 266404X
-        focus: 1
-      - null
-      - ''
-  text: Son dos entradas de un catálogo del Gobierno chino. Y lo único que de verdad importa de cada una es la última
-    letra.
-- id: c1-05
-  type: text_overlay
-  overlay:
     doc: Catálogo de tecnologías prohibidas o restringidas para la exportación
     tag: BORRADOR
     columns:
@@ -120,9 +38,17 @@ shots:
     - - code: 266404X
         focus: 1
       - null
-      - ''
-  text: La J viene de 禁, prohibido.
-- id: c1-06
+      - seals:
+        - big: X
+          lines:
+          - 限 xiàn
+          - RESTRINGIDO
+          ink: x
+          size: 66
+  lead_in: 0.3
+  motion: zoom_in
+  text: 266402J.
+- id: c1-02
   type: text_overlay
   overlay:
     doc: Catálogo de tecnologías prohibidas o restringidas para la exportación
@@ -154,6 +80,79 @@ shots:
           - RESTRINGIDO
           ink: x
           size: 66
+    punch:
+      zoom: 1.3
+      at:
+      - 960
+      - 430
+  text: 266404X.
+- id: c1-03
+  type: text_overlay
+  overlay:
+    doc: ''
+    tag: ''
+    columns:
+    - label: Código
+      width: 520
+    - label: Tecnología
+      width: 700
+    - label: Nivel
+    rows:
+    - - code: 266402J
+        focus: 0
+      - null
+      - ''
+    - - code: 266404X
+        focus: 0
+      - null
+      - ''
+  text: Parecen números de serie.
+- id: c1-04
+  type: text_overlay
+  overlay:
+    doc: Catálogo de tecnologías prohibidas o restringidas para la exportación
+    tag: BORRADOR
+    columns:
+    - label: Código
+      width: 520
+    - label: Tecnología
+      width: 700
+    - label: Nivel
+    rows:
+    - - code: 266402J
+        focus: 1
+      - null
+      - ''
+    - - code: 266404X
+        focus: 1
+      - null
+      - ''
+  text: Son dos entradas de un catálogo del Gobierno chino. Y lo único que de verdad importa de cada una es la última
+    letra.
+- id: c1-05
+  type: text_overlay
+  overlay:
+    stamp:
+    - big: J
+      lines:
+      - 禁 jìn
+      - PROHIBIDO
+      ink: j
+  text: La J viene de 禁, prohibido.
+- id: c1-06
+  type: text_overlay
+  overlay:
+    stamp:
+    - big: J
+      lines:
+      - 禁 jìn
+      - PROHIBIDO
+      ink: j
+    - big: X
+      lines:
+      - 限 xiàn
+      - RESTRINGIDO
+      ink: x
   text: La X viene de 限, restringido.
 - id: c1-07
   type: text_overlay
@@ -220,6 +219,25 @@ shots:
 - id: c1-10
   type: text_overlay
   overlay:
+    kicker: Borrador del 16 de octubre de 2026
+    title: 40 entradas nuevas
+    max: 40
+    highlight: 1
+    bars:
+    - label: Total
+      value: 40
+      text: '40'
+    - label: IA
+      value: 23
+      text: '23'
+    - label: Resto
+      note: biomedicina y fotovoltaica
+      value: 17
+      text: '17'
+  text: '23 son de inteligencia artificial:'
+- id: c1-11
+  type: text_overlay
+  overlay:
     kicker: Catálogo · borrador
     title: 40 tecnologías; 23 son de IA
     figures:
@@ -228,17 +246,8 @@ shots:
     - value: '23'
       label: 'de IA: modelos de lenguaje · agentes · diseños de chips · clústeres de cómputo · herramientas de ciberataque'
     highlight: 1
-    seals:
-    - lines:
-      - 16 OCT 2026
-      ink: ink
-      size: 70
-      at:
-      - 1500
-      - 210
-  text: '23 son de inteligencia artificial: algunos modelos de lenguaje, agentes, diseños de chips, clústeres de
-    cómputo y herramientas de ciberataque.'
-- id: c1-11
+  text: algunos modelos de lenguaje, agentes, diseños de chips, clústeres de cómputo y herramientas de ciberataque.
+- id: c1-12
   type: text_overlay
   prompt: A single polished silicon wafer with a grid of iridescent chip dies resting on a clean white laboratory
     bench, macro photograph. Calm, uncluttered left third of the frame. Plain unbranded objects with no logos and
@@ -249,10 +258,10 @@ shots:
     body: Chips avanzados, prohibidos
   text: 'Durante años, cuando se hablaba de IA y controles de exportación, la frase tenía siempre el mismo sujeto:
     Estados Unidos, prohibiendo vender chips avanzados a China.'
-- id: c1-12
+- id: c1-13
   type: image
   prompt: 'Close-up: the character holds up a plain wooden rubber stamp with a blank unmarked rubber face, about
-    to stamp a blank sheet of paper on a clean desk in a bright archive office. Plain unbranded objects with no
-    logos and no readable text.'
+    to stamp a blank sheet of paper on a clean desk in a bright archive office. White cotton archival gloves on
+    both hands. Plain unbranded objects with no logos and no readable text.'
   character: true
   text: Ahora es China la que escribe su lista.

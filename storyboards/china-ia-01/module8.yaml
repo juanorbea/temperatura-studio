@@ -34,23 +34,35 @@ shots:
 - id: c8-03
   type: text_overlay
   overlay:
-    doc: Catálogo de tecnologías prohibidas o restringidas para la exportación · revisión de 2020
+    doc: 《中国禁止出口限制出口技术目录》 · revisión de 2020
+    tag: ANUNCIO 38/2020
     columns:
     - label: Código
-      width: 420
+      width: 380
     - label: Tecnología
-      width: 1000
+      width: 800
     - label: Nivel
     rows:
-    - - null
-      - Recomendación de servicios de información personalizada basada en el análisis de datos
-      - label: Con licencia
+    - - code: 056101X
+        focus: 1
+      - 'Procesamiento de información · añade: envío de información personalizada basado en el análisis de datos'
+      - seals:
+        - big: X
+          lines:
+          - 限 xiàn
+          - RESTRINGIDO
+          ink: x
+          size: 56
     highlight: 0
-    caption: El código de la entrada no está en las fuentes
-  text: 'En 2020, China revisó este mismo catálogo y añadió, entre otras cosas, la «recomendación de servicios de
-    información personalizada basada en el análisis de datos». Dicho en castellano: el algoritmo que decide qué
-    vídeo ves después.'
+  text: En 2020, China revisó este mismo catálogo y añadió, entre otras cosas, la «recomendación de servicios de
+    información personalizada basada en el análisis de datos».
 - id: c8-04
+  type: text_overlay
+  overlay:
+    kicker: Dicho en castellano
+    title: El algoritmo que decide qué vídeo ves después
+  text: 'Dicho en castellano: el algoritmo que decide qué vídeo ves después.'
+- id: c8-05
   type: text_overlay
   prompt: A generic unbranded smartphone on a pale desk showing a blurred abstract video feed. Calm, uncluttered
     left third of the frame. Plain unbranded objects with no logos and no readable text.
@@ -59,7 +71,7 @@ shots:
     title: Veto de facto
     body: Sobre cualquier venta del negocio de TikTok en EE. UU.
   text: Con esa línea, Pekín se dio un veto de facto sobre cualquier venta del negocio de TikTok en Estados Unidos.
-- id: c8-05
+- id: c8-06
   type: text_overlay
   overlay:
     kicker: TikTok
@@ -74,8 +86,22 @@ shots:
     - date: Principios de 2026
       label: Licencia del algoritmo a una empresa conjunta en EE. UU.
   text: ByteDance, la dueña de TikTok, pidió ese mismo año una licencia para exportar sus algoritmos de recomendación.
-    Nunca la obtuvo.
-- id: c8-06
+- id: c8-07
+  type: text_overlay
+  overlay:
+    kicker: TikTok
+    title: Lo que pesa una licencia
+    highlight: 1
+    span: Más de cinco años
+    steps:
+    - date: '2020'
+      label: ByteDance pide la licencia
+    - date: …
+      label: …nunca se concede…
+    - date: Principios de 2026
+      label: Licencia del algoritmo a una empresa conjunta en EE. UU.
+  text: Nunca la obtuvo.
+- id: c8-08
   type: text_overlay
   overlay:
     kicker: TikTok
@@ -91,13 +117,13 @@ shots:
       label: Licencia del algoritmo a una empresa conjunta en EE. UU.
   text: No fue hasta principios de 2026, más de cinco años después, cuando ByteDance licenció el algoritmo a una
     empresa conjunta en Estados Unidos.
-- id: c8-07
+- id: c8-09
   type: image
-  prompt: 'Wide shot: the character sits alone in an empty waiting room holding a blank paper queue ticket. Plain
-    unbranded objects with no logos and no readable text.'
+  prompt: 'Wide shot: the character sits alone in an empty waiting room holding a blank paper queue ticket. White
+    cotton archival gloves on both hands. Plain unbranded objects with no logos and no readable text.'
   character: true
   text: Más de cinco años. Para un algoritmo de recomendación de vídeos.
-- id: c8-08
+- id: c8-10
   type: text_overlay
   overlay:
     title: Alguien en Pekín tiene la llave
@@ -109,11 +135,17 @@ shots:
       ink: x
     opinion: true
   text: Por eso la X no es un trámite menor. "Restringido" quiere decir que alguien en Pekín tiene la llave.
-- id: c8-09
+- id: c8-11
   type: text_overlay
   overlay:
     kicker: Para ser justos · Concordia AI
     title: La mayoría será mucho más fluida
-    body: TikTok fue un caso extremo. Pero enseña hasta dónde puede llegar la herramienta
   text: Para ser justos, Concordia AI cree que la mayoría de las exportaciones de IA restringida serán mucho más
-    fluidas que la de TikTok. TikTok fue un caso extremo. Pero enseña hasta dónde puede llegar la herramienta.
+    fluidas que la de TikTok.
+- id: c8-12
+  type: text_overlay
+  overlay:
+    kicker: Para ser justos · Concordia AI
+    title: TikTok fue un caso extremo
+    body: Pero enseña hasta dónde puede llegar la herramienta
+  text: TikTok fue un caso extremo. Pero enseña hasta dónde puede llegar la herramienta.

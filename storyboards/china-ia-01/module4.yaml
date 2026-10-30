@@ -33,9 +33,16 @@ shots:
         focus: 0
       - null
       - ''
-    caption: Borrador de revisión · 16 de octubre de 2026
+    caption: 《中国禁止出口限制出口技术目录》 · borrador de revisión · 16 de octubre de 2026
   text: El documento se llama, agárrate, Catálogo de Tecnologías Prohibidas o Restringidas para la Exportación.
 - id: c4-02
+  type: text_overlay
+  overlay:
+    kicker: 16 de octubre de 2026
+    title: Un borrador de revisión
+    body: Abierto a comentarios
+  text: Lo publicado es un borrador de revisión,
+- id: c4-03
   type: text_overlay
   overlay:
     kicker: Borrador de revisión
@@ -48,9 +55,9 @@ shots:
       org: Ministerio de Ciencia y Tecnología
       note: Firma el borrador
     highlight: -1
-  text: 'Lo publicado es un borrador de revisión, y lo firman dos ministerios: el de Comercio, que en inglés se
-    abrevia MOFCOM, y el de Ciencia y Tecnología, MOST.'
-- id: c4-03
+  text: 'y lo firman dos ministerios: el de Comercio, que en inglés se abrevia MOFCOM, y el de Ciencia y Tecnología,
+    MOST.'
+- id: c4-04
   type: text_overlay
   overlay:
     kicker: Borrador del 16 de octubre de 2026
@@ -69,7 +76,7 @@ shots:
       value: 17
       text: '17'
   text: La propuesta añade 40 entradas. 23 son de IA; el resto, de biomedicina y energía fotovoltaica.
-- id: c4-04
+- id: c4-05
   type: text_overlay
   overlay:
     kicker: Las 23 de IA
@@ -88,15 +95,16 @@ shots:
       value: 17
       text: '17'
   text: '6 de las 23 llevan la J: prohibidas. 17 llevan la X: se pueden exportar con licencia.'
-- id: c4-05
+- id: c4-06
   type: text_overlay
   prompt: 'Medium shot in a bright archive office: the character pushes a thick plain bound document aside and points
-    off-frame. Plain unbranded objects with no logos and no readable text.'
+    off-frame. White cotton archival gloves on both hands. Plain unbranded objects with no logos and no readable
+    text.'
   character: true
   overlay:
     opinion: true
   text: Pero lo que a mí me parece más importante no es ninguna de las 23 entradas.
-- id: c4-06
+- id: c4-07
   type: text_overlay
   overlay:
     kicker: ¿Quién regula qué?
@@ -114,8 +122,31 @@ shots:
     show: 1
     highlight: 0
   text: Hasta ahora, las normas obligatorias de IA en China venían sobre todo de la Administración del Ciberespacio
-    de China, la CAC. Y regulaban la IA como un servicio que se ofrece al público dentro de China.
-- id: c4-07
+    de China, la CAC.
+- id: c4-08
+  type: text_overlay
+  overlay:
+    kicker: ¿Quién regula qué?
+    title: Tres organismos
+    people:
+    - name: CAC
+      org: Ciberespacio
+      note: La IA como servicio dentro de China
+    - name: MOFCOM + MOST
+      org: Comercio · Ciencia y Tecnología
+      note: 'La tecnología cuando sale de China: pesos · puntos de control · arquitectura · software del agente'
+    - name: NDRC
+      org: Desarrollo y Reforma
+      note: Seguridad de inversión extranjera (Manus)
+    show: 1
+    highlight: 0
+    punch:
+      zoom: 1.45
+      at:
+      - 420
+      - 640
+  text: Y regulaban la IA como un servicio que se ofrece al público dentro de China.
+- id: c4-09
   type: text_overlay
   overlay:
     kicker: ¿Quién regula qué?
@@ -133,31 +164,51 @@ shots:
     show: 2
     highlight: 1
   text: Este catálogo regula la tecnología en sí.
-- id: c4-08
+- id: c4-10
+  type: text_overlay
+  overlay:
+    kicker: Lo que regula
+    title: La tecnología en sí
+    body: Los pesos del modelo
+  text: Los pesos del modelo, es decir, los números que salen del entrenamiento y que son, en la práctica, el modelo.
+- id: c4-11
+  type: text_overlay
+  overlay:
+    kicker: Lo que regula
+    title: La tecnología en sí
+    body: Pesos del modelo · puntos de control intermedios · arquitectura
+  text: Los puntos de control intermedios. La arquitectura.
+- id: c4-12
   type: text_overlay
   overlay:
     kicker: Lo que regula
     title: La tecnología en sí
     body: Pesos del modelo · puntos de control intermedios · arquitectura · software que envuelve al agente
-  text: Los pesos del modelo, es decir, los números que salen del entrenamiento y que son, en la práctica, el modelo.
-    Los puntos de control intermedios. La arquitectura. Y el software que envuelve a un agente para que pueda usar
-    herramientas.
-- id: c4-09
+  text: Y el software que envuelve a un agente para que pueda usar herramientas.
+- id: c4-13
   type: text_overlay
   overlay:
     kicker: Y cuándo
     title: Cuando sale de China
   text: 'Y la regula en un momento concreto: cuando sale de China.'
-- id: c4-10
+- id: c4-14
   type: text_overlay
   overlay:
     kicker: 'Concordia AI · boletín #31'
-    title: «Una herramienta nueva en su caja de herramientas de IA», no un martillo para aplastar a los modelos
-      abiertos de frontera a corto plazo
-    size: 56
-  text: 'Concordia AI lo resume así: China añade una herramienta nueva a su caja de herramientas de IA, lo que no
-    quiere decir que la vaya a usar como un martillo para aplastar a los modelos abiertos de frontera a corto plazo.'
-- id: c4-11
+    title: «Una herramienta nueva en su caja de herramientas de IA»
+    size: 72
+  text: 'Concordia AI lo resume así: China añade una herramienta nueva a su caja de herramientas de IA,'
+- id: c4-15
+  type: text_overlay
+  overlay:
+    kicker: 'Concordia AI · boletín #31'
+    title: No un martillo para aplastar a los modelos abiertos de frontera a corto plazo
+    size: 64
+    highlight:
+    - a corto plazo
+  text: lo que no quiere decir que la vaya a usar como un martillo para aplastar a los modelos abiertos de frontera
+    a corto plazo.
+- id: c4-16
   type: image
   prompt: An open tidy metal toolbox on a pale workbench with one new unused precision tool on top. Plain unbranded
     objects with no logos and no readable text.

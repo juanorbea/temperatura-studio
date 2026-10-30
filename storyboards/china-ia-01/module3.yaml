@@ -26,17 +26,16 @@ shots:
   type: text_overlay
   overlay:
     kicker: Cómo solemos mirar la IA china
-    from: Una amenaza
-    to: Una copia barata
+    from: Amenaza · copia barata
+    to: ''
     opinion: true
   text: En España solemos mirar la IA china como una amenaza o como una copia barata de lo americano.
 - id: c3-03
   type: text_overlay
   overlay:
     kicker: Cómo solemos mirar la IA china
-    from: Una copia barata
-    to: ¿Quién decide?
-    body: Cómo se decide allí qué se puede hacer con ella
+    from: Amenaza · copia barata
+    to: ¿Cómo se decide allí?
     opinion: true
   text: Y casi nunca miramos cómo se decide allí qué se puede hacer con ella.
 - id: c3-04
@@ -48,6 +47,7 @@ shots:
     - name: Pekín
       lon: 116.4
       lat: 39.9
+  motion: zoom_in
   text: Cuando DeepSeek publicó sus modelos abiertos a principios de 2025, medio mundo descubrió que China estaba
     mucho más cerca de la frontera de lo que creía.
 - id: c3-05
@@ -57,10 +57,10 @@ shots:
     title: Modelos, y quién decide sobre ellos
     people:
     - name: Modelos
-      org: Lo que llegó
+      org: Lo que se vio
       note: DeepSeek y los modelos abiertos
     - name: Ministerios · reglas · juristas
-      org: Lo que llegó con menos fuerza
+      org: Lo que se vio menos
       note: Quién decide qué se hace con ellos
     highlight: 1
   text: 'La otra mitad de la historia llegó con menos fuerza: los ministerios, las reglas, los juristas que discuten

@@ -27,16 +27,32 @@ shots:
 - id: c5-02
   type: text_overlay
   overlay:
+    kicker: Fuente
+    title: Un comentario vinculado a CCTV
+    body: La televisión estatal china
+  text: 'Un comentario vinculado a CCTV, la televisión estatal china, lo dice casi así:'
+- id: c5-03
+  type: text_overlay
+  overlay:
+    kicker: Comentario vinculado a CCTV · traducción
+    title: «A medida que China llega a la frontera en más campos, gestionar su propia tecnología se ha convertido
+      en una nueva prioridad […]»
+    size: 56
+    highlight:
+    - gestionar su propia tecnología
+  text: a medida que China llega a la frontera en más campos, gestionar su propia tecnología se ha convertido en
+    una nueva prioridad,
+- id: c5-04
+  type: text_overlay
+  overlay:
     kicker: Comentario vinculado a CCTV · traducción al inglés de Concordia AI
     size: 50
     title: «A medida que China llega a la frontera en más campos, gestionar su propia tecnología se ha convertido
       en una nueva prioridad, después de años defendiéndose de bloqueos extranjeros.»
     body: «As China reaches the frontier in more fields, managing its own technology has become a new priority after
       years of defending against foreign blockades.»
-  text: 'Un comentario vinculado a CCTV, la televisión estatal china, lo dice casi así: a medida que China llega
-    a la frontera en más campos, gestionar su propia tecnología se ha convertido en una nueva prioridad, después
-    de años defendiéndose de bloqueos extranjeros.'
-- id: c5-03
+  text: después de años defendiéndose de bloqueos extranjeros.
+- id: c5-05
   type: text_overlay
   overlay:
     kicker: Controles de exportación
@@ -52,7 +68,7 @@ shots:
     muted:
     - 0
   text: Ojo, China no descubre ahora los controles de exportación.
-- id: c5-04
+- id: c5-06
   type: text_overlay
   overlay:
     kicker: Controles de exportación
@@ -67,12 +83,46 @@ shots:
     highlight: 2
     muted:
     - 1
-  text: Ya los usaba con algunos materiales, como el galio y el germanio desde 2023. Y ya usó este mismo catálogo
-    en 2020 con TikTok.
-- id: c5-05
+  text: Ya los usaba con algunos materiales, como el galio y el germanio desde 2023.
+- id: c5-07
   type: text_overlay
   overlay:
+    kicker: Controles de exportación
+    title: De dónde venimos
+    steps:
+    - date: '2020'
+      label: China revisa su catálogo (TikTok)
+    - date: '2022'
+      label: EE. UU. restringe chips y máquinas
+    - date: '2023'
+      label: China controla galio y germanio
+    highlight: 2
+    muted:
+    - 1
+    punch:
+      zoom: 1.5
+      at:
+      - 700
+      - 640
+  text: Y ya usó este mismo catálogo en 2020 con TikTok.
+- id: c5-08
+  type: text_overlay
+  overlay:
+    stamp:
+    - lines:
+      - MATERIAS PRIMAS
+      ink: muted
+      size: 84
+    - lines:
+      - ALGORITMO
+      ink: muted
+      size: 84
     kicker: Lo nuevo es el objeto
+    arrows: true
+  text: Lo nuevo es el objeto. Ya no son materias primas ni un algoritmo de recomendación.
+- id: c5-09
+  type: text_overlay
+  overlay:
     stamp:
     - lines:
       - MATERIAS PRIMAS
@@ -87,50 +137,44 @@ shots:
       - DE FRONTERA
       ink: ink
       size: 84
+    kicker: Lo nuevo es el objeto
     arrows: true
-  text: Lo nuevo es el objeto. Ya no son materias primas ni un algoritmo de recomendación. Son modelos y agentes
-    de frontera.
-- id: c5-06
+  text: Son modelos y agentes de frontera.
+- id: c5-10
   type: text_overlay
   prompt: 'Medium shot in a quiet archive room: the character holds a plain cardboard archive box with a blank label.
-    Plain unbranded objects with no logos and no readable text.'
+    White cotton archival gloves on both hands. Plain unbranded objects with no logos and no readable text.'
   character: true
   overlay:
     opinion: true
   text: Para mí, esta es la primera idea del vídeo.
-- id: c5-07
+- id: c5-11
   type: text_overlay
   overlay:
-    kicker: Mi lectura
-    doc: Expediente 01 · Ficha de lectura
+    kicker: Mi lectura · idea 1 de 5
+    title: De defenderse de los controles a imponer los suyos
     opinion: true
-    reveal: 5
-    columns:
-    - label: Nº
-      width: 110
-    - label: Idea
-      width: 1000
-    - label: Estado
-    rows:
-    - - '1'
-      - De defenderse de los controles a imponer los suyos
-      - seals:
-        - lines:
-          - ARGUMENTADA
-          ink: ink
-    - - '2'
-      - La seguridad es un motivo real, pero no el único
-      - label: Pendiente
-    - - '3'
-      - Los modelos abiertos, protegidos. Por ahora
-      - label: Pendiente
-    - - '4'
-      - 'Washington y Pekín vuelven a hablar: poco y en concreto'
-      - label: Pendiente
-    - - '5'
-      - Más plural y más discutido de lo que creemos
-      - label: Pendiente
-    highlight: -1
-    caption: ''
-  text: Uno solo controla lo que cree que tiene valor. Si China quiere decidir quién se lleva sus modelos, es porque
-    cree que sus modelos valen algo.
+    seals:
+    - lines:
+      - PENDIENTE
+      ink: muted
+      size: 150
+      at:
+      - 1380
+      - 720
+  text: Uno solo controla lo que cree que tiene valor.
+- id: c5-12
+  type: text_overlay
+  overlay:
+    kicker: Mi lectura · idea 1 de 5
+    title: De defenderse de los controles a imponer los suyos
+    opinion: true
+    seals:
+    - lines:
+      - ARGUMENTADA
+      ink: ink
+      size: 150
+      at:
+      - 1380
+      - 720
+  text: Si China quiere decidir quién se lleva sus modelos, es porque cree que sus modelos valen algo.
