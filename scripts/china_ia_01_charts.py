@@ -340,7 +340,9 @@ def g08b_row2020(level=True):
                 columns=[{"label": "Código", "width": 380}, {"label": "Tecnología", "width": 800},
                          {"label": "Nivel"}],
                 rows=[[{"code": "056101X", "focus": 1},
-                       "Recomendación de servicios de información personalizada basada en el análisis de datos",
+                       # punto 21 añadido a 信息处理技术: 基于数据分析的个性化信息推送服务技术 [4]
+                       "Procesamiento de información · añade: envío de información personalizada basado en el "
+                       "análisis de datos",
                        {"seals": [{**X, "size": 56}]} if level else ""]], highlight=0)
 
 
@@ -353,12 +355,12 @@ IDEAS = ["De defenderse de los controles a imponer los suyos",
 
 def g03_card(shown=5, argued=0, nuances=0, footer=""):
     """G3. Juan's five ideas (script v3) with their state: PENDIENTE, ARGUMENTADA (one per idea as
-    the video argues it) and MATIZ (six: one per idea and a sixth on idea 5, shown as «2 MATICES»).
+    the video argues it) and MATIZ (six, each on the idea it answers; two on one idea show as «2 MATICES»).
     Stamps big enough to read at 1080p; the full text of each nuance is on g03_idea."""
     rows = []
     for i, idea in enumerate(IDEAS):
         seals = [ARGUED] if i < argued else []
-        n = (1 if i < nuances else 0) + (1 if i == 4 and nuances >= 6 else 0)
+        n = NUANCE_IDEA[:nuances].count(i + 1)
         if n:
             seals.append({"lines": ["MATIZ" if n == 1 else f"{n} MATICES"], "ink": "copper"})
         rows.append([str(i + 1), idea, {"seals": seals} if seals else {"label": "Pendiente"}])
@@ -375,12 +377,15 @@ NUANCES = ["Es un borrador: comentarios hasta el 15 de noviembre",
            "El catálogo ya existía en 2020; a Manus lo frenó la NDRC",
            "Poco tiempo, agenda sin confirmar, ni el mismo nombre",
            "Muchas voces no es decidir de forma descentralizada"]
-NUANCE_IDEA = [1, 2, 3, 4, 5, 5]  # the idea each nuance answers (the sixth is the second one on idea 5)
+NUANCE_IDEA = [1, 3, 3, 1, 4, 5]  # the idea each nuance answers, by content (the sixth answers idea 5)
 
 
-def g03_idea(n, state="pendiente", nuance=0):
+def g03_idea(n=0, state="pendiente", nuance=0):
     """One idea of the card on its own, with a stamp you can read: PENDIENTE (the opening), ARGUMENTADA
-    (when the video has argued it) or, with nuance (1-6), a big MATIZ stamp with the nuance's text."""
+    (when the video has argued it) or, with nuance (1-6), a big MATIZ stamp with the nuance's text
+    on the idea it answers."""
+    if nuance:
+        n = NUANCE_IDEA[nuance - 1]
     o = dict(kicker=f"Mi lectura · idea {n} de 5", title=IDEAS[n - 1], opinion=True)
     seal = {"pendiente": PENDING, "argumentada": ARGUED}[state]
     if nuance:
