@@ -240,3 +240,17 @@ def test_highlighted_quote_marks_only_the_phrase(tmp_path):
     with Image.open(a) as ia, Image.open(b) as ib:
         assert graphics.BLUEPRINT.accent_soft not in set(ia.convert("RGB").get_flattened_data())
         assert graphics.BLUEPRINT.accent_soft in set(ib.convert("RGB").get_flattened_data())
+
+
+def test_punch_cuts_in_on_the_graphic(tmp_path):
+    from PIL import Image
+    card = {"kicker": "Prueba", "title": "Un título", "body": "Texto"}
+    wide = Image.open(graphics.overlay_card(card, tmp_path / "a.png", on_photo=False, theme="blueprint"))
+    close = Image.open(graphics.overlay_card({**card, "punch": {"zoom": 2, "at": [0, 0]}}, tmp_path / "b.png",
+                                             on_photo=False, theme="blueprint"))
+    assert close.size == wide.size
+    # the top-left quarter of the wide frame now fills the whole frame
+    expected = wide.convert("RGB").crop((0, 0, wide.width // 2, wide.height // 2)).resize(wide.size, Image.LANCZOS)
+    got = close.convert("RGB")
+    for xy in [(400, 400), (1200, 700), (300, 150)]:
+        assert all(abs(a - b) <= 3 for a, b in zip(got.getpixel(xy), expected.getpixel(xy)))

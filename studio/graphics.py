@@ -621,11 +621,26 @@ def opinion_tab(img: Image.Image) -> None:
     spaced(d, (x1 - width + 32, 22), OPINION_TAB, f, T.panel, tracking=5)
 
 
+def _punch(img: Image.Image, punch: dict) -> None:
+    """Cut in closer: crop the frame around `at` ([x, y], default the centre) by `zoom` (e.g. 1.4)
+    and scale it back to the full frame, in place. Gives a second framing of the same graphic,
+    so a long passage can cut between a wide and a close shot instead of holding one still."""
+    z = float(punch.get("zoom", 1.4))
+    cw, ch = W / z, H / z
+    cx, cy = punch.get("at", [W / 2, H / 2])
+    left = min(max(cx - cw / 2, 0), W - cw)
+    top = min(max(cy - ch / 2, 0), H - ch)
+    img.paste(img.crop((round(left), round(top), round(left + cw), round(top + ch))).resize((W, H), Image.LANCZOS))
+
+
 def _finish(img: Image.Image, overlay: dict, seals: list | None = None) -> None:
     """What goes on top of any blueprint graphic: rubber stamps (the graphic's own, then
-    `seals: [{..., at: [x, y]}]`) and the opinion tab (`opinion: true`)."""
+    `seals: [{..., at: [x, y]}]`), a closer framing (`punch: {zoom, at}`) and the opinion tab
+    (`opinion: true`)."""
     for seal in (seals or []) + list(overlay.get("seals", [])):
         stamp_on(img, seal)
+    if overlay.get("punch"):
+        _punch(img, overlay["punch"])
     if overlay.get("opinion"):
         opinion_tab(img)
 
@@ -1249,7 +1264,7 @@ def _bp_doc(d, o: dict) -> list:
       highlight (row index), foot: [cells] (a closing row under a double rule), kicker, title, caption.
     Cells: "text" | null (grey bars: the text is not known) | {code, focus} (a catalogue code
     whose last `focus` characters stand out) | {label} (small grey capitals, e.g. PENDIENTE) |
-    {seals: [seal, ...]} (stamped in the cell)."""
+    {seals: [seal, ...]} (stamped in the cell; seal_size sets their size)."""
     top = 140
     if o.get("kicker"):
         _bp_kicker(d, o["kicker"])
@@ -1303,7 +1318,7 @@ def _bp_doc(d, o: dict) -> list:
         elif isinstance(value, dict) and "seals" in value:
             n = len(value["seals"])
             for j, seal in enumerate(value["seals"]):
-                seals.append({"size": min(64, int(rh * 0.42)), **seal,
+                seals.append({"size": o.get("seal_size", min(64, int(rh * 0.42))), **seal,
                               "at": [cx + cw * (j + 0.5) / n - 10, yy + rh / 2]})
         else:
             tf = font("Inter-SemiBold.ttf" if strong else "Inter-Regular.ttf", 32 if rh >= 110 else 28)
