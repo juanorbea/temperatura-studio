@@ -7,8 +7,10 @@ consistent look, and simple code-made graphics, cut to the voice with ffmpeg.
 Five scripts have storyboards and images: `examples/gobernanza-ia.md` (video 1),
 `examples/japon-chips.md` (video 2), `examples/potencias-medias.md` (video 3),
 `examples/consenso-sf.md` (video 4, first of the series "Economía de la IA transformadora")
-and `examples/caballo.md` (video 5, "Tú eres el próximo caballo", headers like
-`[PARTE 1: ...]`, pizarra theme; 26 pictures reused across 57 shots).
+`examples/caballo.md` (video 5, "Tú eres el próximo caballo", headers like
+`[PARTE 1: ...]`, pizarra theme; 26 pictures reused across 57 shots) and
+`examples/anthropic.md` (video 6, Anthropic IPO / S-1, named sections like potencias,
+blueprint theme).
 
 ## How it works
 
@@ -24,7 +26,8 @@ and `examples/caballo.md` (video 5, "Tú eres el próximo caballo", headers like
      each, numbered in order. `[VFX ...]`, `[B-ROLL ...]` and `[CÁMARA ...]` at the start
      of a line are visual direction; `NARRADOR:` is optional; every other line is a
      paragraph. Header lines (Versión, Duración, Tono, Formato) are skipped and source
-     tags such as `[3]`, `[12, 13]` or `[opinión Juan]` are dropped.
+     tags such as `[3]`, `[12, 13]` or `[opinión Juan]` are dropped. A VFX cue may nest a `[check ...]` note; source tags
+     such as `[S-1 p.64]`, `[cálculo]`, `[X: Bustamante]` or `[OpenRouter]` are dropped too.
    - Markdown (`examples/china-ia-01.md`, video 7): the writers' drafts use `##` headings,
      cues in italics `*[...]*` and `**NARRADOR:**`. `scripts/convert_markdown_script.py` turns
      a draft into a build copy in the section format and never changes the draft. Every

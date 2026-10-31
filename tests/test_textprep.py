@@ -8,7 +8,7 @@ from studio.textprep import Lexicon, heard_text, load_lexicon, number_words, num
 LEX = Lexicon(
     translate={"Chips for Peace": "Chips para la Paz", "EE. UU.": "Estados Unidos", "AI": "IA",
                "Global AI Governance Forecasts 2025-2060": "Pronósticos de la IA, de 2025 a 2060"},
-    respell={"IA": "í a", "Good Judgment Inc.": "Gud Yóchment", "Nvidia": "Envidia"},
+    respell={"IA": "í a", "Good Judgment Inc.": "Gud Yóchment", "Nvidia": "Envídia"},
 )
 
 
@@ -44,7 +44,7 @@ def test_translations_and_respellings_go_to_the_voice():
 def test_whisper_is_expected_to_hear_translations_but_not_respellings():
     text = "una IA segura, firmada por EE. UU. y gigantes como Nvidia"
     assert heard_text(text, LEX) == "una IA segura, firmada por Estados Unidos y gigantes como Nvidia"
-    assert voice_text(text, LEX) == "una í a segura, firmada por Estados Unidos y gigantes como Envidia"
+    assert voice_text(text, LEX) == "una í a segura, firmada por Estados Unidos y gigantes como Envídia"
 
 
 def test_whole_words_only_and_case_sensitive():
@@ -62,13 +62,13 @@ def test_juans_lexicon_loads_and_covers_the_script_terms():
     f5 = load_lexicon(Path("voices/juan/pronunciations.yaml"), "f5-tts")
     assert voice_text(text, f5) == "la í a de Estados Unidos y Chips para la Paz en Euro hache pe ce con poder de cómputo"
     omni = load_lexicon(Path("voices/juan/pronunciations.yaml"), "omnivoice")
-    assert voice_text(text, omni) == "la IA de Estados Unidos y Chips para la Paz en Euro hache pe ce con poder de cómputo"
+    assert voice_text(text, omni) == "la ía de Estados Unidos y Chips para la Paz en Euro hache pe ce con poder de cómputo"
 
 
 def test_juans_omnivoice_lexicon_keeps_spanish_spellings_of_english_names():
     omni = load_lexicon(Path("voices/juan/pronunciations.yaml"), "omnivoice")
     said = voice_text("la AGI según Good Judgment Inc., la OPCW y el OIEA", omni)
-    assert said == "la IA general según Gud Yóchment, la o pe ce uve doble y el OIEA"
+    assert said == "la ía general según Gud Yóchment, la o pe ce uve doble y el OIEA"
 
 
 def test_question_mark_left_before_a_removed_citation_is_cleaned():
@@ -84,3 +84,31 @@ def test_juans_lexicon_covers_the_japan_script():
                     "de su pe i be.")
     assert voice_text("Chris Miller, el autor de Chip War, y los hot lots.", omni) == \
         "Cris Míler, el autor de La guerra de los chips, y los lotes prioritarios."
+
+
+def test_decimal_with_leading_zero_keeps_the_zero():
+    assert numbers_to_words("unos 2,08 dólares y 0,40") == "unos dos coma cero ocho dólares y cero coma cuarenta"
+
+
+def test_juans_lexicon_covers_the_anthropic_script():
+    omni = load_lexicon(Path("voices/juan/pronunciations.yaml"), "omnivoice")
+    said = voice_text(
+        "Anthropic bajó con Opus 5.5 frente a Opus 4.5 y Fable 5.1; Mythos 5 y el S-1 de la SEC. "
+        "Claude Code y Claude Enterprise en Amazon Bedrock y Google Vertex. "
+        "SpaceXAI, la antigua xAI de Elon Musk. SAFE, Trainium, TPU, GPU de NVIDIA y AMD. "
+        "OpenRouter, Ornn, Broadcom, Nscale, Lambda, Fortune 500, Cowork, tokens y marketplaces. "
+        "El Long-Term Benefit Trust. Nicolas Bustamante. Un 1.368 % y 2,08 dólares. La IA.",
+        omni)
+    assert "Ánzropic" in said and "Clod Coud" in said and "Clod Énterprais" in said
+    assert "Ópus cinco coma cinco" in said and "Féibol cinco coma uno" in said and "Mízos cinco" in said
+    assert "ese uno" in said and "ese e ce" in said and "séif" in said
+    assert "Ámazon Bédrok" in said and "Gúgel Vértex" in said
+    assert "Spéis ex ei ai" in said and "ex ei ai" in said and "Ílon Mask" in said
+    assert "Treínium" in said and "te pe u" in said and "ge pe u" in said and "Envídia" in said
+    assert "Ópen ráuter" in said and "Orn" in said and "Bródcom" in said and "En squéil" in said
+    assert "Fórchun quinientas" in said and "Cóuork" in said and "tókens" in said and "marquetpleisis" in said
+    assert "fideicomiso de beneficio a largo plazo" in said and "Nicolás Bustamante" in said
+    assert "mil trescientos sesenta y ocho por ciento" in said and "dos coma cero ocho" in said
+    assert "ía" in said
+    assert "Anthropic" not in said and "Claude" not in said and "S-1" not in said
+    assert "5.5" not in said and "2,08" not in said
