@@ -45,6 +45,20 @@ blueprint theme).
    going from one value to another), `steps` (dated timeline), `lot` (a 25-wafer
    lot against single wafers), `places` (map of Japan), `figures` (big
    numbers) and `path` (a narrow path between two cliffs). See `storyboards/japon-chips/` for examples.
+   Series «China y la IA» (video 7) adds to blueprint one colour only, seal vermilion
+   (`graphics.VERMILION`, used only for the J level / «prohibido»), and a copper «MI LECTURA»
+   tab for Juan's opinion shots: `opinion: true` on any blueprint overlay (on a picture, an
+   overlay with only `opinion: true` draws just the tab). Chinese characters in any blueprint
+   text are drawn with Noto Serif CJK SC (SIL OFL; a 2.6 MB subset per weight of the 3,755
+   common characters, rebuilt with `python3 -m scripts.subset_cjk_font --text "..."`).
+   Its graphics: `stamp` (one to three rubber stamps; `ink: j` vermilion, `x` hollow navy,
+   `ink`, `copper`), `seals: [{..., at: [x, y]}]` to stamp on top of any blueprint graphic,
+   `doc` (a ruled document: catalogue rows with codes and grey bars where the text is not
+   known, the case-file card of Juan's ideas with ARGUMENTADA / MATIZ stamps, the four-ways
+   matrix; rows revealed one per shot) and `expediente` (the series ident
+   «CHINA Y LA IA · EXPEDIENTE 0N», `graphics.opener(n, status)`). Quote cards take
+   `highlight: [phrases]` and `size`; `people` takes `show` and a `seal` per card; `steps`
+   takes `muted` and `span`; a bar can be `ink: j`; `lit` takes `link` (an arc).
    `theme: editorial` (video 4) draws the same graphics on cream paper with serif
    titles (DM Serif Display), copper numbers, olive stat boxes and a line-art
    skyline. Extra full-frame graphics in both paper themes: `people` (text cards

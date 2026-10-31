@@ -86,6 +86,21 @@ def test_juans_lexicon_covers_the_japan_script():
         "Cris Míler, el autor de La guerra de los chips, y los lotes prioritarios."
 
 
+def test_juans_lexicon_covers_the_china_series():
+    omni = load_lexicon(Path("voices/juan/pronunciations.yaml"), "omnivoice")
+    # catalogue codes digit by digit, never "doscientos sesenta y seis mil..."
+    assert voice_text("266402J. 266404X.", omni) == (
+        "Dos, seis, seis, cuatro, cero, dos, jota. Dos, seis, seis, cuatro, cero, cuatro, equis.")
+    assert voice_text("La J viene de 禁, prohibido. La X viene de 限.", omni) == (
+        "La jota viene de yin, prohibido. La equis viene de sián.")
+    assert voice_text("lo llama 即报即出, algo así", omni) == "lo llama yí bao yí chu, algo así"
+    assert "Mófcom" in voice_text("MOFCOM", omni) and "Dipsík" in voice_text("DeepSeek", omni)
+    # IA is respelled "ía" (from video 6); Concordia AI is read the same way
+    assert voice_text("boletines de Concordia AI sobre la IA", omni) == "boletines de Concordia ía sobre la ía"
+    # what Whisper should hear keeps the script's wording
+    assert heard_text("266402J.", omni) == "266402J."
+
+
 def test_decimal_with_leading_zero_keeps_the_zero():
     assert numbers_to_words("unos 2,08 dólares y 0,40") == "unos dos coma cero ocho dólares y cero coma cuarenta"
 

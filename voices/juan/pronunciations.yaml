@@ -70,6 +70,42 @@ translate:   # Whisper is expected to hear these Spanish words
 respell:     # how to write it so the voice says it right (every engine)
   # Kept for OmniVoice too: English names and acronyms, so they are said the Spanish way
   # (Juan's rule), and spellings that tested as good or better with OmniVoice.
+  # china-ia-01 (serie China y la IA, episodio 1). Catalogue codes are said digit by digit
+  # and the last letter by its name (otherwise "doscientos sesenta y seis mil..."); single
+  # J and X are the two levels of the catalogue. The voice engines do not read Chinese
+  # characters, so they get the pinyin spelled the Spanish way. Spellings from the direction plan.
+  "266402J": "Dos, seis, seis, cuatro, cero, dos, jota"
+  "266404X": "Dos, seis, seis, cuatro, cero, cuatro, equis"
+  "J": "jota"
+  "X": "equis"
+  "禁": "yin"
+  "限": "sián"
+  "即报即出": "yí bao yí chu"
+  "MOFCOM": "Mófcom"
+  "MOST": "Móst"
+  "NDRC": "ene de erre ce"
+  "CAC": "ce a ce"
+  "CCTV": "ce ce te uve"
+  "TC260": "te ce doscientos sesenta"
+  "Apache": "Apáchi"
+  "DeepSeek": "Dipsík"
+  "MiniMax": "Mínimax"
+  "ByteDance": "Báitdans"
+  "Caixin": "Cáisin"
+  "WeChat": "Uichát"
+  "Yuyuan Tantian": "Yuyuán Tantián"
+  "Xi Jinping": "Shi Yinpín"
+  "Zhejiang": "Yeyiáng"
+  "Wenzhou": "Uenyóu"
+  "Lin Qianduo": "Lin Chienduó"
+  "Zhang Wenxian": "Yang Uensién"
+  "Shi Jianzhong": "Shi Yienyóng"
+  "Shou Bu": "Shou Bu"
+  "Jiao Tong": "Yiáo Tong"
+  "Gabriel Wagner": "Gabriel Vágner"
+  "Erik Lindblad": "Érik Líndblad"
+  "ARTEX": "Ártex"
+  "Manus": "Mánus"
   "Good Judgment": "Gud Yóchment"
   "OPCW": "o pe ce uve doble"
   "INAISI": "Ináisi"

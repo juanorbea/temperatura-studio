@@ -1,6 +1,6 @@
 """The full-frame graphics render at video size, and refuse to go on top of a photo."""
 import pytest
-from PIL import Image
+from PIL import Image, ImageDraw
 
 from studio import graphics
 
@@ -145,3 +145,112 @@ def test_pizarra_overlays_on_a_picture_are_transparent_and_full_frame_ones_refus
     card = graphics.title_card("Tú eres el próximo caballo", "Introducción", tmp_path / "t.png", theme="pizarra")
     with Image.open(card) as img:
         assert img.convert("RGB").getpixel((10, 10)) == (228, 244, 253)
+
+
+def _glyph(text):
+    img = Image.new("RGB", (200, 120), "white")
+    graphics.draw_text(ImageDraw.Draw(img), (20, 20), text, graphics.font("Inter-Bold.ttf", 80), "black")
+    return img
+
+
+def test_chinese_characters_draw_with_the_cjk_font():
+    # with a font that lacks them, both would be the same empty box
+    assert _glyph("禁").tobytes() != _glyph("限").tobytes()
+    assert graphics.cjk_font(graphics.font("Inter-Bold.ttf", 40)).path.endswith("NotoSerifCJKsc-Bold.otf")
+    assert graphics.cjk_font(graphics.font("Inter-Regular.ttf", 40)).path.endswith("NotoSerifCJKsc-Regular.otf")
+
+
+def test_text_without_chinese_draws_exactly_as_before():
+    a = Image.new("RGB", (400, 120), "white")
+    b = a.copy()
+    f = graphics.font("Inter-Regular.ttf", 40)
+    ImageDraw.Draw(a).text((10, 10), "Catálogo «J»", font=f, fill="black")
+    graphics.draw_text(ImageDraw.Draw(b), (10, 10), "Catálogo «J»", f, "black")
+    assert a.tobytes() == b.tobytes()
+
+
+def test_opinion_tab_in_copper_only_when_asked(tmp_path):
+    card = {"kicker": "Idea 1", "title": "De defenderse a imponer"}
+    plain = graphics.overlay_card(card, tmp_path / "a.png", on_photo=False, theme="blueprint")
+    tab = graphics.overlay_card({**card, "opinion": True}, tmp_path / "b.png", on_photo=False, theme="blueprint")
+    with Image.open(plain) as a, Image.open(tab) as b:
+        assert a.convert("RGB").getpixel((1700, 20)) != graphics.BLUEPRINT.accent
+        assert b.convert("RGB").getpixel((1700, 20)) == graphics.BLUEPRINT.accent
+    only = graphics.overlay_card({"opinion": True}, tmp_path / "c.png", on_photo=True, theme="blueprint")
+    with Image.open(only) as c:
+        assert c.getpixel((960, 540))[3] == 0 and c.getpixel((1700, 20))[3] == 255
+
+
+def test_vermilion_is_the_one_new_colour():
+    assert graphics.VERMILION == (178, 52, 40)
+    assert graphics.VERMILION not in {getattr(graphics.BLUEPRINT, f) for f in graphics.BLUEPRINT.__dataclass_fields__}
+
+
+J_SEAL = {"big": "J", "lines": ["禁 jìn", "PROHIBIDO"], "ink": "j"}
+X_SEAL = {"big": "X", "lines": ["限 xiàn", "RESTRINGIDO"], "ink": "x"}
+CHINA = {
+    "stamp": {"stamp": [J_SEAL, X_SEAL]},
+    "doc": {"doc": "Catálogo", "tag": "BORRADOR", "columns": [{"label": "Código", "width": 500}, {"label": "Nivel"}],
+            "rows": [[{"code": "266402J", "focus": 1}, {"seals": [J_SEAL]}], [{"code": "266404X", "focus": 1}, None]],
+            "foot": ["Conclusión", {"label": "pendiente"}]},
+    "expediente": graphics.opener(1),
+}
+
+
+@pytest.mark.parametrize("name", CHINA)
+def test_china_series_graphics_render_on_blueprint(tmp_path, name):
+    out = graphics.overlay_card(CHINA[name], tmp_path / f"{name}.png", on_photo=False, theme="blueprint")
+    with Image.open(out) as img:
+        assert img.size == (1920, 1080)
+
+
+def test_j_seal_is_vermilion_and_x_seal_is_hollow_navy():
+    j, x = graphics.seal_image({**J_SEAL, "angle": 0}), graphics.seal_image({**X_SEAL, "angle": 0})
+    colours = lambda im: {px[:3] for px in im.get_flattened_data() if px[3] > 200}
+    assert graphics.VERMILION in colours(j) and graphics.BLUEPRINT.ink not in colours(j)
+    assert graphics.BLUEPRINT.ink in colours(x) and graphics.VERMILION not in colours(x)
+    # hollow: the middle of the big X's stroke is not inked as it would be with a solid letter
+    solid = graphics.seal_image({**X_SEAL, "ink": "ink", "angle": 0})
+    assert sum(p[3] > 200 for p in x.get_flattened_data()) < sum(p[3] > 200 for p in solid.get_flattened_data())
+
+
+def test_a_stamp_is_the_same_every_time():
+    assert graphics.seal_image(J_SEAL).tobytes() == graphics.seal_image(J_SEAL).tobytes()
+
+
+def test_seals_can_go_on_any_blueprint_graphic(tmp_path):
+    base = {"kicker": "Hoy", "title": "Cifras", "figures": [{"value": "40", "label": "tecnologías"}]}
+    a = graphics.overlay_card(base, tmp_path / "a.png", on_photo=False, theme="blueprint")
+    b = graphics.overlay_card({**base, "seals": [{"lines": ["16 OCT 2026"], "at": [1500, 300]}]},
+                              tmp_path / "b.png", on_photo=False, theme="blueprint")
+    with Image.open(a) as ia, Image.open(b) as ib:
+        assert ia.tobytes() != ib.tobytes()
+
+
+def test_opener_says_the_episode_and_its_status():
+    assert graphics.opener(2, "próximamente") == {"expediente": {"series": "CHINA Y LA IA", "number": 2,
+                                                                 "status": "próximamente"}}
+
+
+def test_highlighted_quote_marks_only_the_phrase(tmp_path):
+    quote = {"kicker": "MOFCOM", "title": "«actores no estatales» y nada más"}
+    a = graphics.overlay_card(quote, tmp_path / "a.png", on_photo=False, theme="blueprint")
+    b = graphics.overlay_card({**quote, "highlight": ["actores no estatales"]}, tmp_path / "b.png",
+                              on_photo=False, theme="blueprint")
+    with Image.open(a) as ia, Image.open(b) as ib:
+        assert graphics.BLUEPRINT.accent_soft not in set(ia.convert("RGB").get_flattened_data())
+        assert graphics.BLUEPRINT.accent_soft in set(ib.convert("RGB").get_flattened_data())
+
+
+def test_punch_cuts_in_on_the_graphic(tmp_path):
+    from PIL import Image
+    card = {"kicker": "Prueba", "title": "Un título", "body": "Texto"}
+    wide = Image.open(graphics.overlay_card(card, tmp_path / "a.png", on_photo=False, theme="blueprint"))
+    close = Image.open(graphics.overlay_card({**card, "punch": {"zoom": 2, "at": [0, 0]}}, tmp_path / "b.png",
+                                             on_photo=False, theme="blueprint"))
+    assert close.size == wide.size
+    # the top-left quarter of the wide frame now fills the whole frame
+    expected = wide.convert("RGB").crop((0, 0, wide.width // 2, wide.height // 2)).resize(wide.size, Image.LANCZOS)
+    got = close.convert("RGB")
+    for xy in [(400, 400), (1200, 700), (300, 150)]:
+        assert all(abs(a - b) <= 3 for a, b in zip(got.getpixel(xy), expected.getpixel(xy)))
