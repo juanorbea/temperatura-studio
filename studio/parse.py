@@ -42,7 +42,8 @@ SECTION_PREFIX_RE = re.compile(r"^SECCIÓN\s+\d+:\s*")
 # Bracketed headers (caballo): [INTRODUCCIÓN: title], [PARTE N: title]; the title is what follows the colon.
 BRACKET_HEADER_RE = re.compile(r"^\[(?:INTRODUCCIÓN|PARTE\s+\d+|CONCLUSIÓN)\s*:?\s*(.*?)\]$")
 # Direction tags open a line: [VFX / ...], [B-ROLL: ...], [CÁMARA EN PLANO MEDIO].
-DIRECTION_RE = re.compile(r"^\s*\[((?:VFX|B-ROLL|CÁMARA)\b[^\]]*)\]")
+# A cue may nest one bracketed note, e.g. [VFX ... [check etiquetas: ...]].
+DIRECTION_OPEN_RE = re.compile(r"^\s*\[((?:VFX|B-ROLL|CÁMARA)\b)")
 # A sentence ends at . ? ! (optionally followed by a closing quote, which it keeps) before whitespace.
 SENTENCE_END_RE = re.compile(r'(?<=[.?!])\s+|(?<=[.?!]["»”])\s+')
 # ...but not after "EE." (of "EE. UU.") or a list number like "1." that starts the sentence,
@@ -58,6 +59,27 @@ class Module:
     title: str
     visual: str
     narration: str  # citation markers removed, paragraphs separated by blank lines
+
+
+
+def match_direction(line: str) -> tuple[str, str] | None:
+    """If line starts with a VFX/B-ROLL/CÁMARA cue, return (inner text, remainder).
+
+    Handles one level of nested brackets inside the cue (a [check ...] note)."""
+    m = DIRECTION_OPEN_RE.match(line)
+    if not m:
+        return None
+    start = line.find("[")
+    depth = 0
+    for i in range(start, len(line)):
+        if line[i] == "[":
+            depth += 1
+        elif line[i] == "]":
+            depth -= 1
+            if depth == 0:
+                return line[start + 1:i].strip(), line[i + 1:]
+    # Unclosed: treat the rest of the line as the cue so nothing leaks into narration.
+    return line[start + 1:].strip(), ""
 
 
 def strip_citations(text: str) -> str:
@@ -134,9 +156,9 @@ def _parse_sections(text: str) -> list[Module]:
         end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
         visuals, paragraphs = [], []
         for line in text[m.end():end].splitlines():
-            while tag := DIRECTION_RE.match(line):
-                visuals.append(tag.group(1).strip())
-                line = line[tag.end():]
+            while pair := match_direction(line):
+                visuals.append(pair[0])
+                line = pair[1]
             line = re.sub(r"^\s*NARRADOR:\s*", "", line)
             if paragraph := strip_source_tags(" ".join(line.split())):
                 paragraphs.append(paragraph)
