@@ -50,6 +50,23 @@ translate:   # Whisper is expected to hear these Spanish words
   # consenso-sf (video 4)
   "ex-CEO": "ex consejero delegado"
 
+  # anthropic (video 6). Versioned model names use a dot that number-to-words would split.
+  "Opus 5.5": "Ópus cinco coma cinco"
+  "Opus 4.5": "Ópus cuatro coma cinco"
+  "Opus 5": "Ópus cinco"
+  "Fable 5.1": "Féibol cinco coma uno"
+  "Fable 5": "Féibol cinco"
+  "Mythos 5": "Mízos cinco"
+  "Fortune 500": "Fórchun quinientas"
+  "Long-Term Benefit Trust": "fideicomiso de beneficio a largo plazo"
+  "Claude Code": "Clod Coud"
+  "Claude Enterprise": "Clod Énterprais"
+  "Amazon Bedrock": "Ámazon Bédrok"
+  "Google Vertex": "Gúgel Vértex"
+  "S-1": "ese uno"
+  "1.er semestre": "primer semestre"
+  "3.er trimestre": "tercer trimestre"
+
 respell:     # how to write it so the voice says it right (every engine)
   # Kept for OmniVoice too: English names and acronyms, so they are said the Spanish way
   # (Juan's rule), and spellings that tested as good or better with OmniVoice.
@@ -94,7 +111,7 @@ respell:     # how to write it so the voice says it right (every engine)
   "INAISI": "Ináisi"
   "CERN": "Cern"
   "EuroHPC": "Euro hache pe ce"
-  "Nvidia": "Envidia"
+  "Nvidia": "Envídia"
   "Stargate": "Stárgueit"
   "Microsoft": "Máicrosoft"
   "Washington": "Guáshinton"
@@ -141,9 +158,9 @@ respell:     # how to write it so the voice says it right (every engine)
   "LLMs": "ele ele eme"
   "LLM": "ele ele eme"
   "ChatGPT": "chat ye pe té"
-  "OpenAI": "Óupen ei ái"
+  "OpenAI": "Ópen ei ai"
   "DeepMind": "Dip Máind"
-  "Anthropic": "Anzrópic"
+  "Anthropic": "Ánzropic"
   "Sam Altman": "Sam Áltman"
   "Demis Hassabis": "Démis Jasábis"
   "Dario Amodei": "Dário Amodéi"
@@ -176,7 +193,37 @@ respell:     # how to write it so the voice says it right (every engine)
   "Waymo": "Uéimo"
   "John Deere": "Yon Díar"
 
+  # anthropic (video 6)
+  "Claude": "Clod"
+  "SAFE": "séif"
+  "SEC": "ese e ce"
+  "Trainium": "Treínium"
+  "TPU": "te pe u"
+  "GPU": "ge pe u"
+  "NVIDIA": "Envídia"
+  "AMD": "a eme de"
+  "Amazon": "Ámazon"
+  "SpaceXAI": "Spéis ex ei ai"
+  "xAI": "ex ei ai"
+  "Elon Musk": "Ílon Mask"
+  "Nicolas Bustamante": "Nicolás Bustamante"
+  "Cowork": "Cóuork"
+  "Opus": "Ópus"
+  "Mythos": "Mízos"
+  "Fable": "Féibol"
+  "OpenRouter": "Ópen ráuter"
+  "Ornn": "Orn"
+  "Broadcom": "Bródcom"
+  "Nscale": "En squéil"
+  "Lambda": "Lambda"
+  "tokens": "tókens"
+  "marketplaces": "marquetpleisis"
+  "Pro y Max": "Pro y Max"
+
 engine_respell:   # only for one engine; wins over respell
+  omnivoice:
+    # Juan's rule: IA is said «ía» (stress on i). OmniVoice reads this spelling cleanly.
+    "IA": "ía"
   f5-tts:
     # OmniVoice says these right as written: in an A/B on the script's sentences
     # (Whisper check, 2 seeds each) these spellings did not help it, and "í a" made
