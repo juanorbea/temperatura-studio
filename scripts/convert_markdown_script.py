@@ -6,6 +6,11 @@ The writers' drafts (e.g. writing/china-ia-01-exportaciones/draft.md) look like 
   *[B-ROLL: ...]*  *[VFX / ...]*            -> [B-ROLL: ...]  [VFX / ...]  (visual direction)
   *[CÁMARA EN PLANO MEDIO]*                 -> [CÁMARA EN PLANO MEDIO → PERSONAJE IA: ...]
   **NARRADOR:** text                        -> NARRADOR: text
+  ### Subheading                            -> dropped (put it in a shot's kicker), unless --section
+                                               names it: then it starts a module of its own
+
+--section "Subheading" (repeatable) promotes a ### subheading to a module; --title "Heading=New title"
+(repeatable) renames a module in the copy (the title of its section header).
 
 The channel never shows Juan on camera, so every CÁMARA cue becomes a shot of the AI
 character (Juan's mannequin); the converted cue says so and the storyboard follows it.
@@ -21,6 +26,7 @@ import re
 from pathlib import Path
 
 HEADING_RE = re.compile(r"^##\s+(.+?)\s*$")
+SUBHEADING_RE = re.compile(r"^###\s+(.+?)\s*$")
 CUE_RE = re.compile(r"\*\[((?:VFX|B-ROLL|CÁMARA)\b[^\]]*)\]\*")
 NARRATOR_RE = re.compile(r"\*\*NARRADOR:\*\*\s*")
 TAG_RE = re.compile(r"\s*\[[^\[\]\n]+\]")  # source tags like [1] or [opinión Juan]
@@ -34,15 +40,26 @@ def _cue(text: str) -> str:
     return f"[{text}]"
 
 
-def convert(markdown: str, pending: str = "") -> str:
+def convert(markdown: str, pending: str = "", promote: tuple[str, ...] = (),
+            titles: dict[str, str] | None = None) -> str:
     """Return the build copy. pending: the start of the first narration line that must not be
-    voiced yet; it and every narration line after it become PENDIENTE cues."""
+    voiced yet; it and every narration line after it become PENDIENTE cues. promote: ###
+    subheadings that start a module of their own (every other ### line is dropped). titles:
+    heading text -> title to use in the copy."""
     sections: list[tuple[str, list[str]]] = []
+    titles = titles or {}
     held = False
+    missing = set(promote) | set(titles)
     for raw in markdown.splitlines():
-        if m := HEADING_RE.match(raw):
-            sections.append((m.group(1).replace("]", ")"), []))
+        m = HEADING_RE.match(raw)
+        sub = SUBHEADING_RE.match(raw)
+        if m or (sub and sub.group(1) in promote):
+            heading = (m or sub).group(1)
+            missing.discard(heading)
+            sections.append((titles.get(heading, heading).replace("]", ")"), []))
             continue
+        if sub:
+            continue  # a subchapter: its name goes in a shot's kicker, not in the voice
         if not sections:
             continue  # title and header notes
         line = CUE_RE.sub(lambda m: _cue(m.group(1)), raw.strip())
@@ -57,6 +74,8 @@ def convert(markdown: str, pending: str = "") -> str:
             words = TAG_RE.sub("", speech.replace("NARRADOR: ", "")).strip()
             line = f"{cues}[B-ROLL: PENDIENTE DE JUAN, sin locución todavía: «{words}»]"
         sections[-1][1].append(line)
+    if missing:
+        raise ValueError(f"headings not found: {sorted(missing)}")
     if pending and not held:
         raise ValueError(f"--pending text not found in the narration: {pending!r}")
     if len(sections) < 2:
@@ -74,12 +93,16 @@ def main() -> None:
     ap.add_argument("source", type=Path)
     ap.add_argument("out", type=Path)
     ap.add_argument("--pending", default="", help="start of the first narration line not to voice yet")
+    ap.add_argument("--section", action="append", default=[], help="### subheading that starts a module")
+    ap.add_argument("--title", action="append", default=[], help="'Heading=New title' for a module")
     args = ap.parse_args()
+    titles = dict(t.split("=", 1) for t in args.title)
     if args.source.resolve() == args.out.resolve():
         raise SystemExit("the build copy must be a different file; the original is never changed")
     header = (f"<!-- Build copy of {args.source.name}, made by scripts/convert_markdown_script.py. "
               "Edit the original and convert again. -->\n")
-    args.out.write_text(header + convert(args.source.read_text(encoding="utf-8"), args.pending), encoding="utf-8")
+    args.out.write_text(header + convert(args.source.read_text(encoding="utf-8"), args.pending,
+                                     tuple(args.section), titles), encoding="utf-8")
     print(f"{args.out}")
 
 

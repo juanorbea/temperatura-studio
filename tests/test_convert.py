@@ -68,3 +68,32 @@ def test_the_original_is_never_overwritten(tmp_path):
     with pytest.raises(SystemExit):
         conv.main()
     assert src.read_text(encoding="utf-8") == DRAFT
+
+
+SUBS = """# Título
+
+## Uno
+
+**NARRADOR:** Primera frase.
+
+### Un subcapítulo
+
+**NARRADOR:** Segunda frase.
+
+### Otro módulo
+
+**NARRADOR:** Tercera frase.
+
+## Final: dos
+
+**NARRADOR:** Cuarta frase.
+"""
+
+
+def test_subheadings_are_dropped_unless_promoted_and_titles_can_be_renamed():
+    modules = parse_script(convert(SUBS, promote=("Otro módulo",), titles={"Final: dos": "Dos"}))
+    assert [m.title for m in modules] == ["Uno", "Otro módulo", "Dos"]
+    assert modules[0].narration == "Primera frase.\n\nSegunda frase."
+    assert "###" not in convert(SUBS)
+    with pytest.raises(ValueError, match="not found"):
+        convert(SUBS, promote=("No existe",))
