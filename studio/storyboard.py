@@ -53,11 +53,12 @@ def load(path: Path) -> Storyboard:
 
 
 def check_coverage(board: Storyboard, module: Module) -> None:
-    """Fail unless the shots, in order, cover the module narration exactly once."""
+    """Fail unless the shots, in order, cover the module narration exactly once. A shot with no
+    text is silent: it lasts its lead_in + tail (a chapter card or a coda with no voice)."""
     for s in board.shots:
         if CITATION_RE.search(s.text):
             raise ValueError(f"{s.id}: citation or source tag left in voice text: {s.text!r}")
-    joined = " ".join(s.text.strip() for s in board.shots)
+    joined = " ".join(s.text.strip() for s in board.shots if s.text.strip())  # silent shots have no text
     expected = " ".join(module.narration.split())
     if joined != expected:
         i = next((k for k, (a, b) in enumerate(zip(joined, expected)) if a != b),
