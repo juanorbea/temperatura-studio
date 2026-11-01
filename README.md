@@ -160,7 +160,10 @@ character always in white gloves). The 45 pictures are in
 ```
 
 `scripts/finish_video.py` joins the built modules and normalises the mix to -16 LUFS
-integrated and at most -1 dBTP (two-pass loudnorm), into `OUT/STEM_final.mp4`.
+integrated and at most -1 dBTP (two-pass loudnorm), into `OUT/STEM_final.mp4`. A faint room tone
+(soft brown noise, about -35 LUFS after the mix) runs underneath, so the silent cards and the coda
+are never digital silence. On a picture, a blueprint card can sit on the right (`side: right`) to
+keep clear of a subject on the left.
 
 **Editing the >5 GW figure.** The words live in the draft
 (`/workspace/writing/trillion-dollar-chasm/draft.md`, lines 21 hook, 185 ramp, 235 ending) and in

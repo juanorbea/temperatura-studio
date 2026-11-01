@@ -518,7 +518,7 @@ def _chip_schematic(d, cx: int, cy: int, size: int) -> None:
 
 def _bp_overlay_card(overlay: dict, out: Path, on_photo: bool) -> Path:
     """Blueprint graphics. Full frame on paper: one of the BP_FULL_FRAME kinds.
-    On a photo: a paper card on the left with kicker, title and body (or from + to)."""
+    On a photo: a paper card on the left (or `side: right`) with kicker, title and body (or from + to)."""
     if "haiku" in overlay:
         return _bp_haiku(overlay, out, on_photo)
     for kind, draw in BP_FULL_FRAME.items():
@@ -539,8 +539,9 @@ def _bp_overlay_card(overlay: dict, out: Path, on_photo: bool) -> Path:
         img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         card = blueprint_paper(780, 760).convert("RGBA")
         card.putalpha(242)
-        img.alpha_composite(card, (BP_MARGIN - 40, 160))
-        x, y, width = BP_MARGIN, 220, 690
+        left = W - BP_MARGIN - 740 if overlay.get("side") == "right" else BP_MARGIN - 40  # right: off the subject
+        img.alpha_composite(card, (left, 160))
+        x, y, width = left + 40, 220, 690
     else:
         img = blueprint_paper().convert("RGBA")
         x, y, width = BP_MARGIN, 300, 1200
