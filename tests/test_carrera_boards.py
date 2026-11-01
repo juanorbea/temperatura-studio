@@ -52,3 +52,11 @@ def test_gw_sentences_are_found_where_the_hook_ramp_and_ending_say_them():
     assert all(found.values())
     assert any("Blackwell" in u for u in found[1]) and any("Blackwell" in u for u in found[6])
     assert any("más de 5" in u for u in found[8])
+
+
+@pytest.mark.parametrize("n", sorted(B.P))
+def test_build_cuts_the_voice_into_the_same_pieces_as_the_cache(n):
+    """The narration is generated ahead per piece of units(n); the build must ask for the same pieces."""
+    from studio import clone
+    board = storyboard.load(Path(f"storyboards/carrera-del-billon/module{n}.yaml"))
+    assert [p.text for p in clone.pieces_for_shots(board.shots, set(), 160)] == units(n)

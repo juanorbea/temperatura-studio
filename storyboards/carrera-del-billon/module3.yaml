@@ -140,18 +140,34 @@ shots:
       label: Sin centro de datos propio
     - date: '4'
       label: Margen menor
+    highlight: 1
+    caption: ''
+  text: Cuando vende un sistema, cobra al entregarlo,
+- id: m3-10
+  type: text_overlay
+  overlay:
+    kicker: Vender
+    title: Cuando Google vende un sistema
+    steps:
+    - date: '1'
+      label: Entrega
+    - date: '2'
+      label: Cobra
+    - date: '3'
+      label: Sin centro de datos propio
+    - date: '4'
+      label: Margen menor
     highlight: 3
     caption: ''
-  text: Cuando vende un sistema, cobra al entregarlo, no pone ni el centro de datos ni los servidores, y acepta
-    un margen menor.
-- id: m3-10
+  text: no pone ni el centro de datos ni los servidores, y acepta un margen menor.
+- id: m3-11
   type: image
   prompt: Symmetrical one-point perspective down a very long data-centre aisle at night between rows of unmarked
     server racks, cool blue indicator glow, one warm amber light at the end, no screens with text. 24 mm wide establishing
     shot, low horizon.
   motion: pan_left
   text: 'Kurian lo dijo así: poner sistemas TPU en instalaciones de terceros y de clientes'
-- id: m3-11
+- id: m3-12
   type: text_overlay
   overlay:
     kicker: Kurian
@@ -163,7 +179,7 @@ shots:
     highlight: 0
     caption: ''
   text: «también compensa la necesidad de tener que construir instalaciones por adelantado».
-- id: m3-12
+- id: m3-13
   type: text_overlay
   overlay:
     kicker: Mi lectura
@@ -172,7 +188,7 @@ shots:
     to: Capital
     opinion: true
   text: Google está cambiando margen por capital.
-- id: m3-13
+- id: m3-14
   type: text_overlay
   prompt: A data-centre construction site at night under tall work lights, cable trays and trenches, steel frame,
     no people, no signage. 24 mm wide establishing shot, low horizon. Main subject in the right two thirds, calm
@@ -183,7 +199,7 @@ shots:
     body: ''
   motion: pan_left
   text: Para una empresa que gastará entre 195.000 y 205.000 millones en capex en 2026, tiene sentido.
-- id: m3-14
+- id: m3-15
   type: text_overlay
   prompt: The character signs a very long contract with a fountain pen, pages fanned out on the desk, no readable
     text. 35 mm medium shot, eye level. Main subject in the right two thirds, calm empty area on the left third.
@@ -193,7 +209,7 @@ shots:
     title: Anthropic
     body: 'Su folleto de salida a bolsa: el S-1'
   text: El mayor comprador es Anthropic. En su folleto de salida a bolsa, el S-1,
-- id: m3-15
+- id: m3-16
   type: text_overlay
   overlay:
     kicker: S-1 de Anthropic
@@ -206,7 +222,7 @@ shots:
     highlight: 0
     caption: ''
   text: aparecen unos 400.000 millones de dólares en capacidad basada en TPU, la mayoría a siete años.
-- id: m3-16
+- id: m3-17
   type: text_overlay
   overlay:
     kicker: S-1 de Anthropic
@@ -228,7 +244,7 @@ shots:
     caption: ''
     max: 161200
   text: 114.500 millones con Google directamente.
-- id: m3-17
+- id: m3-18
   type: text_overlay
   overlay:
     kicker: S-1 de Anthropic
@@ -250,7 +266,7 @@ shots:
     caption: ''
     max: 161200
   text: 161.200 millones en arrendamientos de equipos de Broadcom.
-- id: m3-18
+- id: m3-19
   type: text_overlay
   overlay:
     kicker: S-1 de Anthropic
@@ -272,7 +288,7 @@ shots:
     caption: ''
     max: 161200
   text: Y entre 125.000 y 150.000 millones más, estimados, para 2028-2031.
-- id: m3-19
+- id: m3-20
   type: text_overlay
   prompt: 'A vast data hall at night seen from one end: half of the aisles lit with cool light and half dark, unmarked
     server racks, no screens. 24 mm wide establishing shot, low horizon. Main subject in the right two thirds, calm
@@ -282,7 +298,7 @@ shots:
     title: «Regardless of actual usage»
     body: Con independencia del uso real
   text: Y se pagan «con independencia del uso real».
-- id: m3-20
+- id: m3-21
   type: text_overlay
   overlay:
     kicker: El número más grande
@@ -298,7 +314,7 @@ shots:
     caption: ''
   text: Fíjate en el número más grande. Pasa por Broadcom, el socio que diseña y suministra las TPU con Google hasta
     2031.
-- id: m3-21
+- id: m3-22
   type: text_overlay
   overlay:
     kicker: Kurian
@@ -310,14 +326,14 @@ shots:
     highlight: 0
     caption: ''
   text: Kurian dice que trabajan con Anthropic «directamente y a través de Broadcom».
-- id: m3-22
+- id: m3-23
   type: text_overlay
   overlay:
     kicker: 161.200 M$
     title: ¿Google o Broadcom?
     body: No es público
   text: Cuánto de esa parte acaba en las cuentas de Google y cuánto en las de Broadcom no es público.
-- id: m3-23
+- id: m3-24
   type: text_overlay
   prompt: Two unmarked server racks facing each other in a clean bright lab, cables neatly dressed, no labels. Main
     subject in the right two thirds, calm empty area on the left third.
@@ -327,7 +343,7 @@ shots:
     body: ''
   motion: zoom_in
   text: Así, Google se convierte en un vendedor de chips que compite con Nvidia.
-- id: m3-24
+- id: m3-25
   type: text_overlay
   overlay:
     kicker: Mercado de chips de IA
@@ -338,7 +354,7 @@ shots:
     highlight: 0
     caption: ''
   text: Nvidia tiene alrededor del 70 % del mercado de chips de IA.
-- id: m3-25
+- id: m3-26
   type: text_overlay
   prompt: Symmetrical one-point perspective down a very long data-centre aisle at night between rows of unmarked
     server racks, cool blue indicator glow, one warm amber light at the end, no screens with text. 24 mm wide establishing
@@ -349,7 +365,7 @@ shots:
     body: de los envíos de servidores en 2026 · Tom's Hardware, 21 may 2026
   text: Pero los servidores con chips a medida, como las TPU, serán el 27,8 % de los envíos en 2026, según Tom's
     Hardware.
-- id: m3-26
+- id: m3-27
   type: text_overlay
   overlay:
     kicker: Nvidia · 25 nov 2025
@@ -357,7 +373,7 @@ shots:
     body: ''
     size: 56
   text: Nvidia ha contestado. En noviembre de 2025 dijo que va «una generación por delante de la industria».
-- id: m3-27
+- id: m3-28
   type: text_overlay
   overlay:
     kicker: Nvidia contesta
@@ -370,7 +386,7 @@ shots:
     highlight: 0
     caption: ''
   text: 'Y Jensen Huang, en abril de 2026: «Sin Anthropic, ¿por qué iba a haber crecimiento de TPU? Es 100 % Anthropic».'
-- id: m3-28
+- id: m3-29
   type: text_overlay
   prompt: Detail of a launch tower's steel umbilical arms emerging from fog at night, amber work lights, no markings.
     100 mm macro, shallow depth of field, single point of focus. Main subject in the right two thirds, calm empty
@@ -380,7 +396,7 @@ shots:
     title: «Un caso único, no una tendencia»
     body: ''
   text: Para él, Anthropic es «un caso único, no una tendencia».
-- id: m3-29
+- id: m3-30
   type: text_overlay
   overlay:
     kicker: Al revés
@@ -395,7 +411,7 @@ shots:
     highlight: 1
     caption: ''
   text: 'Sundar Pichai lo cuenta al revés: Google pone las TPU «frente a las fuerzas del mercado».'
-- id: m3-30
+- id: m3-31
   type: text_overlay
   overlay:
     kicker: Una rareza
@@ -413,7 +429,7 @@ shots:
     highlight: 0
     caption: ''
   text: Y hay una rareza. Anthropic es cliente de Google.
-- id: m3-31
+- id: m3-32
   type: text_overlay
   overlay:
     kicker: Una rareza
@@ -431,7 +447,7 @@ shots:
     highlight: 1
     caption: ''
   text: Google tendrá más del 5 % del capital de Anthropic tras su salida a bolsa, en acciones sin voto.
-- id: m3-32
+- id: m3-33
   type: text_overlay
   overlay:
     kicker: Una rareza
@@ -449,7 +465,7 @@ shots:
     highlight: 2
     caption: ''
   text: Y Claude compite de tú a tú con Gemini.
-- id: m3-33
+- id: m3-34
   type: text_overlay
   prompt: The character sits at a chessboard; from the other side of the frame only a single white gloved hand reaches
     in to move a piece, no other person visible. 35 mm medium shot, eye level. Main subject in the right two thirds,

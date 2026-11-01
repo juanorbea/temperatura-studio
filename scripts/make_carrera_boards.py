@@ -303,7 +303,9 @@ P = {
             [("1", "Compra servidores"), ("2", "Amortiza ~6 años"), ("3", "Margen alto")], 0)),
   (1, steps("Alquilar", "Cuando Google alquila capacidad",
             [("1", "Compra servidores"), ("2", "Amortiza ~6 años"), ("3", "Margen alto")], 2)),
-  (2, steps("Vender", "Cuando Google vende un sistema",
+  (1, steps("Vender", "Cuando Google vende un sistema",
+            [("1", "Entrega"), ("2", "Cobra"), ("3", "Sin centro de datos propio"), ("4", "Margen menor")], 1)),
+  (1, steps("Vender", "Cuando Google vende un sistema",
             [("1", "Entrega"), ("2", "Cobra"), ("3", "Sin centro de datos propio"), ("4", "Margen menor")], 3)),
   (1, pic("b21-pasillo.jpg", motion="pan_left")),
   (1, people("Kurian", "Instalaciones de terceros",
@@ -427,7 +429,8 @@ P = {
               {"name": "Potencia", "org": "Plan de 20 GW adicionales", "note": "«Difícil, pero no imposible»"}],
              highlight=1)),
   (1, photo("b12-subestacion.jpg", "Musk · el plan de energía", "«No digo que vayamos a tener 20 gigavatios de potencia»")),
-  (2, quote("Musk · el plan de energía", "«Tenemos un plan con el que, si todo sale bien, tendremos 20 gigavatios "
+  (1, quote("Musk · el plan de energía", "«Digo que tenemos un plan con el que, si todo sale bien…»", size=52)),
+  (1, quote("Musk · el plan de energía", "«Tenemos un plan con el que, si todo sale bien, tendremos 20 gigavatios "
             "de potencia adicional el año que viene»", size=52)),
   (1, photo("b05-plataforma.jpg", "Objetivo de ingresos", "Toda SpaceX", "a finales de 2027")),
   (1, figs("Objetivo de ingresos", "Toda SpaceX, a finales de 2027",
@@ -549,7 +552,8 @@ P = {
   (1, people("Amazon", "Andy Jassy", [{"name": "Andy Jassy", "org": "Consejero delegado de Amazon",
                                        "note": "AWS: más de +40 % en 2027 y en 2028. "
                                                "Un negocio de 1 billón $ de ingresos en 5-10 años"}], 0)),
-  (2, photo("b24-desfiladero.jpg", "Tunguz", "La primera empresa de 10 billones $…")),
+  (1, photo("b24-desfiladero.jpg", "Tomasz Tunguz", "Lo plantea así")),
+  (1, card("Tunguz", "La primera empresa de 10 billones $…")),
   (1, g(kicker="Tunguz", title="La primera empresa de 10 billones $",
         sides=["El negocio antiguo que paga las GPU", "Motor de cómputo de IA de 1 billón $"], path="", highlight=1)),
   (1, g(kicker="Tunguz", title="La primera empresa de 10 billones $",

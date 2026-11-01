@@ -272,13 +272,20 @@ shots:
   type: text_overlay
   overlay:
     kicker: Musk · el plan de energía
+    title: «Digo que tenemos un plan con el que, si todo sale bien…»
+    body: ''
+    size: 52
+  text: Digo que tenemos un plan con el que, si todo sale bien,
+- id: m5-22
+  type: text_overlay
+  overlay:
+    kicker: Musk · el plan de energía
     title: «Tenemos un plan con el que, si todo sale bien, tendremos 20 gigavatios de potencia adicional el año
       que viene»
     body: ''
     size: 52
-  text: Digo que tenemos un plan con el que, si todo sale bien, tendremos 20 gigavatios de potencia adicional el
-    año que viene».
-- id: m5-22
+  text: tendremos 20 gigavatios de potencia adicional el año que viene».
+- id: m5-23
   type: text_overlay
   prompt: An unmarked generic rocket standing on a launch pad at night, low fog rolling across the pad, sodium floodlights,
     launch tower, no insignia, no flags, no flames, no smoke. 24 mm wide establishing shot, low horizon. Main subject
@@ -288,7 +295,7 @@ shots:
     title: Toda SpaceX
     body: a finales de 2027
   text: 'Y el objetivo de ingresos, para toda SpaceX a finales de 2027:'
-- id: m5-23
+- id: m5-24
   type: text_overlay
   overlay:
     kicker: Objetivo de ingresos
@@ -299,21 +306,21 @@ shots:
     highlight: 0
     caption: ''
   text: un ARR de «entre 500.000 millones y un billón de dólares».
-- id: m5-24
+- id: m5-25
   type: text_overlay
   overlay:
     kicker: Glosario
     title: ARR (run-rate)
     body: Ingresos recurrentes anualizados
   text: El ARR, ingresos recurrentes anualizados, o run-rate,
-- id: m5-25
+- id: m5-26
   type: text_overlay
   overlay:
     kicker: Glosario
     title: ARR (run-rate)
     body: Lo facturado en un periodo corto × hasta un año
   text: es lo que se factura en un periodo corto multiplicado hasta un año.
-- id: m5-26
+- id: m5-27
   type: text_overlay
   prompt: Aerial view at dusk of a generic data-centre campus, long flat grey halls, fog between the buildings,
     amber road lights, no signage. 24 mm wide establishing shot, low horizon. Main subject in the right two thirds,
@@ -323,7 +330,7 @@ shots:
     title: Ritmo ≠ ingresos del año
     body: ''
   text: Es una foto del ritmo, no lo que se ingresa en el año.
-- id: m5-27
+- id: m5-28
   type: text_overlay
   overlay:
     kicker: Elon Musk · 20 oct 2026
@@ -331,7 +338,7 @@ shots:
     body: «No quiero provocarle un infarto a Bret» · Bret Johnsen, director financiero
     size: 56
   text: Musk remató con un «no quiero provocarle un infarto a Bret», su director financiero.
-- id: m5-28
+- id: m5-29
   type: text_overlay
   overlay:
     kicker: Las cuentas
@@ -344,13 +351,13 @@ shots:
     highlight: 0
     caption: ''
   text: Para hacer cuentas uso tres anclas que propone el inversor Tomasz Tunguz en su boletín.
-- id: m5-29
+- id: m5-30
   type: image
   prompt: The character at a drafting table with three small brass paperweights shaped like ship anchors on a blank
     sheet. 35 mm medium shot, eye level. Main subject in the right two thirds, calm empty area on the left third.
   character: true
   text: No son previsiones. Son puntos de referencia.
-- id: m5-30
+- id: m5-31
   type: text_overlay
   overlay:
     kicker: Las cuentas · anclas de Tunguz
@@ -365,7 +372,7 @@ shots:
     highlight: 0
     caption: 7.560 × 4 ÷ 1,7 GW (30 sep)
   text: Una. Si anualizas los ingresos de Superinteligencia del trimestre, 7.560 millones por cuatro,
-- id: m5-31
+- id: m5-32
   type: text_overlay
   overlay:
     kicker: Las cuentas · anclas de Tunguz
@@ -386,7 +393,7 @@ shots:
       - 560
   text: y los divides entre los 1,7 gigavatios que tenía a 30 de septiembre, salen unos 17.800 millones al año por
     gigavatio.
-- id: m5-32
+- id: m5-33
   type: text_overlay
   overlay:
     kicker: Las cuentas · anclas de Tunguz
@@ -401,7 +408,7 @@ shots:
     highlight: 1
     caption: ''
   text: Dos. Cada gigavatio nuevo cuesta unos 38.000 millones de capex.
-- id: m5-33
+- id: m5-34
   type: text_overlay
   prompt: A data-centre construction site at night under tall work lights, cable trays and trenches, steel frame,
     no people, no signage. 24 mm wide establishing shot, low horizon. Main subject in the right two thirds, calm
@@ -411,7 +418,7 @@ shots:
     title: 19.590 M$
     body: invertidos en el trimestre
   text: Tres. SpaceX invirtió 19.590 millones en el trimestre.
-- id: m5-34
+- id: m5-35
   type: text_overlay
   overlay:
     kicker: Las cuentas · anclas de Tunguz
@@ -426,7 +433,7 @@ shots:
     highlight: 2
     caption: 19.590 × 4 ≈ 78.000 M$ ≈ 2 GW al año
   text: Son unos 78.000 millones al año, que pagan unos dos gigavatios anuales.
-- id: m5-35
+- id: m5-36
   type: text_overlay
   overlay:
     kicker: Cálculo propio sobre anclas de Tunguz
@@ -439,7 +446,7 @@ shots:
     highlight: -1
     caption: ''
   text: Con 13 gigavatios a finales de 2027 y 17.800 millones por gigavatio,
-- id: m5-36
+- id: m5-37
   type: text_overlay
   overlay:
     kicker: Cálculo propio sobre anclas de Tunguz
@@ -450,7 +457,7 @@ shots:
     highlight: 0
     caption: ''
   text: el ARR de Superinteligencia sería de unos 231.000 millones de dólares.
-- id: m5-37
+- id: m5-38
   type: text_overlay
   overlay:
     kicker: Cálculo propio sobre anclas de Tunguz
@@ -463,7 +470,7 @@ shots:
     highlight: 1
     caption: ''
   text: Con 20 gigavatios, unos 356.000 millones.
-- id: m5-38
+- id: m5-39
   type: text_overlay
   prompt: Generic ground-station parabolic dishes at sunset on a plain, large white dishes on pedestals, no logos,
     not flat-panel user terminals. 24 mm wide establishing shot, low horizon. Main subject in the right two thirds,
@@ -473,7 +480,7 @@ shots:
     title: ~28.000 M$ anualizados
     body: Starlink y lanzamientos, 3T × 4
   text: Aunque les sumes el resto de SpaceX, Starlink y lanzamientos, unos 28.000 millones anualizados,
-- id: m5-39
+- id: m5-40
   type: text_overlay
   overlay:
     kicker: Cálculo propio
@@ -495,7 +502,7 @@ shots:
     caption: ''
     max: 500000
   text: ninguno llega a 500.000.
-- id: m5-40
+- id: m5-41
   type: text_overlay
   overlay:
     kicker: Cálculo propio

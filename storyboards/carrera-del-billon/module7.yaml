@@ -62,11 +62,18 @@ shots:
   prompt: An empty deep gorge at dawn, mist at the bottom, sheer cliffs on both sides, no bridge. 24 mm wide establishing
     shot, low horizon.
   overlay:
+    kicker: Tomasz Tunguz
+    title: Lo plantea así
+    body: ''
+  text: 'Tunguz lo plantea así:'
+- id: m7-06
+  type: text_overlay
+  overlay:
     kicker: Tunguz
     title: La primera empresa de 10 billones $…
     body: ''
-  text: 'Tunguz lo plantea así: la primera empresa de 10 billones de dólares'
-- id: m7-06
+  text: la primera empresa de 10 billones de dólares
+- id: m7-07
   type: text_overlay
   overlay:
     kicker: Tunguz
@@ -77,7 +84,7 @@ shots:
     path: ''
     highlight: 1
   text: será la primera que construya un motor de cómputo de IA de un billón de ingresos
-- id: m7-07
+- id: m7-08
   type: text_overlay
   overlay:
     kicker: Tunguz
@@ -88,7 +95,7 @@ shots:
     path: ''
     highlight: 0
   text: antes de que la IA erosione el negocio antiguo que paga las GPU.
-- id: m7-08
+- id: m7-09
   type: text_overlay
   prompt: A data centre under construction at dawn, tower cranes against a pale sky, bare steel frame, no signage,
     no people. 24 mm wide establishing shot, low horizon. Main subject in the right two thirds, calm empty area
@@ -98,7 +105,7 @@ shots:
     title: 1 billón $ × 10 = 10 billones $
     body: ''
   text: El salto a 10 billones sale de aplicar un múltiplo de 10 veces los ingresos. Es un supuesto, no una ley.
-- id: m7-09
+- id: m7-10
   type: text_overlay
   overlay:
     kicker: Cálculo propio · múltiplo de 10
@@ -109,7 +116,7 @@ shots:
     highlight: 0
     caption: ''
   text: Con ese múltiplo, la Superinteligencia de SpaceX valdría unos 2,31 billones de dólares con 13 gigavatios
-- id: m7-10
+- id: m7-11
   type: text_overlay
   overlay:
     kicker: Cálculo propio · múltiplo de 10
@@ -122,7 +129,7 @@ shots:
     highlight: 1
     caption: ''
   text: y unos 3,56 con 20.
-- id: m7-11
+- id: m7-12
   type: text_overlay
   prompt: An unmarked generic rocket standing on a launch pad at night, low fog rolling across the pad, sodium floodlights,
     launch tower, no insignia, no flags, no flames, no smoke. 24 mm wide establishing shot, low horizon. Main subject
@@ -132,7 +139,7 @@ shots:
     title: ~2 billones $
     body: ''
   text: Toda SpaceX valía unos 2 billones el 21 de octubre.
-- id: m7-12
+- id: m7-13
   type: text_overlay
   overlay:
     kicker: Los números del trimestre
@@ -154,7 +161,7 @@ shots:
     caption: ''
     max: 46000
   text: Los números del trimestre. AWS ingresó 46.000 millones, un 39,3 % más,
-- id: m7-13
+- id: m7-14
   type: text_overlay
   overlay:
     kicker: Los números del trimestre
@@ -176,7 +183,7 @@ shots:
     caption: ''
     max: 46000
   text: su mayor crecimiento desde finales de 2021, con un backlog de 578.000 millones.
-- id: m7-14
+- id: m7-15
   type: text_overlay
   overlay:
     kicker: Los números del trimestre
@@ -198,7 +205,7 @@ shots:
     caption: ''
     max: 46000
   text: Azure, 33.200 millones, un 48 % más.
-- id: m7-15
+- id: m7-16
   type: text_overlay
   overlay:
     kicker: Los números del trimestre
@@ -220,7 +227,7 @@ shots:
     caption: ''
     max: 46000
   text: Google Cloud, 30.700 millones, un 103 % más, hardware incluido.
-- id: m7-16
+- id: m7-17
   type: text_overlay
   prompt: Aerial view at dusk of a generic data-centre campus, long flat grey halls, fog between the buildings,
     amber road lights, no signage. 24 mm wide establishing shot, low horizon. Main subject in the right two thirds,
@@ -231,14 +238,14 @@ shots:
     body: ''
   motion: pan_left
   text: 'Tunguz proyecta con un supuesto sencillo:'
-- id: m7-17
+- id: m7-18
   type: text_overlay
   overlay:
     kicker: Estimación · Tunguz
     title: El crecimiento se frena un 15 % al año
     body: Y AWS crece lo que guía Jassy
   text: el crecimiento de cada uno se frena un 15 % al año, y AWS crece lo que guía Jassy.
-- id: m7-18
+- id: m7-19
   type: text_overlay
   overlay:
     kicker: Estimación · Tunguz
@@ -255,7 +262,7 @@ shots:
     highlight: 1
     caption: ''
   text: Con eso, Google Cloud pasaría a Azure a mediados de 2027 y a AWS a finales de 2027.
-- id: m7-19
+- id: m7-20
   type: text_overlay
   overlay:
     kicker: Estimación · Tunguz
@@ -272,7 +279,7 @@ shots:
     highlight: 2
     caption: Anclas de razonamiento, no previsiones
   text: Google Cloud y SpaceX llegarían a un billón anualizado en 2030. AWS, en 2032.
-- id: m7-20
+- id: m7-21
   type: text_overlay
   prompt: The character stands, seen from behind, on a half-built bridge over a deep gorge at dawn, looking at the
     far side, mist below. 24 mm wide establishing shot, low horizon.
@@ -283,7 +290,7 @@ shots:
     body: ''
     opinion: true
   text: 'Lo tomo como ancla para razonar, no como previsión. Y deja una pregunta: ¿quién paga el camino?'
-- id: m7-21
+- id: m7-22
   type: text_overlay
   prompt: An old cast-iron printing press in a clean quiet workshop, morning light, no type visible, no posters.
     Main subject in the right two thirds, calm empty area on the left third.
@@ -292,7 +299,7 @@ shots:
     title: En Google, la búsqueda
     body: ''
   text: En Google, paga la búsqueda.
-- id: m7-22
+- id: m7-23
   type: text_overlay
   overlay:
     kicker: Búsqueda de Google · 3T 2026
@@ -305,7 +312,7 @@ shots:
     highlight: 1
     caption: ''
   text: Ingresó 63.350 millones en el trimestre, un 12 % más.
-- id: m7-23
+- id: m7-24
   type: text_overlay
   overlay:
     kicker: Búsqueda de Google
@@ -329,7 +336,7 @@ shots:
       value: 12
       text: +12 %
   text: En el primer trimestre crecía un 19 %; en el segundo, un 17 %.
-- id: m7-24
+- id: m7-25
   type: text_overlay
   overlay:
     kicker: Búsqueda de Google
@@ -340,7 +347,7 @@ shots:
     highlight: 0
     caption: Y no por falta de uso
   text: Del segundo al tercero subió solo 79 millones. Y no por falta de uso.
-- id: m7-25
+- id: m7-26
   type: text_overlay
   overlay:
     kicker: Búsqueda de Google
@@ -352,20 +359,20 @@ shots:
     highlight: 0
     caption: ''
   text: Pichai dijo que el crecimiento interanual de las consultas «es el más alto de los últimos cinco años».
-- id: m7-26
+- id: m7-27
   type: image
   prompt: The character types on a tablet with a blank screen, the gloved fingers on the glass. 35 mm medium shot,
     eye level. Main subject in the right two thirds, calm empty area on the left third.
   character: true
   text: Las consultas en AI Mode, la búsqueda con IA de Google, son tres veces más largas, pero se monetizan peor.
-- id: m7-27
+- id: m7-28
   type: text_overlay
   overlay:
     kicker: Búsqueda de Google
     title: Más uso, casi los mismos ingresos
     body: ''
   text: Más uso, casi los mismos ingresos.
-- id: m7-28
+- id: m7-29
   type: text_overlay
   prompt: Loading dock at dusk, unmarked wooden crates lined up waiting, one truck bay open, no logos, no signage.
     Main subject in the right two thirds, calm empty area on the left third.
@@ -375,7 +382,7 @@ shots:
     body: 2T +26 % → 3T +12 %
   text: En Amazon, la publicidad ingresó 19.600 millones, un 12 % más, cuando en el segundo trimestre crecía un
     26 %.
-- id: m7-29
+- id: m7-30
   type: text_overlay
   overlay:
     kicker: Flujo de caja libre
@@ -391,7 +398,7 @@ shots:
     caption: ''
   text: Y la caja. Microsoft generó 18.630 millones de flujo de caja libre en el trimestre, con 45.200 millones
     de capex.
-- id: m7-30
+- id: m7-31
   type: text_overlay
   overlay:
     kicker: Flujo de caja libre
@@ -406,7 +413,7 @@ shots:
     highlight: 1
     caption: ''
   text: Alphabet, 9.070 millones negativos, con 51.360 millones de capex.
-- id: m7-31
+- id: m7-32
   type: text_overlay
   overlay:
     kicker: Flujo de caja libre
@@ -421,7 +428,7 @@ shots:
     highlight: 2
     caption: ''
   text: Amazon acumula 42.400 millones negativos en doce meses, con 77.300 millones de capex solo en el trimestre.
-- id: m7-32
+- id: m7-33
   type: text_overlay
   prompt: An empty control room at night, rows of empty chairs, dark switched-off monitors with faint amber reflections,
     no text on any screen, no people. 24 mm wide establishing shot, low horizon. Main subject in the right two thirds,
@@ -432,13 +439,13 @@ shots:
     body: Microsoft −0,2 %
   text: Tras los resultados, en la negociación fuera de hora, Amazon cayó un 12 %, Alphabet un 12,6 % y Microsoft
     un 0,2 %.
-- id: m7-33
+- id: m7-34
   type: image
   prompt: The character in a bright office with an unmarked laptop; colleagues out of focus, seen only from behind.
     35 mm medium shot, eye level. Main subject in the right two thirds, calm empty area on the left third.
   character: true
   text: Microsoft es la excepción. Los ingresos de Microsoft 365 en la nube comercial crecen un 17 %
-- id: m7-34
+- id: m7-35
   type: text_overlay
   overlay:
     kicker: Microsoft 365 · nube comercial
@@ -452,7 +459,7 @@ shots:
     caption: ''
   text: porque sube el ingreso medio por usuario, por Copilot y los planes caros, aunque los puestos ya solo crezcan
     un 5 %.
-- id: m7-35
+- id: m7-36
   type: text_overlay
   overlay:
     kicker: ServiceNow · 29 oct 2026
@@ -465,7 +472,7 @@ shots:
     highlight: 0
     caption: ''
   text: 'ServiceNow muestra el lado contrario: se hundió un 27 % el 29 de octubre, al día siguiente de sus resultados,'
-- id: m7-36
+- id: m7-37
   type: text_overlay
   overlay:
     kicker: ServiceNow · 29 oct 2026
