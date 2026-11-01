@@ -392,7 +392,7 @@ shots:
       label: ritmo actual de capex al año
     highlight: 0
     caption: 7.560 × 4 ÷ 1,7 GW (30 sep)
-    motion: zoom_in
+  motion: zoom_in
   text: y los divides entre los 1,7 gigavatios que tenía a 30 de septiembre, salen unos 17.800 millones al año por
     gigavatio.
 - id: m5-34

@@ -56,6 +56,7 @@ shots:
       note: 'AWS: más de +40 % en 2027 y en 2028'
     highlight: 0
     caption: ''
+  motion: zoom_in
   text: dice que AWS puede crecer más de un 40 % en 2027 y en 2028,
 - id: m7-05
   type: text_overlay
@@ -106,7 +107,7 @@ shots:
     - Motor de cómputo de IA de 1 billón $
     path: ''
     highlight: 0
-    motion: zoom_in
+  motion: zoom_in
   text: antes de que la IA erosione el negocio antiguo que paga las GPU.
 - id: m7-10
   type: text_overlay
@@ -418,7 +419,7 @@ shots:
       label: Amazon · 12 meses · capex del trimestre 77.300 M$
     highlight: 0
     caption: ''
-    motion: zoom_in
+  motion: zoom_in
   text: Microsoft generó 18.630 millones de flujo de caja libre en el trimestre, con 45.200 millones de capex.
 - id: m7-34
   type: text_overlay
@@ -449,7 +450,7 @@ shots:
       label: Amazon · 12 meses · capex del trimestre 77.300 M$
     highlight: 2
     caption: ''
-    motion: zoom_out
+  motion: zoom_out
   text: Amazon acumula 42.400 millones negativos en doce meses, con 77.300 millones de capex solo en el trimestre.
 - id: m7-36
   type: text_overlay

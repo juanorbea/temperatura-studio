@@ -72,7 +72,7 @@ shots:
       value: 36.2
       text: 36,2 %
     caption: Sin dato del 4T 2025
-    motion: zoom_in
+  motion: zoom_in
   text: 'Y aun así, el margen operativo de Google Cloud marcó un récord: 36,2 %, frente al 23,7 % de un año antes.'
 - id: m3-05
   type: text_overlay
