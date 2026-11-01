@@ -140,12 +140,21 @@ shots:
     server racks, cool blue indicator glow, one warm amber light at the end, no screens with text. 24 mm wide establishing
     shot, low horizon.
   overlay:
+    kicker: No encaja · 5/5
+    title: Anthropic
+    body: ''
+  text: Quinto, Anthropic.
+- id: m4-15
+  type: text_overlay
+  prompt: Symmetrical one-point perspective down a very long data-centre aisle at night between rows of unmarked
+    server racks, cool blue indicator glow, one warm amber light at the end, no screens with text. 24 mm wide establishing
+    shot, low horizon.
+  overlay:
     kicker: No encaja · 5/5 · Financial Times
     title: ~200.000 M$
     body: contratos relacionados que dependen de Anthropic
-  text: Quinto, Anthropic. Según el Financial Times, unos 200.000 millones en contratos relacionados dependen de
-    ella.
-- id: m4-15
+  text: Según el Financial Times, unos 200.000 millones en contratos relacionados dependen de ella.
+- id: m4-16
   type: text_overlay
   overlay:
     kicker: The Information
@@ -157,7 +166,7 @@ shots:
     caption: ''
   text: Y según The Information, su compromiso supera el 40 % de los ingresos futuros comprometidos de la nube de
     Google.
-- id: m4-16
+- id: m4-17
   type: text_overlay
   overlay:
     kicker: The Information
@@ -178,7 +187,7 @@ shots:
       - 820
       angle: -5
   text: Ese porcentaje es de la prensa, no de las cuentas.
-- id: m4-17
+- id: m4-18
   type: text_overlay
   prompt: The character sits at a walnut desk by a window before dawn and opens a large ledger with blank pages.
     35 mm medium shot, eye level. Main subject in the right two thirds, calm empty area on the left third.
@@ -186,7 +195,7 @@ shots:
   overlay:
     opinion: true
   text: Para mí, nada de esto invalida el negocio.
-- id: m4-18
+- id: m4-19
   type: text_overlay
   overlay:
     kicker: Mi lectura

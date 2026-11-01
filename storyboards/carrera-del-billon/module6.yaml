@@ -163,15 +163,33 @@ shots:
       value: 500000
       text: 500.000 M$
       note: ''
+    highlight: 0
+    caption: ''
+    max: 708000
+  text: Con 13 gigavatios, y sumando el resto de SpaceX, unos 470.000 millones.
+- id: m6-14
+  type: text_overlay
+  overlay:
+    kicker: Cálculo propio · ilustrativo · supone precio anual
+    title: Con ~34.000 M$ por GW
+    bars:
+    - label: 13 GW + resto
+      value: 470000
+      text: ~470.000 M$
+      note: ''
+    - label: Mínimo de Musk
+      value: 500000
+      text: 500.000 M$
+      note: ''
     - label: 20 GW + resto
       value: 708000
       text: ~708.000 M$
       note: ''
-    highlight: 1
+    highlight: 2
     caption: ''
     max: 708000
-  text: Con 13 gigavatios, y sumando el resto de SpaceX, unos 470.000 millones. Con 20, unos 708.000.
-- id: m6-14
+  text: Con 20, unos 708.000.
+- id: m6-15
   type: text_overlay
   prompt: The character adjusts two brass levers on an old control desk, no labels, no screens. 35 mm medium shot,
     eye level. Main subject in the right two thirds, calm empty area on the left third.
@@ -179,14 +197,14 @@ shots:
   overlay:
     opinion: true
   text: El mínimo de Musk solo aparece si suben a la vez los gigavatios y lo que se cobra por cada uno.
-- id: m6-15
+- id: m6-16
   type: text_overlay
   overlay:
     kicker: La lectura menos generosa
     title: Sin Cursor ni publicidad
     body: ''
   text: 'La lectura menos generosa: sin Cursor ni publicidad,'
-- id: m6-16
+- id: m6-17
   type: text_overlay
   overlay:
     kicker: Cape Fear Advisors
@@ -204,7 +222,7 @@ shots:
     caption: ''
     max: 17800
   text: el cómputo genera hoy unos 15.100 millones por gigavatio, según Cape Fear Advisors.
-- id: m6-17
+- id: m6-18
   type: text_overlay
   prompt: A data centre under construction at dawn, tower cranes against a pale sky, bare steel frame, no signage,
     no people. 24 mm wide establishing shot, low horizon. Main subject in the right two thirds, calm empty area
@@ -214,7 +232,7 @@ shots:
     title: De 1,7 GW a 13 GW
     body: 1,7 GW a 30 sep 2026
   text: Pasar de los 1,7 gigavatios de septiembre a 13,
-- id: m6-18
+- id: m6-19
   type: text_overlay
   overlay:
     kicker: Conclusión 2 · El límite es la financiación
@@ -225,7 +243,7 @@ shots:
     highlight: 0
     caption: ''
   text: a 38.000 millones cada uno, cuesta unos 429.000 millones.
-- id: m6-19
+- id: m6-20
   type: text_overlay
   overlay:
     kicker: Conclusión 2 · El límite es la financiación
@@ -238,7 +256,7 @@ shots:
     highlight: 1
     caption: ''
   text: Cinco años y medio de capex al ritmo actual, en unos quince meses.
-- id: m6-20
+- id: m6-21
   type: text_overlay
   overlay:
     kicker: Conclusión 2 · El límite es la financiación
@@ -251,13 +269,13 @@ shots:
     highlight: 0
     caption: ''
   text: Para 20 gigavatios, unos 695.000 millones. Casi nueve años al ritmo actual.
-- id: m6-21
+- id: m6-22
   type: image
   prompt: The character before an open account book with blank columns, a fountain pen beside it. 35 mm medium shot,
     eye level. Main subject in the right two thirds, calm empty area on the left third.
   character: true
   text: ¿Con qué se paga?
-- id: m6-22
+- id: m6-23
   type: text_overlay
   overlay:
     kicker: ¿Con qué se paga?
@@ -271,7 +289,7 @@ shots:
     caption: ''
     max: 90000
   text: SpaceX tenía unos 90.000 millones en caja y valores negociables a 30 de septiembre.
-- id: m6-23
+- id: m6-24
   type: text_overlay
   prompt: 'A vast data hall at night seen from one end: half of the aisles lit with cool light and half dark, unmarked
     server racks, no screens. 24 mm wide establishing shot, low horizon. Main subject in the right two thirds, calm
@@ -281,14 +299,14 @@ shots:
     title: 40.000 M$
     body: Vehículo gestionado por Apollo
   text: Ha firmado un arrendamiento financiero de GPU de 40.000 millones con un vehículo gestionado por Apollo.
-- id: m6-24
+- id: m6-25
   type: text_overlay
   overlay:
     kicker: Glosario
     title: EBITDA ajustado
     body: Beneficio antes de intereses, impuestos y amortizaciones
   text: Y su EBITDA ajustado, el beneficio antes de intereses, impuestos y amortizaciones, anualizado,
-- id: m6-25
+- id: m6-26
   type: text_overlay
   overlay:
     kicker: ¿Con qué se paga?
@@ -310,7 +328,7 @@ shots:
     caption: ''
     max: 90000
   text: da unos 35.000 millones al año.
-- id: m6-26
+- id: m6-27
   type: text_overlay
   prompt: The character before an open account book with blank columns, a fountain pen beside it. 35 mm medium shot,
     eye level. Main subject in the right two thirds, calm empty area on the left third.
@@ -321,50 +339,40 @@ shots:
     body: 'Fuentes identificadas: 90.000 + 40.000 + EBITDA de 12-15 meses'
   motion: zoom_in
   text: Hasta finales de 2027, entre 165.000 y 174.000 millones en total.
-- id: m6-27
-  type: text_overlay
-  overlay:
-    kicker: Cálculo propio
-    title: El hueco · 13 GW
-    bars:
-    - label: Capex 13 GW
-      value: 429000
-      text: 429.000 M$
-      note: ''
-    - label: Fuentes
-      value: 169500
-      text: 165.000-174.000 M$
-      note: ''
-    highlight: 0
-    caption: Faltan 255.000-264.000 M$
-    max: 695000
-  text: Frente a 429.000 millones, faltan entre 255.000 y 264.000.
 - id: m6-28
   type: text_overlay
   overlay:
     kicker: Cálculo propio
-    title: El hueco · 20 GW
-    bars:
-    - label: Capex 20 GW
-      value: 695000
-      text: 695.000 M$
-      note: ''
-    - label: Fuentes
-      value: 169500
-      text: 165.000-174.000 M$
-      note: ''
-    highlight: 0
-    caption: Faltan 521.000-530.000 M$
-    max: 695000
-  text: Frente a 695.000, entre 521.000 y 530.000.
+    title: El hueco · 13 GW
+    figures:
+    - value: 429.000 M$
+      label: capex para 13 GW
+    - value: 255.000-264.000 M$
+      label: 'faltan · fuentes: 165.000-174.000 M$'
+    highlight: 1
+    caption: ''
+  text: Frente a 429.000 millones, faltan entre 255.000 y 264.000.
 - id: m6-29
+  type: text_overlay
+  overlay:
+    kicker: Cálculo propio
+    title: El hueco · 20 GW
+    figures:
+    - value: 695.000 M$
+      label: capex para 20 GW
+    - value: 521.000-530.000 M$
+      label: 'faltan · fuentes: 165.000-174.000 M$'
+    highlight: 1
+    caption: ''
+  text: Frente a 695.000, entre 521.000 y 530.000.
+- id: m6-30
   type: text_overlay
   overlay:
     kicker: Cape Fear Advisors
     title: ~22.500 M$ por GW
     body: El coste más bajo que estima
   text: Con el coste más bajo que estima Cape Fear, unos 22.500 millones por gigavatio,
-- id: m6-30
+- id: m6-31
   type: text_overlay
   overlay:
     kicker: Cálculo propio
@@ -386,27 +394,27 @@ shots:
     caption: ''
     max: 695000
   text: 13 gigavatios costarían unos 254.000 millones.
-- id: m6-31
+- id: m6-32
   type: image
   prompt: An electrical substation at night lit by sodium lamps, faint vapour, transformers and insulators, no people,
     no signs. Main subject in the right two thirds, calm empty area on the left third.
   motion: zoom_in
   text: El hueco se reduce, pero sigue ahí.
-- id: m6-32
+- id: m6-33
   type: text_overlay
   overlay:
     kicker: S&P · jun 2026
     title: BBB
     body: La calificación de SpaceX
   text: S&P, que califica a SpaceX con BBB,
-- id: m6-33
+- id: m6-34
   type: text_overlay
   overlay:
     kicker: S&P · BBB
     title: Flujo de caja libre negativo hasta 2029
     body: Más deuda y más acciones
   text: espera flujo de caja libre negativo hasta 2029 y más emisiones de deuda y de acciones.
-- id: m6-34
+- id: m6-35
   type: text_overlay
   prompt: The character stands before a huge architectural blueprint of a data centre pinned to a wall, no readable
     text, a stack of account books on the table in front. 35 mm medium shot, eye level. Main subject in the right
@@ -418,7 +426,7 @@ shots:
     body: No la ingeniería
     opinion: true
   text: Por eso creo que el límite no es la ingeniería. Es la financiación.
-- id: m6-35
+- id: m6-36
   type: text_overlay
   prompt: 'Wide symmetrical shot: the character, tiny, stands at the far end of a huge aisle of server racks at
     night, hands at the sides. 24 mm wide establishing shot, low horizon.'
@@ -428,7 +436,7 @@ shots:
     title: ¿De dónde salen varios cientos de miles de millones más?
     body: ''
   text: Lo que no está anunciado es de dónde salen varios cientos de miles de millones más.
-- id: m6-36
+- id: m6-37
   type: text_overlay
   overlay:
     kicker: S-1 de Anthropic
@@ -443,7 +451,7 @@ shots:
     highlight: 1
     caption: ''
   text: Y el gran cliente, Anthropic, puede cancelar con 90 días de preaviso a partir de principios de 2027.
-- id: m6-37
+- id: m6-38
   type: text_overlay
   prompt: A data centre under construction at dawn, tower cranes against a pale sky, bare steel frame, no signage,
     no people. 24 mm wide establishing shot, low horizon. Main subject in the right two thirds, calm empty area
@@ -453,7 +461,7 @@ shots:
     title: Nivel a final de año ≠ media anual
     body: ''
   text: Y la última. Un nivel a final de año no es una media anual.
-- id: m6-38
+- id: m6-39
   type: text_overlay
   overlay:
     kicker: La rampa · cálculo propio sobre el anuncio de Musk del 31 oct
@@ -467,7 +475,7 @@ shots:
     caption: ''
     max: 14
   text: En la llamada, SpaceX esperaba terminar 2026 con entre 2,5 y 3 gigavatios.
-- id: m6-39
+- id: m6-40
   type: text_overlay
   overlay:
     kicker: La rampa · cálculo propio sobre el anuncio de Musk del 31 oct
@@ -486,7 +494,7 @@ shots:
     max: 14
   text: Con los 1,2 millones de chips Blackwell que anunció Musk el 31 de octubre, unos 3 gigavatios más, serían
     más de 5.
-- id: m6-40
+- id: m6-41
   type: text_overlay
   overlay:
     kicker: La rampa · cálculo propio sobre el anuncio de Musk del 31 oct
@@ -507,7 +515,7 @@ shots:
       text: '13'
     caption: 'Media del año: ~9 GW'
   text: Si de ahí llega a 13 a finales de 2027 a ritmo constante, la media del año será de unos 9 gigavatios.
-- id: m6-41
+- id: m6-42
   type: text_overlay
   prompt: 'A vast data hall at night seen from one end: half of the aisles lit with cool light and half dark, unmarked
     server racks, no screens. 24 mm wide establishing shot, low horizon. Main subject in the right two thirds, calm
@@ -515,9 +523,17 @@ shots:
   overlay:
     kicker: Año natural 2027
     title: ~160.000 M$
-    body: frente a 231.000 M$, el ritmo de diciembre
-  text: Los ingresos de Superinteligencia en el año natural 2027 rondarían los 160.000 millones, no 231.000.
-- id: m6-42
+    body: ingresos de Superinteligencia
+  text: Los ingresos de Superinteligencia en el año natural 2027 rondarían los 160.000 millones,
+- id: m6-43
+  type: text_overlay
+  overlay:
+    kicker: Año natural 2027
+    body: 231.000 M$ es el ritmo de diciembre
+    from: ~231.000 M$
+    to: ~160.000 M$
+  text: no 231.000.
+- id: m6-44
   type: text_overlay
   overlay:
     kicker: Cálculo propio
@@ -530,7 +546,7 @@ shots:
     highlight: 0
     caption: ''
   text: Con 20 gigavatios, unos 222.000 millones, no 356.000.
-- id: m6-43
+- id: m6-45
   type: image
   prompt: A data-centre construction site at night under tall work lights, cable trays and trenches, steel frame,
     no people, no signage. 24 mm wide establishing shot, low horizon. Main subject in the right two thirds, calm

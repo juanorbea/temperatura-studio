@@ -144,11 +144,28 @@ shots:
   overlay:
     kicker: 10-Q de Alphabet · Google Cloud
     title: «Product sales, primarily the sale of TPU systems»
-    body: Venta de productos, principalmente la venta de sistemas TPU. Sin cifra.
+    body: Venta de productos, principalmente la venta de sistemas TPU.
     size: 56
   text: 'Dentro de Google Cloud aparece una línea nueva: «venta de productos, principalmente la venta de sistemas
-    TPU». Sin cifra.'
+    TPU».'
 - id: m2-14
+  type: text_overlay
+  overlay:
+    kicker: 10-Q de Alphabet · Google Cloud
+    title: «Product sales, primarily the sale of TPU systems»
+    body: Venta de productos, principalmente la venta de sistemas TPU.
+    size: 56
+    seals:
+    - lines:
+      - SIN CIFRA
+      ink: copper
+      size: 120
+      at:
+      - 1300
+      - 820
+      angle: -5
+  text: Sin cifra.
+- id: m2-15
   type: text_overlay
   overlay:
     kicker: 10-Q de Alphabet
@@ -164,7 +181,7 @@ shots:
     caption: ''
   text: 'Y una frase que importa: Google empezó a reconocer ingresos de estos contratos en el segundo trimestre
     de 2026,'
-- id: m2-15
+- id: m2-16
   type: text_overlay
   overlay:
     kicker: 10-Q de Alphabet
@@ -179,12 +196,12 @@ shots:
     highlight: 2
     caption: ''
   text: y «la mayor parte, con diferencia» se reconocerá en 2027.
-- id: m2-16
+- id: m2-17
   type: image
   prompt: Loading dock at dusk, unmarked wooden crates lined up waiting, one truck bay open, no logos, no signage.
     Main subject in the right two thirds, calm empty area on the left third.
   text: Es decir, esto acaba de empezar.
-- id: m2-17
+- id: m2-18
   type: text_overlay
   prompt: Long modern warehouse interior, symmetrical aisle, rows of unmarked wooden crates stacked high with server
     racks visible through the slats, cool overhead light, one amber lamp at the far end. Main subject in the right
@@ -194,7 +211,7 @@ shots:
     title: Todo el inventario TPU, ligado a contratos firmados
     body: ''
   text: Ahí entra el almacén. Según Kurian, todo el inventario de sistemas TPU está ligado a contratos firmados.
-- id: m2-18
+- id: m2-19
   type: text_overlay
   overlay:
     kicker: Otro ciclo de caja
@@ -208,7 +225,7 @@ shots:
     caption: ''
   text: 'Ashkenazi lo describió como otro ciclo de caja: «Construimos el inventario antes de que llegue el flujo
     de ingresos.'
-- id: m2-19
+- id: m2-20
   type: text_overlay
   overlay:
     kicker: Otro ciclo de caja
@@ -220,8 +237,17 @@ shots:
       quote: Construimos el inventario antes de que llegue el flujo de ingresos. No es el capex tradicional
     highlight: 0
     caption: ''
+    seals:
+    - lines:
+      - NO ES CAPEX
+      ink: copper
+      size: 120
+      at:
+      - 1400
+      - 850
+      angle: -5
   text: No es el capex tradicional».
-- id: m2-20
+- id: m2-21
   type: text_overlay
   prompt: A data centre under construction at dawn, tower cranes against a pale sky, bare steel frame, no signage,
     no people. 24 mm wide establishing shot, low horizon. Main subject in the right two thirds, calm empty area
@@ -231,7 +257,7 @@ shots:
     title: Capex
     body: 'Inversión en activos que se quedan en el balance: centros de datos, servidores'
   text: El capex es la inversión en activos que se quedan en el balance, como centros de datos y servidores.
-- id: m2-21
+- id: m2-22
   type: text_overlay
   overlay:
     kicker: Otro ciclo de caja
@@ -249,14 +275,14 @@ shots:
     caption: ''
   text: Aquí el dinero sale antes, espera en el almacén y vuelve cuando el cliente recibe el equipo. Mientras tanto,
     pesa.
-- id: m2-22
+- id: m2-23
   type: text_overlay
   overlay:
     kicker: Glosario
     title: Flujo de caja libre
     body: Lo que queda de la caja del negocio después de pagar las inversiones
   text: El flujo de caja libre de Alphabet, lo que queda de la caja del negocio después de pagar las inversiones,
-- id: m2-23
+- id: m2-24
   type: text_overlay
   overlay:
     kicker: Alphabet · 3T 2026
@@ -267,7 +293,7 @@ shots:
     highlight: 0
     caption: ''
   text: fue de 9.100 millones negativos en el trimestre.
-- id: m2-24
+- id: m2-25
   type: text_overlay
   prompt: Long modern warehouse interior, symmetrical aisle, rows of unmarked wooden crates stacked high with server
     racks visible through the slats, cool overhead light, one amber lamp at the far end. Main subject in the right
@@ -278,7 +304,7 @@ shots:
     body: ''
   motion: zoom_in
   text: La directora financiera citó el inventario de TPU entre las causas.
-- id: m2-25
+- id: m2-26
   type: text_overlay
   prompt: Five plain unlabelled manila folders fanned out on a desk, soft light, blank covers. Main subject in the
     right two thirds, calm empty area on the left third.
@@ -287,7 +313,7 @@ shots:
     title: Los analistas no se ponen de acuerdo
     body: ''
   text: Los analistas sí ponen número, y no se ponen de acuerdo.
-- id: m2-26
+- id: m2-27
   type: text_overlay
   overlay:
     kicker: Estimación
@@ -305,12 +331,55 @@ shots:
       value: 75000
       text: 75.000 M$
       note: ''
-    highlight: -1
+    highlight: 0
     caption: Estimaciones de analistas, no cifras de Alphabet
     max: 99000
-  text: Para 2027, BNP Paribas estima más de 40.000 millones de ingresos por TPU. TD Cowen, 62.500 millones. Evercore,
-    75.000.
-- id: m2-27
+  text: Para 2027, BNP Paribas estima más de 40.000 millones de ingresos por TPU.
+- id: m2-28
+  type: text_overlay
+  overlay:
+    kicker: Estimación
+    title: Ingresos por TPU estimados para 2027
+    bars:
+    - label: BNP Paribas
+      value: 40000
+      text: '>40.000 M$'
+      note: ''
+    - label: TD Cowen
+      value: 62500
+      text: 62.500 M$
+      note: ''
+    - label: Evercore ISI
+      value: 75000
+      text: 75.000 M$
+      note: ''
+    highlight: 1
+    caption: Estimaciones de analistas, no cifras de Alphabet
+    max: 99000
+  text: TD Cowen, 62.500 millones.
+- id: m2-29
+  type: text_overlay
+  overlay:
+    kicker: Estimación
+    title: Ingresos por TPU estimados para 2027
+    bars:
+    - label: BNP Paribas
+      value: 40000
+      text: '>40.000 M$'
+      note: ''
+    - label: TD Cowen
+      value: 62500
+      text: 62.500 M$
+      note: ''
+    - label: Evercore ISI
+      value: 75000
+      text: 75.000 M$
+      note: ''
+    highlight: 2
+    caption: Estimaciones de analistas, no cifras de Alphabet
+    max: 99000
+  text: Evercore, 75.000.
+- id: m2-30
   type: text_overlay
   overlay:
     kicker: Estimación
@@ -332,7 +401,7 @@ shots:
     caption: Estimaciones de analistas, no cifras de Alphabet
     max: 99000
   text: Morgan Stanley, unos 84.000. Wells Fargo, 99.000.
-- id: m2-28
+- id: m2-31
   type: text_overlay
   prompt: The character at a drafting table with a desktop calculator with a blank display and a pencil, working
     on a blank sheet. 35 mm medium shot, eye level. Main subject in the right two thirds, calm empty area on the
@@ -343,7 +412,7 @@ shots:
     title: El trimestre que acaba de cerrar
     body: ''
   text: Para el trimestre que acaba de cerrar he hecho mi propia cuenta.
-- id: m2-29
+- id: m2-32
   type: text_overlay
   overlay:
     kicker: Cálculo propio
@@ -361,7 +430,7 @@ shots:
     caption: ''
     max: 30709
   text: En el segundo trimestre, Google Cloud ingresó 24.800 millones.
-- id: m2-30
+- id: m2-33
   type: text_overlay
   overlay:
     kicker: Cálculo propio
@@ -379,7 +448,7 @@ shots:
     caption: ''
     max: 30709
   text: Si el negocio de siempre no encogió de un trimestre a otro,
-- id: m2-31
+- id: m2-34
   type: text_overlay
   overlay:
     kicker: Cálculo propio
@@ -397,7 +466,7 @@ shots:
     caption: Cálculo propio, no cifra de Alphabet
     max: 30709
   text: al menos esos 24.800 de los 30.700 del tercero no son venta de TPU.
-- id: m2-32
+- id: m2-35
   type: text_overlay
   overlay:
     kicker: Cálculo propio
@@ -419,7 +488,7 @@ shots:
     caption: Cálculo propio, no cifra de Alphabet
     max: 30709
   text: Quedan, como mucho, unos 6.000 millones para TPU.
-- id: m2-33
+- id: m2-36
   type: text_overlay
   prompt: Blank paper shipping tags tied with string to wooden crates, one tag in focus, the rest soft, the tags
     completely blank. 100 mm macro, shallow depth of field, single point of focus. Main subject in the right two
@@ -429,7 +498,7 @@ shots:
     title: No me cuadra
     body: El resto de la nube quedaría por debajo de los 24.768 M$ del 2T
   text: Los 9.000 que estimaba Wells Fargo para este trimestre supondrían que el resto de la nube cayó. No me cuadra.
-- id: m2-34
+- id: m2-37
   type: text_overlay
   overlay:
     kicker: Cálculo propio
@@ -440,7 +509,20 @@ shots:
     highlight: 0
     caption: Cálculo propio, no cifra de Alphabet
   text: Un rango razonable son entre 2.000 y 6.000 millones de TPU en el trimestre.
-- id: m2-35
+- id: m2-38
+  type: text_overlay
+  overlay:
+    kicker: Cálculo propio
+    title: Cuánto del crecimiento
+    figures:
+    - value: +15.600 M$
+      label: crecimiento de Google Cloud en un año
+    - value: 13-38 %
+      label: lo que explicarían las TPU
+    highlight: 0
+    caption: Cálculo propio, no cifra de Alphabet
+  text: Google Cloud creció 15.600 millones en un año.
+- id: m2-39
   type: text_overlay
   overlay:
     kicker: Cálculo propio
@@ -452,8 +534,8 @@ shots:
       label: lo que explicarían las TPU
     highlight: 1
     caption: Cálculo propio, no cifra de Alphabet
-  text: Google Cloud creció 15.600 millones en un año. Las TPU explicarían entre el 13 % y el 38 % de ese crecimiento.
-- id: m2-36
+  text: Las TPU explicarían entre el 13 % y el 38 % de ese crecimiento.
+- id: m2-40
   type: text_overlay
   prompt: 'A vast data hall at night seen from one end: half of the aisles lit with cool light and half dark, unmarked
     server racks, no screens. 24 mm wide establishing shot, low horizon. Main subject in the right two thirds, calm
@@ -464,7 +546,7 @@ shots:
     to: +63-90 %
     body: Cálculo propio
   text: Sin ellas, la nube habría crecido entre un 63 % y un 90 %.
-- id: m2-37
+- id: m2-41
   type: text_overlay
   overlay:
     kicker: Cálculo propio
@@ -477,7 +559,7 @@ shots:
     highlight: 1
     caption: Cálculo propio, no cifra de Alphabet
   text: 'Insisto: es una estimación mía, Alphabet no da la cifra.'
-- id: m2-38
+- id: m2-42
   type: text_overlay
   prompt: The character stands before a whiteboard with a single tall bar drawn on it, no writing, and nods calmly.
     35 mm medium shot, eye level. Main subject in the right two thirds, calm empty area on the left third.
@@ -485,7 +567,7 @@ shots:
   overlay:
     opinion: true
   text: Y aun en el peor caso, un 63 % sigue siendo muchísimo.
-- id: m2-39
+- id: m2-43
   type: text_overlay
   overlay:
     kicker: Mi lectura

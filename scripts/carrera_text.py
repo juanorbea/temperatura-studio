@@ -16,6 +16,7 @@ AUTO_CHARS = 118
 SPLITS = [
     "El 20 de octubre, ocho días antes de que Alphabet presentara esas cuentas,",
     "Elon Musk puso un objetivo para toda SpaceX:",
+    "Pero los servidores con chips a medida, como las TPU,",
     "Los titulares, como el crecimiento de la nube de Google o los gigavatios de Musk,",
     "Antes, al repasar los costes de todo Alphabet, había dicho que la partida de «otros costes de los ingresos» "
     "subió un 32 %, hasta 35.100 millones,",
@@ -37,15 +38,19 @@ SPLITS = [
     "Si es por año, que es lo que encaja con otra frase suya,",
     "que la inversión nueva se recupera en menos de un año,",
     "Pasar de los 1,7 gigavatios de septiembre a 13,",
+    "Los ingresos de Superinteligencia en el año natural 2027 rondarían los 160.000 millones,",
     "Y su EBITDA ajustado, el beneficio antes de intereses, impuestos y amortizaciones, anualizado,",
     "S&P, que califica a SpaceX con BBB,",
-    "Andy Jassy, el consejero delegado de Amazon, dice que AWS puede crecer más de un 40 % en 2027 y en 2028,",
+    "Andy Jassy, el consejero delegado de Amazon,",
+    "dice que AWS puede crecer más de un 40 % en 2027 y en 2028,",
     "Tunguz lo plantea así:",
     "la primera empresa de 10 billones de dólares",
     "será la primera que construya un motor de cómputo de IA de un billón de ingresos",
     "Con ese múltiplo, la Superinteligencia de SpaceX valdría unos 2,31 billones de dólares con 13 gigavatios",
     "El director financiero dijo que los alquileres nuevos se firman",
     "AWS ingresó 46.000 millones, un 39,3 % más,",
+    "En Amazon, la publicidad ingresó 19.600 millones, un 12 % más,",
+    "Tras los resultados, en la negociación fuera de hora,",
     "Los ingresos de Microsoft 365 en la nube comercial crecen un 17 %",
     "ServiceNow muestra el lado contrario: se hundió un 27 % el 29 de octubre, al día siguiente de sus resultados,",
 ]
