@@ -254,3 +254,31 @@ def test_punch_cuts_in_on_the_graphic(tmp_path):
     got = close.convert("RGB")
     for xy in [(400, 400), (1200, 700), (300, 150)]:
         assert all(abs(a - b) <= 3 for a, b in zip(got.getpixel(xy), expected.getpixel(xy)))
+
+
+def test_haiku_is_quiet_text_on_a_transparent_layer(tmp_path):
+    haiku = {"haiku": ["Blue marble below"], "translation": ["Abajo, la canica azul"], "kicker": "Sección 4",
+             "foot": "1 oct 2026"}
+    out = graphics.overlay_card(haiku, tmp_path / "h.png", on_photo=True, theme="blueprint")
+    with Image.open(out) as img:
+        assert img.size == (1920, 1080) and img.mode == "RGBA"
+        assert img.getpixel((960, 40))[3] == 0          # the top of the picture stays clear
+        assert img.getpixel((960, 1060))[3] > 0         # a soft shade under the text
+        # no paper card: the left third, where a card would sit, is clear above the shade
+        assert img.getpixel((300, 300))[3] == 0
+    caption_only = graphics.overlay_card({"haiku": [], "foot": "Solo un pie"}, tmp_path / "f.png", on_photo=True,
+                                         theme="blueprint")
+    with Image.open(caption_only) as img:
+        assert img.size == (1920, 1080)
+
+
+def test_points_axis_can_count_gigawatts(tmp_path):
+    ramp = {"kicker": "La rampa", "title": "GW", "ymax": 14, "unit": " GW", "tick": 2,
+            "points": [{"x": 0, "year_label": "dic 2026", "value": 5, "text": "5"},
+                       {"x": 12, "year_label": "dic 2027", "value": 13, "text": "13"}]}
+    a = graphics.overlay_card(ramp, tmp_path / "a.png", on_photo=False, theme="blueprint")
+    b = graphics.overlay_card({k: v for k, v in ramp.items() if k not in ("unit", "tick")} | {"ymax": 60},
+                              tmp_path / "b.png", on_photo=False, theme="blueprint")
+    with Image.open(a) as ia, Image.open(b) as ib:
+        assert ia.size == (1920, 1080)
+        assert ia.convert("RGB").tobytes() != ib.convert("RGB").tobytes()

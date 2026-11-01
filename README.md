@@ -35,6 +35,9 @@ blueprint theme).
      camera), and `--pending "first words"` keeps lines that are not ready as PENDIENTE cues,
      so they are not voiced:
      `.venv/bin/python -m scripts.convert_markdown_script DRAFT.md examples/china-ia-01.md --pending "..."`
+     `###` subheadings are not voiced: `--section "Heading"` (repeatable) turns one into a module
+     of its own, and `--title "Heading=New title"` renames a module (video 8; the exact
+     command is under «La carrera del billón» below).
 2. **Storyboard** (`storyboards/module1.yaml`): a list of shots. Each shot
    covers a piece of the narration and is an `image`, a `title_card` or a
    `text_overlay`. Shots cut only at sentence ends.
@@ -78,6 +81,11 @@ blueprint theme).
    `of` + `hit` (8 of 10 figures, or a 10 x 10 grid) and `list` (a checklist
    ticked one item per shot). On a picture: `note` (handwritten words in the
    empty sky) and `placard` (words written on a blank placard at `box`).
+   Video 8 («La carrera del billón») adds to blueprint: `haiku` (quiet centred lines with an
+   optional `translation`, `kicker` and `foot`, straight on a picture with a soft shade and no
+   paper card; `haiku: []` with a `foot` is a picture with only a caption), and `points` takes
+   `unit` (default `" %"`) and `tick` (default 10) so the axis can count gigawatts. A shot may
+   have no `text`: it is silent and lasts its `lead_in` + `tail` (section cards, haiku cards, coda).
    Kinetic typography is done shot by shot: the next card adds the strike, the
    tick or the number. Picture shots pan with `motion: pan_right`/`pan_left`.
 3. **Voice**: either your own recording (see below), or a free Microsoft neural
@@ -136,6 +144,50 @@ The Japan storyboards are written by `scripts/make_japon_boards.py`
 (`.venv/bin/python -m scripts.make_japon_boards`), which also checks that each
 block's shots cover its sentences. `scripts/make_potencias_boards.py` and
 `scripts/make_consenso_boards.py` do the same for videos 3 and 4.
+
+### «La carrera del billón» (video 8)
+
+`scripts/make_carrera_boards.py` writes `storyboards/carrera-del-billon/` from the direction
+plan; `scripts/carrera_text.py` cuts the narration into pieces under ~118 characters (so no
+static shot passes 8 s) and `scripts/carrera_pictures.py` keeps the picture prompts (the AI
+character always in white gloves). The 45 pictures are in
+`assets/images/carrera-del-billon/pictures/`; the script copies them per shot:
+
+```
+.venv/bin/python -m scripts.make_carrera_boards assets/images/carrera-del-billon/pictures
+.venv/bin/python -m studio build examples/carrera-del-billon.md --module all --voice juan --out output/carrera-del-billon
+.venv/bin/python -m scripts.finish_video examples/carrera-del-billon.md output/carrera-del-billon
+```
+
+`scripts/finish_video.py` joins the built modules and normalises the mix to -16 LUFS
+integrated and at most -1 dBTP (two-pass loudnorm), into `OUT/STEM_final.mp4`. A faint room tone
+(soft brown noise, about -35 LUFS after the mix) runs underneath, so the silent cards and the coda
+are never digital silence. On a picture, a blueprint card can sit on the right (`side: right`) to
+keep clear of a subject on the left.
+
+**Editing the >5 GW figure.** The words live in the draft
+(`/workspace/writing/trillion-dollar-chasm/draft.md`, lines 21 hook, 185 ramp, 235 ending) and in
+`examples/carrera-del-billon.md` (lines 16, 166, 214), rebuilt from the draft with:
+
+```
+.venv/bin/python -m scripts.convert_markdown_script /workspace/writing/trillion-dollar-chasm/draft.md examples/carrera-del-billon.md \
+  --section "Margen frente a capital" --section "Lo que no encaja" \
+  --section "Primera conclusión: los gigavatios solos no llegan" \
+  --title "Gancho: un almacén en Google y un objetivo en SpaceX=Un almacén en Google y un objetivo en SpaceX" \
+  --title "Primera conclusión: los gigavatios solos no llegan=Tres conclusiones" --title "Final: 2,2 gigavatios=2,2 gigavatios"
+```
+
+On screen, the GW rule and its notes are the constants at the top of
+`scripts/make_carrera_boards.py` (`GW_MAX`, `GW_TODAY`, `GW_END_2026`, `GW_END_NOTE`,
+`GW_END_SHORT`, `GW_RAMP_*`) plus the m1 card «1,2 millones de chips Blackwell en Colossus 2».
+If a sentence changes, check `SPLITS` in `scripts/carrera_text.py` still matches it. Then rebuild
+only the modules that say it and re-join (the other modules are reused as they are):
+
+```
+.venv/bin/python -m scripts.make_carrera_boards assets/images/carrera-del-billon/pictures
+for n in 1 6 8; do .venv/bin/python -m studio build examples/carrera-del-billon.md --module $n --voice juan --out output/carrera-del-billon; done
+.venv/bin/python -m scripts.finish_video examples/carrera-del-billon.md output/carrera-del-billon
+```
 
 If a shot has no image yet, the build stops and prints the shot id and the
 full prompt to generate it with.

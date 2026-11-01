@@ -518,7 +518,9 @@ def _chip_schematic(d, cx: int, cy: int, size: int) -> None:
 
 def _bp_overlay_card(overlay: dict, out: Path, on_photo: bool) -> Path:
     """Blueprint graphics. Full frame on paper: one of the BP_FULL_FRAME kinds.
-    On a photo: a paper card on the left with kicker, title and body (or from + to)."""
+    On a photo: a paper card on the left (or `side: right`) with kicker, title and body (or from + to)."""
+    if "haiku" in overlay:
+        return _bp_haiku(overlay, out, on_photo)
     for kind, draw in BP_FULL_FRAME.items():
         if kind in overlay:
             if on_photo:
@@ -537,8 +539,9 @@ def _bp_overlay_card(overlay: dict, out: Path, on_photo: bool) -> Path:
         img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         card = blueprint_paper(780, 760).convert("RGBA")
         card.putalpha(242)
-        img.alpha_composite(card, (BP_MARGIN - 40, 160))
-        x, y, width = BP_MARGIN, 220, 690
+        left = W - BP_MARGIN - 740 if overlay.get("side") == "right" else BP_MARGIN - 40  # right: off the subject
+        img.alpha_composite(card, (left, 160))
+        x, y, width = left + 40, 220, 690
     else:
         img = blueprint_paper().convert("RGBA")
         x, y, width = BP_MARGIN, 300, 1200
@@ -573,6 +576,45 @@ def _bp_overlay_card(overlay: dict, out: Path, on_photo: bool) -> Path:
         y += 30
         y = _marked(d, overlay.get("body", ""), font("Inter-Regular.ttf", 38), T.text, x, y, width, 54, marks)
     _finish(img, overlay)
+    img.save(out)
+    return out
+
+
+def _bp_haiku(o: dict, out: Path, on_photo: bool) -> Path:
+    """Quiet text straight on a picture, with no paper card: a chapter card or a quote seen in
+    silence (video 8, the haiku from orbit). o: haiku (lines, centred, light), translation (lines,
+    smaller, under them), kicker (small, spaced, above), foot (a small note in the lower left
+    corner). Any of them may be empty; haiku: [] with a foot gives a picture with only a caption.
+    A soft shade under the text keeps it readable on any picture."""
+    img = Image.new("RGBA", (W, H), (0, 0, 0, 0)) if on_photo else blueprint_paper().convert("RGBA")
+    lines, under = list(o.get("haiku") or []), list(o.get("translation") or [])
+    light, soft = ((246, 245, 241), (214, 218, 224)) if on_photo else (T.ink, T.text)
+    if on_photo:
+        rows = [int(200 * max(0.0, (y - H * 0.42) / (H * 0.58)) ** 1.4) for y in range(H)]
+        alpha = Image.new("L", (1, H))
+        alpha.putdata(rows)
+        shade = Image.new("RGBA", (W, H), (10, 16, 28, 0))
+        shade.putalpha(alpha.resize((W, H)))
+        img.alpha_composite(shade)
+    d = ImageDraw.Draw(img)
+    big, small = font("InterDisplay-Light.ttf", o.get("size", 64)), font("Inter-Regular.ttf", 32)
+    height = len(lines) * int(big.size * 1.3) + (24 + len(under) * 46 if under else 0)
+    y = o.get("y", H - 150 - height)
+    if o.get("kicker"):
+        kf = font("Inter-SemiBold.ttf", 24)
+        text = o["kicker"].upper()
+        spaced(d, ((W - _spaced_length(d, text, kf, 5)) / 2, y - 70), text, kf, T.accent_soft if on_photo
+               else T.accent, tracking=5)
+    for line in lines:
+        d.text((W / 2, y), line, font=big, fill=light, anchor="ma")
+        y += int(big.size * 1.3)
+    y += 24 if under else 0
+    for line in under:
+        d.text((W / 2, y), line, font=small, fill=soft, anchor="ma")
+        y += 46
+    if o.get("foot"):
+        d.text((BP_MARGIN - 60, H - 70), o["foot"], font=font("Inter-Regular.ttf", 28), fill=light, anchor="ls")
+    _finish(img, o)
     img.save(out)
     return out
 
@@ -715,22 +757,23 @@ def _bp_bars(d, o: dict) -> None:
 
 def _bp_share(d, o: dict) -> None:
     """Two (or more) points of a share over time, joined by a dashed line: no invented curve.
-    o: kicker, title, points: [{x, year_label, value, text}], ymax, caption."""
+    o: kicker, title, points: [{x, year_label, value, text}], ymax, caption,
+    unit (axis label after each tick, default " %") and tick (axis step, default 10)."""
     _bp_kicker(d, o["kicker"])
     _bp_title(d, o["title"], size=64)
     pts = o["points"]
     xs = [p["x"] for p in pts]
     lo, hi = o.get("xmin", min(xs) - 4), o.get("xmax", max(xs) + 4)
     left, right, top, base = BP_MARGIN + 80, W - BP_MARGIN - 80, 360, 860
-    ymax = o.get("ymax", 60)
+    ymax, unit, tick = o.get("ymax", 60), o.get("unit", " %"), o.get("tick", 10)
     px = lambda x: left + (right - left) * (x - lo) / (hi - lo)
     py = lambda v: base - (base - top) * v / ymax
     d.line((left, base, right, base), fill=T.ink, width=3)
     d.line((left, base, left, top - 20), fill=T.ink, width=3)
-    for v in range(0, ymax + 1, 10):
+    for v in range(0, ymax + 1, tick):
         d.line((left - 10, py(v), left, py(v)), fill=T.ink, width=2)
         d.line((left, py(v), right, py(v)), fill=T.grid_major, width=1)
-        d.text((left - 20, py(v)), f"{v} %", font=font("Inter-Regular.ttf", 24), fill=T.muted, anchor="rm")
+        d.text((left - 20, py(v)), f"{v}{unit}", font=font("Inter-Regular.ttf", 24), fill=T.muted, anchor="rm")
     coords = [(px(p["x"]), py(p["value"])) for p in pts]
     for (ax, ay), (bx, by) in zip(coords, coords[1:]):
         steps = int(math.hypot(bx - ax, by - ay) // 24)
