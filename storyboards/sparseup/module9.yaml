@@ -25,7 +25,7 @@ shots:
   prompt: Editorial cream-paper graphic, no photo.
   text: No gana en todas partes. En LoTTE, tanto en foros como en búsqueda, queda por detrás de los modelos densos
     y de interacción tardía.
-  motion: none
+  motion: zoom_in
 - id: m9-01b
   type: image
   prompt: Editorial cream-paper graphic, no photo.

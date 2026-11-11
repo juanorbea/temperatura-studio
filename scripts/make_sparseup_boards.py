@@ -153,7 +153,7 @@ A05_LABELS = [
 
 
 
-def copy_padded(name: str, dest: Path, pad: float = 0.05) -> None:
+def copy_padded(name: str, dest: Path, pad: float = 0.085) -> None:
     """Place the full graphic on a cream field so an 8 % Ken Burns still leaves a margin."""
     im = _open(name).resize((W, H), Image.Resampling.LANCZOS)
     canvas = Image.new("RGB", (W, H), im.getpixel((2, 2)))
@@ -177,27 +177,57 @@ A13_ROWS = [
 
 
 def lotte_columns(dest: Path) -> None:
-    """Blow up LoTTE Forum / LoTTE Search next to the model names, keeping the title."""
+    """Large crop of LoTTE Forum / Search, inset so an 8 % zoom still leaves a 5 % margin."""
     im = _open("a19_lotte_tabla2.png").resize((W, H), Image.Resampling.LANCZOS)
     paper = im.getpixel((20, 20))
     canvas = Image.new("RGB", (W, H), paper)
-    # Tight title band (kicker + heading).
-    canvas.paste(im.crop((0, 80, W, 320)), (0, 50))
-    # Model names only (no CURE-en figures) + the LoTTE columns, all five rows.
+    # 9 % inset: after zoom_in to 1.08 the last frame still has >= 5 % margin.
+    ml, mt, mr, mb = int(0.09 * W), int(0.09 * H), int(0.09 * W), int(0.09 * H)
+    inner_w, inner_h = W - ml - mr, H - mt - mb
+    # Compact title (kicker + heading), leaving most of the frame for the table.
+    title = im.crop((80, 100, 1100, 300))
+    tw = min(int(inner_w * 0.85), title.width)
+    th = int(title.height * tw / title.width)
+    title = title.resize((tw, th), Image.Resampling.LANCZOS)
+    canvas.paste(title, (ml, mt))
+    # Model names + LoTTE Forum / LoTTE Search, all five rows.
     model = im.crop((108, 410, 318, 694))
     lotte = im.crop((1158, 410, 1466, 694))
-    gap = 0
-    stitched = Image.new("RGB", (model.width + gap + lotte.width, model.height), paper)
+    stitched = Image.new("RGB", (model.width + lotte.width, model.height), paper)
     stitched.paste(model, (0, 0))
-    stitched.paste(lotte, (model.width + gap, 0))
-    # Fit between the title (~y=50-290) and the caption (~y=820).
-    max_h, max_w = 500, 1500
-    scale = min(max_w / stitched.width, max_h / stitched.height)
+    stitched.paste(lotte, (model.width, 0))
+    # Highlight the SPARSEUP row (4th of 5 data rows under the header).
+    from PIL import ImageDraw as _ID
+    d = _ID.Draw(stitched.convert("RGBA"))
+    # header occupies ~27 % of the table height; 5 rows share the rest.
+    header_h = int(stitched.height * 0.18)
+    row_h = (stitched.height - header_h) / 5
+    # SPARSEUP is row index 3 (0-based among data rows)
+    y0 = int(header_h + 3 * row_h)
+    y1 = int(header_h + 4 * row_h)
+    overlay = Image.new("RGBA", stitched.size, (0, 0, 0, 0))
+    od = _ID.Draw(overlay)
+    od.rectangle((0, y0, stitched.width - 1, y1), fill=(186, 102, 48, 40),
+                 outline=(186, 102, 48, 200), width=3)
+    stitched = Image.alpha_composite(stitched.convert("RGBA"), overlay).convert("RGB")
+    cap_h = 120
+    gap = 10
+    max_th = inner_h - th - cap_h - 2 * gap
+    scale = min(inner_w / stitched.width, max_th / stitched.height)
     nw, nh = int(stitched.width * scale), int(stitched.height * scale)
     stitched = stitched.resize((nw, nh), Image.Resampling.LANCZOS)
-    x, y = (W - nw) // 2, 300
-    canvas.paste(stitched, (x, y))
-    canvas.paste(im.crop((0, 800, W, 1080)), (0, 800))
+    tx = ml + (inner_w - nw) // 2
+    ty = mt + th + gap
+    canvas.paste(stitched, (tx, ty))
+    # Caption under the table, still inside the inset.
+    cap = im.crop((80, 800, 1840, 1040))
+    cw = inner_w
+    ch = int(cap.height * cw / cap.width)
+    if ty + nh + gap + ch > H - mb:
+        ch = max(80, H - mb - (ty + nh + gap))
+        cw = int(cap.width * ch / cap.height)
+    cap = cap.resize((cw, ch), Image.Resampling.LANCZOS)
+    canvas.paste(cap, (ml + (inner_w - cw) // 2, ty + nh + gap))
     _save(canvas, dest)
 
 
@@ -391,13 +421,13 @@ def _plan() -> list[tuple[int, dict, object]]:
     add(5, graf("m5-03",
                 "Con eso, la representación arranca más dispersa, y RoBERTa-Large vuelve a entrenar.",
                 "zoom_in"),
-        lambda d: focus("a07_fig1_derecha.png", (80, 80, 1840, 700), d))
+        lambda d: copy_padded("a07_fig1_derecha.png", d))
     add(5, graf("m5-04a", "El truco no es nuevo: ya aparecía en el trabajo de Geng y Yang."),
-        lambda d: focus("a07_fig1_derecha.png", (80, 480, 1840, 1040), d))
+        lambda d: copy_padded("a07_fig1_derecha.png", d))
     add(5, graf("m5-04b",
                 "Aquí muestran cómo fijar el umbral, y que basta para desbloquear redes que antes fallaban o rendían por debajo.",
                 "zoom_in"),
-        lambda d: focus("a07_fig1_derecha.png", (80, 480, 1840, 1040), d))
+        lambda d: copy_padded("a07_fig1_derecha.png", d))
 
     # ----- Módulo 6 · Fan-out -----
     add(6, title_shot("m6-00", TITLES[6]))
@@ -408,16 +438,16 @@ def _plan() -> list[tuple[int, dict, object]]:
         lambda d: copy_full("a09_fanout.png", d))
     add(6, graf("m6-02",
                 "Si se deja libre, cada posición puede disparar una cola larga de términos que no aportan, y eso mete ruido.",
-                "pan_right"),
-        lambda d: focus("a09_fanout.png", (700, 200, 1880, 980), d))
+                "zoom_in"),
+        lambda d: copy_padded("a09_fanout.png", d))
     add(6, graf("m6-03", "Un límite de 8 o de 12 gana a no poner ninguno.", "zoom_in"),
-        lambda d: focus("a10_fig2_fanout.png", (80, 200, 1000, 980), d))
+        lambda d: copy_padded("a10_fig2_fanout.png", d))
     add(6, graf("m6-04a", "Y gana también a limitarse a apretar el regularizador de escasez:"),
-        lambda d: focus("a10_fig2_fanout.png", (920, 200, 1860, 980), d))
+        lambda d: copy_padded("a10_fig2_fanout.png", d))
     add(6, graf("m6-04b",
                 "ese camino sí deja vectores más dispersos, pero pierde más calidad a igual escasez.",
                 "zoom_in"),
-        lambda d: focus("a10_fig2_fanout.png", (920, 200, 1860, 980), d))
+        lambda d: copy_padded("a10_fig2_fanout.png", d))
 
     # ----- Módulo 7 · Plegado -----
     add(7, title_shot("m7-00", TITLES[7]))
@@ -515,19 +545,20 @@ def _plan() -> list[tuple[int, dict, object]]:
     # ----- Módulo 9 · Límites -----
     add(9, title_shot("m9-00", TITLES[9]))
     add(9, graf("m9-01a",
-                "No gana en todas partes. En LoTTE, tanto en foros como en búsqueda, queda por detrás de los modelos densos y de interacción tardía."),
+                "No gana en todas partes. En LoTTE, tanto en foros como en búsqueda, queda por detrás de los modelos densos y de interacción tardía.",
+                "zoom_in"),
         lambda d: lotte_columns(d))
     add(9, graf("m9-01b", "El artículo no explica el motivo.", "zoom_in"),
         lambda d: lotte_columns(d))
     add(9, graf("m9-02a", "Las representaciones tampoco son limpias.", "zoom_in"),
-        lambda d: copy_padded("a20_fig4_cleaver.png", d, 0.05))
+        lambda d: copy_padded("a20_fig4_cleaver.png", d))
     add(9, graf("m9-02b",
                 "Como el tokenizador parte las palabras en subpiezas, a veces se activan términos que no vienen a cuento.",
                 "zoom_in"),
-        lambda d: copy_padded("a20_fig4_cleaver.png", d, 0.05))
+        lambda d: copy_padded("a20_fig4_cleaver.png", d))
     add(9, graf("m9-03",
                 "En un ejemplo, el trozo «cle», de «cleaver», dispara también «cleavage», «Cole» o «cane». Son los llamados wacky weights, pesos disparatados."),
-        lambda d: copy_padded("a20_fig4_cleaver.png", d, 0.05))
+        lambda d: copy_padded("a20_fig4_cleaver.png", d))
     add(9, card("m9-04a", "El abanico lo mitiga en parte, pero no lo quita.",
                 {"kicker": "Los límites",
                  "title": "El abanico lo mitiga, no lo quita",

@@ -35,7 +35,7 @@ shots:
   type: image
   prompt: Editorial cream-paper graphic, no photo.
   text: Si se deja libre, cada posición puede disparar una cola larga de términos que no aportan, y eso mete ruido.
-  motion: pan_right
+  motion: zoom_in
 - id: m6-03
   type: image
   prompt: Editorial cream-paper graphic, no photo.
