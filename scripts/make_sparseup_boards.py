@@ -152,6 +152,55 @@ A05_LABELS = [
 ]
 
 
+
+def copy_padded(name: str, dest: Path, pad: float = 0.05) -> None:
+    """Place the full graphic on a cream field so an 8 % Ken Burns still leaves a margin."""
+    im = _open(name).resize((W, H), Image.Resampling.LANCZOS)
+    canvas = Image.new("RGB", (W, H), im.getpixel((2, 2)))
+    nw, nh = int(W * (1 - 2 * pad)), int(H * (1 - 2 * pad))
+    canvas.paste(im.resize((nw, nh), Image.Resampling.LANCZOS), ((W - nw) // 2, (H - nh) // 2))
+    _save(canvas, dest)
+
+
+# White cards on a17_tabla2_bright_freshstack.png (BRIGHT-Pro, then FreshStack).
+A17_CARDS = [
+    (122, 332, 1798, 578),
+    (122, 622, 1798, 868),
+]
+
+# Rows on a13_ficha_modelo.png: base+data, authors, weights.
+A13_ROWS = [
+    (80, 350, 1840, 520),   # red de base + datos
+    (80, 530, 1840, 790),   # autores, dónde, publicado
+    (80, 800, 1840, 890),   # pesos
+]
+
+
+def lotte_columns(dest: Path) -> None:
+    """Blow up LoTTE Forum / LoTTE Search next to the model names, keeping the title."""
+    im = _open("a19_lotte_tabla2.png").resize((W, H), Image.Resampling.LANCZOS)
+    paper = im.getpixel((20, 20))
+    canvas = Image.new("RGB", (W, H), paper)
+    # Tight title band (kicker + heading).
+    canvas.paste(im.crop((0, 80, W, 320)), (0, 50))
+    # Model names only (no CURE-en figures) + the LoTTE columns, all five rows.
+    model = im.crop((108, 410, 318, 694))
+    lotte = im.crop((1158, 410, 1466, 694))
+    gap = 0
+    stitched = Image.new("RGB", (model.width + gap + lotte.width, model.height), paper)
+    stitched.paste(model, (0, 0))
+    stitched.paste(lotte, (model.width + gap, 0))
+    # Fit between the title (~y=50-290) and the caption (~y=820).
+    max_h, max_w = 500, 1500
+    scale = min(max_w / stitched.width, max_h / stitched.height)
+    nw, nh = int(stitched.width * scale), int(stitched.height * scale)
+    stitched = stitched.resize((nw, nh), Image.Resampling.LANCZOS)
+    x, y = (W - nw) // 2, 300
+    canvas.paste(stitched, (x, y))
+    canvas.paste(im.crop((0, 800, W, 1080)), (0, 800))
+    _save(canvas, dest)
+
+
 def caption_bottom(name: str, title: str, body: str, dest: Path) -> None:
     """Write a two-line caption into the empty cream band at the bottom of pj04."""
     im = _open(name).resize((W, H), Image.Resampling.LANCZOS)
@@ -274,26 +323,31 @@ def _plan() -> list[tuple[int, dict, object]]:
                 "Dos trabajos recientes apuntaban al vocabulario de los tokenizadores modernos, o a la escala de las cabezas del modelo.",
                 {"kicker": "Dos explicaciones previas",
                  "title": "El vocabulario de los tokenizadores",
-                 "body": "O la escala de las cabezas del modelo"}))
+                 "body": "O la escala de las cabezas del modelo"},
+                "zoom_in"))
     add(3, card("m3-05a",
                 "Este artículo mira otra cosa: cómo están repartidas, al empezar, las puntuaciones que el modelo asigna a cada término del vocabulario.",
                 {"kicker": "Este artículo",
                  "title": "Cómo están repartidas, al empezar, las puntuaciones",
-                 "body": "Esas puntuaciones se llaman logits"}))
+                 "body": "Esas puntuaciones se llaman logits"},
+                "zoom_out"))
     add(3, card("m3-05b", "Esas puntuaciones se llaman logits.",
                 {"kicker": "Este artículo",
                  "title": "Logits",
-                 "body": "Las puntuaciones que el modelo asigna a cada término"}))
+                 "body": "Las puntuaciones que el modelo asigna a cada término"},
+                "zoom_in"))
     add(3, card("m3-06a",
                 "En el preentrenamiento habitual, sumar una constante a todas no cambia el resultado. El modelo no tiene por qué dejarlas en un rango concreto.",
                 {"kicker": "Preentrenamiento",
                  "title": "Sumar una constante no cambia nada",
-                 "body": ""}))
+                 "body": ""},
+                "zoom_out"))
     add(3, card("m3-06b",
                 "Pero SPLADE convierte esas puntuaciones de una forma que sí depende de la escala.",
                 {"kicker": "SPLADE",
                  "from": "Sumar una constante no cambia nada",
-                 "to": "Sí depende de la escala"}))
+                 "to": "Sí depende de la escala"},
+                "zoom_in"))
     add(3, graf("m3-07a",
                 "Si la mayoría salen positivas, el vector inicial es denso: se activan demasiados términos."),
         lambda d: focus("a06_mecanismo_denso.png", (80, 80, 1840, 620), d))
@@ -367,22 +421,27 @@ def _plan() -> list[tuple[int, dict, object]]:
 
     # ----- Módulo 7 · Plegado -----
     add(7, title_shot("m7-00", TITLES[7]))
-    add(7, graf("m7-01a", "La tercera es el plegado del vocabulario."),
+    add(7, graf("m7-01a", "La tercera es el plegado del vocabulario.", "zoom_in"),
         lambda d: copy_full("a11a_paris_cuatro.png", d))
     add(7, graf("m7-01b",
-                "Los tokenizadores modernos, BPE a nivel de byte, distinguen mayúsculas de minúsculas, y si un token empieza palabra o va en medio."),
+                "Los tokenizadores modernos, BPE a nivel de byte, distinguen mayúsculas de minúsculas, y si un token empieza palabra o va en medio.",
+                "zoom_out"),
         lambda d: copy_full("a11a_paris_cuatro.png", d))
     add(7, graf("m7-02",
-                "Una sola palabra, «Paris», puede ocupar hasta cuatro entradas: paris, Paris, y las dos con la marca de inicio de palabra."),
+                "Una sola palabra, «Paris», puede ocupar hasta cuatro entradas: paris, Paris, y las dos con la marca de inicio de palabra.",
+                "zoom_in"),
         lambda d: copy_full("a11a_paris_cuatro.png", d))
     add(7, card("m7-03a", "En un buscador denso, esa redundancia queda en segundo plano.",
-                {"kicker": "Densa", "title": "Queda en segundo plano", "body": ""}))
+                {"kicker": "Densa", "title": "Queda en segundo plano", "body": ""},
+                "zoom_in"))
     add(7, card("m7-03b", "En uno disperso, un término de la consulta solo coincide con la forma exacta.",
                 {"kicker": "Dispersa",
                  "from": "Queda en segundo plano",
-                 "to": "Solo la forma exacta"}))
+                 "to": "Solo la forma exacta"},
+                "zoom_out"))
     add(7, graf("m7-04",
-                "El modelo tiene que repartir el peso entre variantes, o aceptar que se le escapen coincidencias."),
+                "El modelo tiene que repartir el peso entre variantes, o aceptar que se le escapen coincidencias.",
+                "zoom_in"),
         lambda d: copy_full("a11a_paris_cuatro.png", d))
     add(7, card("m7-05", "Geng y Yang lo resolvían cambiando el vocabulario y reentrenando.",
                 {"kicker": "Geng y Yang",
@@ -399,8 +458,9 @@ def _plan() -> list[tuple[int, dict, object]]:
     # ----- Módulo 8 · Resultados -----
     add(8, title_shot("m8-00", TITLES[8]))
     add(8, graf("m8-01",
-                "Aplican la receta a la red de base de LateOn, una variante de ModernBERT, y al conjunto abierto Embeddings-Fine-Tuning."),
-        lambda d: copy_full("a13_ficha_modelo.png", d))
+                "Aplican la receta a la red de base de LateOn, una variante de ModernBERT, y al conjunto abierto Embeddings-Fine-Tuning.",
+                "zoom_in"),
+        lambda d: highlight_labels("a13_ficha_modelo.png", 0, d, A13_ROWS))
     add(8, graf("m8-02a",
                 "El modelo se llama SPARSEUP. Lo firman Thibault Formal, Pierre Erbacher y Cosimo Rulli, de Linkup, en París, con contribución igual.",
                 "zoom_in"),
@@ -408,7 +468,7 @@ def _plan() -> list[tuple[int, dict, object]]:
     add(8, graf("m8-02b", "Se publicó en arXiv el 6 de noviembre de 2026.", "zoom_in"),
         lambda d: copy_full("a01_portada_paper.png", d))
     add(8, graf("m8-03", "Los pesos están en Hugging Face."),
-        lambda d: copy_full("a13_ficha_modelo.png", d))
+        lambda d: highlight_labels("a13_ficha_modelo.png", 2, d, A13_ROWS))
     add(8, graf("m8-04a",
                 "En BEIR-13, trece pruebas de búsqueda, el nDCG a diez medio, que mide si lo pertinente sale arriba en la lista, es 56,4."),
         lambda d: copy_full("a14a_tabla1_solo_sparseup.png", d))
@@ -434,13 +494,13 @@ def _plan() -> list[tuple[int, dict, object]]:
     add(8, graf("m8-08b", "Quedan casi empatados."),
         lambda d: copy_full("a16_descontaminada.png", d))
     add(8, graf("m8-09a", "En BRIGHT-Pro, una batería de búsqueda que exige razonamiento,"),
-        lambda d: focus("a17_tabla2_bright_freshstack.png", (80, 200, 1840, 680), d))
+        lambda d: highlight_labels("a17_tabla2_bright_freshstack.png", 0, d, A17_CARDS))
     add(8, graf("m8-09b",
                 "saca 34,5 de nDCG a diez, 4,9 puntos por encima de DenseOn, sin destilación."),
-        lambda d: focus("a17_tabla2_bright_freshstack.png", (80, 200, 1840, 680), d))
+        lambda d: highlight_labels("a17_tabla2_bright_freshstack.png", 0, d, A17_CARDS))
     add(8, graf("m8-10",
                 "En FreshStack, documentos técnicos, 23,3 frente a 19,6 en alfa-nDCG a diez."),
-        lambda d: copy_full("a17_tabla2_bright_freshstack.png", d))
+        lambda d: highlight_labels("a17_tabla2_bright_freshstack.png", 1, d, A17_CARDS))
     add(8, graf("m8-11a",
                 "En el bloque legal y financiero de MTEB obtiene, sin destilación, el mejor nDCG a diez de esa comparación, 50,3,"),
         lambda d: copy_full("a18a_tabla2_legal.png", d))
@@ -455,21 +515,19 @@ def _plan() -> list[tuple[int, dict, object]]:
     # ----- Módulo 9 · Límites -----
     add(9, title_shot("m9-00", TITLES[9]))
     add(9, graf("m9-01a",
-                "No gana en todas partes. En LoTTE, tanto en foros como en búsqueda, queda por detrás de los modelos densos y de interacción tardía.",
-                "zoom_in"),
-        lambda d: copy_full("a19_lotte_tabla2.png", d))
+                "No gana en todas partes. En LoTTE, tanto en foros como en búsqueda, queda por detrás de los modelos densos y de interacción tardía."),
+        lambda d: lotte_columns(d))
     add(9, graf("m9-01b", "El artículo no explica el motivo.", "zoom_in"),
-        lambda d: copy_full("a19_lotte_tabla2.png", d))
+        lambda d: lotte_columns(d))
     add(9, graf("m9-02a", "Las representaciones tampoco son limpias.", "zoom_in"),
-        lambda d: focus("a20_fig4_cleaver.png", (80, 80, 1840, 560), d))
+        lambda d: copy_padded("a20_fig4_cleaver.png", d, 0.05))
     add(9, graf("m9-02b",
                 "Como el tokenizador parte las palabras en subpiezas, a veces se activan términos que no vienen a cuento.",
                 "zoom_in"),
-        lambda d: focus("a20_fig4_cleaver.png", (80, 80, 1840, 560), d))
+        lambda d: copy_padded("a20_fig4_cleaver.png", d, 0.05))
     add(9, graf("m9-03",
-                "En un ejemplo, el trozo «cle», de «cleaver», dispara también «cleavage», «Cole» o «cane». Son los llamados wacky weights, pesos disparatados.",
-                "zoom_in"),
-        lambda d: focus("a20_fig4_cleaver.png", (80, 480, 1840, 1040), d))
+                "En un ejemplo, el trozo «cle», de «cleaver», dispara también «cleavage», «Cole» o «cane». Son los llamados wacky weights, pesos disparatados."),
+        lambda d: copy_padded("a20_fig4_cleaver.png", d, 0.05))
     add(9, card("m9-04a", "El abanico lo mitiga en parte, pero no lo quita.",
                 {"kicker": "Los límites",
                  "title": "El abanico lo mitiga, no lo quita",
@@ -484,9 +542,8 @@ def _plan() -> list[tuple[int, dict, object]]:
     add(9, graf("m9-05b",
                 "Si arrancan de un ModernBERT sin el preentrenamiento de LateOn, el resultado en BEIR-13 baja a 54,3."),
         lambda d: copy_full("a21_sin_preentrenamiento.png", d))
-    add(9, photo("m9-06", "El dato de velocidad hay que tomarlo con lo que hay.",
-                 P["pj03"], "zoom_in", character=True),
-        lambda d: copy_full("pj/pj03_cronometro.jpg", d))
+    add(9, graf("m9-06", "El dato de velocidad hay que tomarlo con lo que hay."),
+        lambda d: copy_full("a22_latencia.png", d))
     add(9, graf("m9-07a",
                 "El artículo afirma que recupera en menos de un milisegundo por consulta, con el motor Seismic."),
         lambda d: copy_full("a22_latencia.png", d))
@@ -561,12 +618,12 @@ def _plan() -> list[tuple[int, dict, object]]:
         lambda d: copy_full("a26_final_dos_decimas.png", d))
     add(11, photo("m11-03a",
                   "Con la receta habitual de SPLADE, esas redes modernas rendían por debajo o ni siquiera entrenaban.",
-                  P["pj05"], "zoom_in", character=True),
-        lambda d: copy_full("pj/pj05_cierra_cajon.jpg", d))
+                  P["pj05"], character=True),
+        lambda d: tighter("pj/pj05_cierra_cajon.jpg", d, zoom=2.35, cx=0.83, cy=0.26))
     add(11, photo("m11-03b",
                   "Con esta, el artículo las convierte en encoders dispersos eficaces.",
-                  P["pj05"], "zoom_in", character=True, tail=2.0),
-        lambda d: tighter("pj/pj05_cierra_cajon.jpg", d, zoom=1.15, cx=0.58, cy=0.52))
+                  P["pj05"], character=True, tail=2.0),
+        lambda d: tighter("pj/pj05_cierra_cajon.jpg", d, zoom=2.35, cx=0.83, cy=0.26))
     add(11, {"id": "m11-04", "type": "title_card", "lead_in": 4.0,
              "title": "temperaturacero", "subtitle": "SPARSEUP", "text": "", "motion": "none"})
 

@@ -24,7 +24,7 @@ shots:
   type: image
   prompt: Editorial cream-paper graphic, no photo.
   text: Aplican la receta a la red de base de LateOn, una variante de ModernBERT, y al conjunto abierto Embeddings-Fine-Tuning.
-  motion: none
+  motion: zoom_in
 - id: m8-02a
   type: image
   prompt: Editorial cream-paper graphic, no photo.

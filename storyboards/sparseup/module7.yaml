@@ -24,19 +24,19 @@ shots:
   type: image
   prompt: Editorial cream-paper graphic, no photo.
   text: La tercera es el plegado del vocabulario.
-  motion: none
+  motion: zoom_in
 - id: m7-01b
   type: image
   prompt: Editorial cream-paper graphic, no photo.
   text: Los tokenizadores modernos, BPE a nivel de byte, distinguen mayúsculas de minúsculas, y si un token empieza
     palabra o va en medio.
-  motion: none
+  motion: zoom_out
 - id: m7-02
   type: image
   prompt: Editorial cream-paper graphic, no photo.
   text: 'Una sola palabra, «Paris», puede ocupar hasta cuatro entradas: paris, Paris, y las dos con la marca de
     inicio de palabra.'
-  motion: none
+  motion: zoom_in
 - id: m7-03a
   type: text_overlay
   overlay:
@@ -44,7 +44,7 @@ shots:
     title: Queda en segundo plano
     body: ''
   text: En un buscador denso, esa redundancia queda en segundo plano.
-  motion: none
+  motion: zoom_in
 - id: m7-03b
   type: text_overlay
   overlay:
@@ -52,12 +52,12 @@ shots:
     from: Queda en segundo plano
     to: Solo la forma exacta
   text: En uno disperso, un término de la consulta solo coincide con la forma exacta.
-  motion: none
+  motion: zoom_out
 - id: m7-04
   type: image
   prompt: Editorial cream-paper graphic, no photo.
   text: El modelo tiene que repartir el peso entre variantes, o aceptar que se le escapen coincidencias.
-  motion: none
+  motion: zoom_in
 - id: m7-05
   type: text_overlay
   overlay:

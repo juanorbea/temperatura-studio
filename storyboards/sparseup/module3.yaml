@@ -56,7 +56,7 @@ shots:
     body: O la escala de las cabezas del modelo
   text: Dos trabajos recientes apuntaban al vocabulario de los tokenizadores modernos, o a la escala de las cabezas
     del modelo.
-  motion: none
+  motion: zoom_in
 - id: m3-05a
   type: text_overlay
   overlay:
@@ -65,7 +65,7 @@ shots:
     body: Esas puntuaciones se llaman logits
   text: 'Este artículo mira otra cosa: cómo están repartidas, al empezar, las puntuaciones que el modelo asigna
     a cada término del vocabulario.'
-  motion: none
+  motion: zoom_out
 - id: m3-05b
   type: text_overlay
   overlay:
@@ -73,7 +73,7 @@ shots:
     title: Logits
     body: Las puntuaciones que el modelo asigna a cada término
   text: Esas puntuaciones se llaman logits.
-  motion: none
+  motion: zoom_in
 - id: m3-06a
   type: text_overlay
   overlay:
@@ -82,7 +82,7 @@ shots:
     body: ''
   text: En el preentrenamiento habitual, sumar una constante a todas no cambia el resultado. El modelo no tiene
     por qué dejarlas en un rango concreto.
-  motion: none
+  motion: zoom_out
 - id: m3-06b
   type: text_overlay
   overlay:
@@ -90,7 +90,7 @@ shots:
     from: Sumar una constante no cambia nada
     to: Sí depende de la escala
   text: Pero SPLADE convierte esas puntuaciones de una forma que sí depende de la escala.
-  motion: none
+  motion: zoom_in
 - id: m3-07a
   type: image
   prompt: Editorial cream-paper graphic, no photo.

@@ -25,7 +25,7 @@ shots:
   prompt: Editorial cream-paper graphic, no photo.
   text: No gana en todas partes. En LoTTE, tanto en foros como en búsqueda, queda por detrás de los modelos densos
     y de interacción tardía.
-  motion: zoom_in
+  motion: none
 - id: m9-01b
   type: image
   prompt: Editorial cream-paper graphic, no photo.
@@ -46,7 +46,7 @@ shots:
   prompt: Editorial cream-paper graphic, no photo.
   text: En un ejemplo, el trozo «cle», de «cleaver», dispara también «cleavage», «Cole» o «cane». Son los llamados
     wacky weights, pesos disparatados.
-  motion: zoom_in
+  motion: none
 - id: m9-04a
   type: text_overlay
   overlay:
@@ -75,11 +75,9 @@ shots:
   motion: none
 - id: m9-06
   type: image
-  prompt: The character looks closely at a small antique pocket chronometer held in white archival gloves, wooden
-    desk, library card catalog behind. Subject on the right, empty wall on the left.
+  prompt: Editorial cream-paper graphic, no photo.
   text: El dato de velocidad hay que tomarlo con lo que hay.
-  motion: zoom_in
-  character: true
+  motion: none
 - id: m9-07a
   type: image
   prompt: Editorial cream-paper graphic, no photo.

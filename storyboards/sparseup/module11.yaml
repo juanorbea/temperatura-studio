@@ -40,14 +40,14 @@ shots:
   prompt: Close-up of two hands in white archival gloves closing a wooden library card-catalog drawer; polished
     brass handle, warm afternoon light.
   text: Con la receta habitual de SPLADE, esas redes modernas rendían por debajo o ni siquiera entrenaban.
-  motion: zoom_in
+  motion: none
   character: true
 - id: m11-03b
   type: image
   prompt: Close-up of two hands in white archival gloves closing a wooden library card-catalog drawer; polished
     brass handle, warm afternoon light.
   text: Con esta, el artículo las convierte en encoders dispersos eficaces.
-  motion: zoom_in
+  motion: none
   character: true
   tail: 2.0
 - id: m11-04
