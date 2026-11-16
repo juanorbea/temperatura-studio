@@ -10,7 +10,7 @@ Five scripts have storyboards and images: `examples/gobernanza-ia.md` (video 1),
 `examples/caballo.md` (video 5, "Tú eres el próximo caballo", headers like
 `[PARTE 1: ...]`, pizarra theme; 26 pictures reused across 57 shots) and
 `examples/anthropic.md` (video 6, Anthropic IPO / S-1, named sections like potencias,
-blueprint theme).
+blueprint theme), and `examples/sparseup.md` (video 9, SPARSEUP paper breakdown, editorial theme).
 
 ## How it works
 
@@ -191,6 +191,31 @@ for n in 1 6 8; do .venv/bin/python -m studio build examples/carrera-del-billon.
 
 If a shot has no image yet, the build stops and prints the shot id and the
 full prompt to generate it with.
+
+
+### «SPARSEUP» (video 9)
+
+`scripts/make_sparseup_boards.py` writes `storyboards/sparseup/` from the direction
+storyboard (`/workspace/direction/sparseup/storyboard.md`), in the editorial theme, and
+copies or crops the paper figures into `assets/images/sparseup/`. Module 1 has no title
+card; the other modules open with a 2 s card. The script goes as written (the «Notas para
+Nolan» section is cut before converting, so it is not narrated):
+
+```
+.venv/bin/python -m scripts.convert_markdown_script /workspace/writing/sparseup/draft-build.md examples/sparseup.md \
+  --section "1. Desplazar las puntuaciones" --section "2. Limitar el abanico de cada palabra" --section "3. Plegar el vocabulario" \
+  --title "Gancho: el modelo que no entrena=El modelo que no entrena" \
+  --title "1. Desplazar las puntuaciones=Cambio 1: desplazar las puntuaciones" \
+  --title "2. Limitar el abanico de cada palabra=Cambio 2: limitar el abanico" \
+  --title "3. Plegar el vocabulario=Cambio 3: plegar el vocabulario" \
+  --title "Final: dos décimas=Dos décimas"
+.venv/bin/python -m scripts.make_sparseup_boards
+.venv/bin/python -m studio build examples/sparseup.md --module all --voice juan --out output/sparseup
+.venv/bin/python -m scripts.finish_video examples/sparseup.md output/sparseup
+```
+
+On screen, only figures that appear in the script. No music: voice and the room tone from
+`finish_video`.
 
 ## Your own voice
 
